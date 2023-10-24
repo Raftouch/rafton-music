@@ -2,11 +2,11 @@ version: '3.8'
 
 services:
   client:
+    container_name: nest-front
     build:
       context: ./client
       dockerfile: Dockerfile
-    image: app-ntm/client
-    container_name: client
+    restart: always
     ports:
       - '3000:3000'
     volumes:
@@ -15,24 +15,26 @@ services:
       - server
 
   server:
+    container_name: nest-back
     build:
       context: ./server
       dockerfile: Dockerfile
-    image: app-ntm/server
-    container_name: client
+    restart: always
     ports:
       - '5000:5000'
     volumes:
       - ./server:/usr/src/app
-    # depends_on:
-    #   - database
-    
-#   database:
-#     image: mongo:latest
-#     ports:
-#       - "27017:27017"
-#     volumes:
-#       - mongodb_data:/data/db
+    depends_on:
+      - database
 
-# volumes:
-#   mongodb_data:
+  database:
+    container_name: mongodb
+    image: mongo:latest
+    restart: always
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:
