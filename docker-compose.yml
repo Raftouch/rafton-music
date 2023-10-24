@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    image: app-ntm/client
+    container_name: client
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./client:/usr/src/app
+    depends_on:
+      - server
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    image: app-ntm/server
+    container_name: client
+    ports:
+      - '5000:5000'
+    volumes:
+      - ./server:/usr/src/app
+    # depends_on:
+    #   - database
+    
+#   database:
+#     image: mongo:latest
+#     ports:
+#       - "27017:27017"
+#     volumes:
+#       - mongodb_data:/data/db
+
+# volumes:
+#   mongodb_data:
