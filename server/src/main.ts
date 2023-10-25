@@ -2,7 +2,10 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 async function start() {
+  const port = process.env.PORT;
   const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
+  app.enableCors();
+  await app.listen(port, () => console.log(`App listening on port ${port}`));
 }
+
 start();
