@@ -1,3 +1,3 @@
 export default function App() {
-  return <div>Hi there</div>
+  return <div>Hi there Music !</div>
 }
