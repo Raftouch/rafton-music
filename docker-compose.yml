@@ -11,6 +11,8 @@ services:
     volumes:
       - ./client:/usr/src/app
       - /usr/src/app/node_modules
+    networks:
+      - app-ntm
 
   server:
     container_name: server
@@ -21,6 +23,8 @@ services:
       - 4000:4000
     volumes:
       - ./server:/usr/src/app
+    networks:
+      - app-ntm
   
   db:
     image: mysql
@@ -50,3 +54,5 @@ services:
 volumes:
   db-data:
 
+networks:
+  app-ntm:
