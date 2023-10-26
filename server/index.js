@@ -2,6 +2,9 @@ const express = require('express')
 require('dotenv').config()
 const app = express()
 const port = process.env.PORT
+const cors = require('cors')
+
+app.use(cors())
 
 const mysql = require('mysql')
 const db = mysql.createConnection({
@@ -29,9 +32,9 @@ app.get('/', (req, res) => {
   })
 })
 
-// app.get('/', (req, res) => {
-//   res.json('Hello from Api !')
-// })
+app.get('/hello', (req, res) => {
+  res.json('Hello from API 😃')
+})
 
 const start = () => {
   app.listen(port, () => console.log(`App listening on port ${port}`))
