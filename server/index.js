@@ -5,10 +5,10 @@ const port = process.env.PORT
 
 const mysql = require('mysql')
 const db = mysql.createConnection({
-  host: 'db',
-  user: 'root',
-  password: 'root',
-  database: 'music-app',
+  host: process.env.DB_HOST,
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  database: process.env.DB_NAME,
 })
 
 db.connect((err) => {
