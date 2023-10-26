@@ -5,18 +5,36 @@ const port = process.env.PORT
 
 const mysql = require('mysql')
 const db = mysql.createConnection({
-  host: 'localhost',
+  host: 'db',
   user: 'root',
   password: 'root',
   database: 'music-app',
 })
 
-db.connect(() => {
+db.connect((err) => {
+  if (err) {
+    console.error('Error: ' + err.stack)
+    return
+  }
   console.log('MySql connected')
 })
 
 app.get('/', (req, res) => {
-  res.json('Hello from Api !')
+  db.query('SELECT 1 + 1 AS solution', (err, results) => {
+    if (err) {
+      res.status(500).send('Error: ' + err)
+      return
+    }
+    res.send('Test success, 1 + 1 = ' + results[0].solution)
+  })
 })
 
-app.listen(port, () => console.log(`App listening on port ${port}`))
+// app.get('/', (req, res) => {
+//   res.json('Hello from Api !')
+// })
+
+const start = () => {
+  app.listen(port, () => console.log(`App listening on port ${port}`))
+}
+
+start()
