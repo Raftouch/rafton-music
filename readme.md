@@ -1,0 +1,7 @@
+- [x] create client (react + vite + typescript)
+- [x] create server (node + express)
+- [x] set up docker environment
+- [x] connect client to server
+- [x] connect server to database
+- [x] integrate test tools for client & server (eslint & prettier)
+- [x] install & run .husky
