@@ -1,0 +1,24 @@
+{
+  "name": "app-ntm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/2023-cda-alt-devops-p3/app-ntm.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/2023-cda-alt-devops-p3/app-ntm/issues"
+  },
+  "homepage": "https://github.com/2023-cda-alt-devops-p3/app-ntm#readme",
+  "devDependencies": {
+    "husky": "^8.0.0"
+  }
+}
