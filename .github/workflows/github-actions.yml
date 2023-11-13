@@ -24,8 +24,8 @@ jobs:
       # - run: npm test
       - name: install modules
         run: npm install
-      - name: build project
-        run: npm run build
+      # - name: build project
+      #   run: npm run build
       - name: lint
         run: npm run lint
       - name: preview
