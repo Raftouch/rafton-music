@@ -22,15 +22,5 @@ jobs:
       # - run: npm ci
       # - run: npm run build --if-present
       # - run: npm test
-      - name: install modules
-        run: npm install
-      # - name: build project
-      #   run: npm run build
-      - name: lint
-        run: npm run lint
-      - name: preview
-        run: npm run preview
-      - name: prettier
-        run: npm run format
 
-      # - run: cd client && npm run lint && npm run format
+      - run: cd client && npm run lint && npm run format
