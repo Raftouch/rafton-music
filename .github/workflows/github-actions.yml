@@ -33,4 +33,4 @@ jobs:
       # - name: prettier
       #   run: cd client && npm run format
 
-      - run: cd client && npm run lint && npm run format
+      - run: cd client && npm run ./node_modules/.bin/eslint --init && npm run format
