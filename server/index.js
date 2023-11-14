@@ -7,25 +7,25 @@ const cors = require('cors')
 app.use(cors())
 
 const mysql = require('mysql')
-const pool = mysql.createPool({
-    connectionLimit: 100,
+const db = mysql.createConnection({
+    // connectionLimit: 100,
     host: process.env.DB_HOST,
     user: process.env.USER,
     password: process.env.PASSWORD,
     database: process.env.DB_NAME,
-    debug: false,
+    // debug: false,
 })
 
-// pool.connect((err) => {
-//     if (err) {
-//         console.error('Error: ' + err.stack)
-//         return
-//     }
-//     console.log('MySql connected')
-// })
+db.connect((err) => {
+    if (err) {
+        console.error('Error: ' + err.stack)
+        return
+    }
+    console.log('MySql connected')
+})
 
 app.get('/', (req, res) => {
-    pool.query('SELECT 1 + 1 AS solution', (err, results) => {
+    db.query('SELECT 1 + 1 AS solution', (err, results) => {
         if (err) {
             res.status(500).send('Error: ' + err)
             return
