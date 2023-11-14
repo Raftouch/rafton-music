@@ -37,7 +37,6 @@ services:
       - db
     ports:
       - 4000:4000
-    command: sh -c "npm install -g nodemon"
     volumes:
       - ./server:/usr/src/app
     # networks:
