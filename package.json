@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/2023-cda-alt-devops-p3/app-ntm#readme",
   "devDependencies": {
-    "husky": "^8.0.0"
+    "husky": "^8.0.0",
+    "nodemon": "^3.0.1"
   }
 }
