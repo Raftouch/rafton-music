@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "preinstall": "npm i nodemon -g",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install"
   },
@@ -20,7 +19,6 @@
   },
   "homepage": "https://github.com/2023-cda-alt-devops-p3/app-ntm#readme",
   "devDependencies": {
-    "husky": "^8.0.0",
-    "nodemon": "^3.0.1"
+    "husky": "^8.0.0"
   }
 }
