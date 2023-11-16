@@ -1,17 +1,17 @@
-FROM node:20-alpine
+FROM node:lts-alpine
 
-COPY . /usr/src/app
+RUN npm install --global nodemon
 
 WORKDIR /usr/src/app
 
-# COPY package*.json ./
+COPY package*.json ./
 
 RUN npm install
 
-# COPY . .
+COPY . .
 
 # RUN npm run build
 
-# EXPOSE 3000
+EXPOSE 4000
 
 CMD npm run dev
