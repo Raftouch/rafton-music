@@ -26,19 +26,20 @@ services:
       - ./server:/usr/src/main
       - /usr/src/main/node_modules
     depends_on:
-      - postgres
+      - db
 
-  postgres:
+  db:
     image: postgres
     container_name: music-app-postgres
     restart: always
     ports:
       - '5432:5432'
     environment:
+      POSTGRES_DB: music-app
       POSTGRES_USER: user-name
       POSTGRES_PASSWORD: strong-password
     volumes:
-      - local_pgdata:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql/data
 
   pgadmin:
     image: dpage/pgadmin4
@@ -50,10 +51,10 @@ services:
       PGADMIN_DEFAULT_EMAIL: user-name@domain-name.com
       PGADMIN_DEFAULT_PASSWORD: strong-password
     depends_on:
-      - postgres
+      - db
     volumes:
       - pgadmin-data:/var/lib/pgadmin
 
 volumes:
-  local_pgdata:
+  db-data:
   pgadmin-data:

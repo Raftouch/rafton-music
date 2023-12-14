@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                Int      @id @default(autoincrement())
+  role              Role     @default(BASIC)
+  email             String   @unique
+  password          String
+  username          String   @unique
+  registration_date DateTime @default(now()) @db.Date
+  // updatedAt         DateTime @updatedAt()
+  uploaded_songs    Song[]   @relation("uploaded_songs")
+  favourite_songs   Song[]   @relation("favourite_songs")
+  listened_songs    Song[]   @relation("listened_songs")
+}
+
+model Song {
+  id               Int      @id @default(autoincrement())
+  title            String
+  image            String
+  audio            String
+  duration         String
+  play_count       Int
+  artists          Artist[]
+  genres           Genre[]
+  uploaded_by      User     @relation("uploaded_songs", fields: [uploaded_by_id], references: [id])
+  uploaded_by_id   Int
+  favourited_by    User?    @relation("favourite_songs", fields: [favourited_by_id], references: [id])
+  favourited_by_id Int?
+  listened_by      User?    @relation("listened_songs", fields: [listened_by_id], references: [id])
+  listened_by_id   Int?
+}
+
+model Genre {
+  id    Int    @id @default(autoincrement())
+  type  String @unique
+  songs Song[]
+}
+
+model Artist {
+  id    Int    @id @default(autoincrement())
+  name  String
+  songs Song[]
+}
+
+enum Role {
+  BASIC
+  ADMIN
+}
