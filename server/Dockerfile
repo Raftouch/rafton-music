@@ -1,6 +1,4 @@
-FROM node:lts-alpine
-
-RUN npm install --global nodemon
+FROM node:18
 
 WORKDIR /usr/src/app
 
@@ -10,8 +8,8 @@ RUN npm install
 
 COPY . .
 
-# RUN npm run build
+RUN npm run build
 
-EXPOSE 4000
+EXPOSE 5000
 
-CMD npm run dev
+CMD npm run start:dev

@@ -4,4 +4,4 @@
 echo coucou
 cd client && npm run lint && npm run format 
 cd ..
-cd server && npm audit && npm run format:write && npm run lint:fix
+cd server && npm audit && npm run format && npm run lint
