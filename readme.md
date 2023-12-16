@@ -1,7 +1,20 @@
-- [x] create client (react + vite + typescript)
-- [x] create server (node + express)
+- [x] create client (NextJS)
+- [x] create server (NestJS)
 - [x] set up docker environment
-- [x] connect client to server
-- [x] connect server to database
+- [x] connect client to server (Hello from API)
+- [x] connect server to database (PostgreSQL & pgAdmin via Docker)
 - [x] integrate test tools for client & server (eslint & prettier)
-- [x] install & run .husky
+  - [x] server: both integrated in NestJS
+  - [x] client: eslint integrated in NextJS, only need to install prettier
+- [x] install & run .husky (pre-commit)
+- [x] add & run github actions (for pull requests on dev)
+- [x] use agile methods (Gitub projects)
+  - [x] create issues w/ user stories
+  - [x] create Kanban table
+- [x] create db models (MERISE, data dictionary, rules)
+- [x] set up Prisma ORM (config both on server & Docker)
+  - [x] server: install, add config in package.json & schema.prisma, run npx prisma generate
+  - [x] Docker: install & run npx prisma generate
+- [x] set up Swagger (API Documentation)
+- [x] server: create routes & controllers
+  - [ ] service, controller & dto in NextJS
