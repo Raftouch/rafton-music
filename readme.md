@@ -1,3 +1,5 @@
+#### WORKFLOW
+
 - [x] create client (NextJS)
 - [x] create server (NestJS)
 - [x] set up docker environment
@@ -17,4 +19,13 @@
   - [x] Docker: install & run npx prisma generate
 - [x] set up Swagger (API Documentation)
 - [x] server: create routes & controllers
-  - [ ] service, controller & dto in NextJS
+  - [x] service, controller & dto for artists
+  - [ ] service, controller & dto for songs
+  - [ ] service, controller & dto for users
+  - [ ] service, controller & dto for genres
+- [x] Rest API
+- [ ] Testing w/ Jest
+
+#### SETUP
+
+- when cloning a repo from github: add .env file & run 'npx prisma generate'
