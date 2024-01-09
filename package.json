@@ -1,7 +1,7 @@
 {
   "name": "app-ntm",
   "version": "1.0.0",
-  "description": "",
+  "description": "desc",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,7 +12,7 @@
     "url": "git+https://github.com/2023-cda-alt-devops-p3/app-ntm.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "rafa",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/2023-cda-alt-devops-p3/app-ntm/issues"
