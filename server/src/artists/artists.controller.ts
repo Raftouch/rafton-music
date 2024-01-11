@@ -13,7 +13,7 @@ import { UpdateArtistDto } from './dto/update-artist.dto';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ArtistEntity } from './entities/artist.entity';
 
-@Controller('artists')
+@Controller('api/artists')
 @ApiTags('artists')
 export class ArtistsController {
   constructor(private readonly artistsService: ArtistsService) {}
