@@ -30,8 +30,8 @@ model Song {
   play_count       Int
   artists          Artist[]
   genres           Genre[]
-  uploaded_by      User     @relation("uploaded_songs", fields: [uploaded_by_id], references: [id])
-  uploaded_by_id   Int
+  uploaded_by      User?    @relation("uploaded_songs", fields: [uploaded_by_id], references: [id])
+  uploaded_by_id   Int?
   favourited_by    User?    @relation("favourite_songs", fields: [favourited_by_id], references: [id])
   favourited_by_id Int?
   listened_by      User?    @relation("listened_songs", fields: [listened_by_id], references: [id])
@@ -46,7 +46,7 @@ model Genre {
 
 model Artist {
   id    Int    @id @default(autoincrement())
-  name  String
+  name  String @unique
   songs Song[]
 }
 
