@@ -18,13 +18,13 @@
   - [x] server: install, add config in package.json & schema.prisma, run npx prisma generate
   - [x] Docker: install & run npx prisma generate
 - [x] set up Swagger (API Documentation)
-- [x] server: create routes & controllers
-  - [x] service, controller & dto for artists
-  - [ ] service, controller & dto for songs
-  - [ ] service, controller & dto for users
-  - [ ] service, controller & dto for genres
 - [x] Rest API
-- [ ] Testing w/ Jest
+  - [x] artists
+  - [ ] songs
+  - [ ] users
+  - [ ] genres
+- [x] run server tests w/ Jest (to check API routes ok)
+- [x] automate testing for CI
 
 #### SETUP
 
