@@ -24,12 +24,12 @@ describe('ArtistsController', () => {
     controller = moduleFixture.get<ArtistsController>(ArtistsController);
     app = moduleFixture.createNestApplication();
     prismaService = moduleFixture.get<PrismaService>(PrismaService);
-    await prismaService.$connect();
+    // await prismaService.$connect();
     await app.init();
   });
 
   afterAll(async () => {
-    await prismaService.$disconnect();
+    // await prismaService.$disconnect();
     await app.close();
   });
 
