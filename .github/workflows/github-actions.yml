@@ -63,4 +63,4 @@ jobs:
       - name: Format & lint code
         run: npm audit && npm run format && npm run lint
       - name: Launch integration tests
-        run: npm run test:i
+        run: npm test
