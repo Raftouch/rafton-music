@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ArtistsController } from '../../artists.controller';
-import { ArtistsService } from '../../artists.service';
-import { AppModule } from '../../../app.module';
+import { ArtistsController } from './artists.controller';
+import { ArtistsService } from './artists.service';
+import { AppModule } from '../app.module';
 import * as request from 'supertest';
-import { CreateArtistDto } from '../../dto/create-artist.dto';
+import { CreateArtistDto } from './dto/create-artist.dto';
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import * as faker from 'faker';
-import { UpdateArtistDto } from '../../dto/update-artist.dto';
+import { UpdateArtistDto } from './dto/update-artist.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 describe('ArtistsController', () => {
