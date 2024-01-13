@@ -7,7 +7,7 @@ import { CreateArtistDto } from './dto/create-artist.dto';
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import * as faker from 'faker';
 import { UpdateArtistDto } from './dto/update-artist.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 
 describe('ArtistsController', () => {
   let controller: ArtistsController;
