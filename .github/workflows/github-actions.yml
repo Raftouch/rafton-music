@@ -36,6 +36,18 @@ jobs:
       matrix:
         node-version: [20.x]
 
+    services:
+      db:
+        image: postgres
+        env:
+          POSTGRES_DB: music-app
+          POSTGRES_USER: user-name
+          POSTGRES_PASSWORD: strong-password
+        ports:
+          - '5432:5432'
+        volumes:
+          - db-data:/var/lib/postgresql/data
+
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
