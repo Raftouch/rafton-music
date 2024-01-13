@@ -80,12 +80,10 @@ describe('ArtistsController', () => {
 
     const artistId = createResponse.body.id;
 
-    // Récupérer l'artiste par ID
     const getResponse = await request(app.getHttpServer())
       .get(`/api/artists/${artistId}`)
       .expect(HttpStatus.OK);
 
-    // Vérifier la réponse
     expect(getResponse.body).toBeDefined();
     expect(getResponse.body.id).toBe(artistId);
     expect(getResponse.body.name).toBe(createArtistDto.name);
@@ -114,7 +112,6 @@ describe('ArtistsController', () => {
     expect(getResponse.body.id).toBe(artistId);
     expect(getResponse.body.name).toBe(updateArtistDto.name);
 
-    // Vérifier que l'entité a été mise à jour dans la base de données
     const updatedArtist = await prismaService.artist.findUnique({
       where: { id: artistId },
     });
@@ -137,16 +134,13 @@ describe('ArtistsController', () => {
 
     const artistId = createResponse.body.id;
 
-    // Supprimer l'artiste par ID
     const deleteResponse = await request(app.getHttpServer())
       .delete(`/api/artists/${artistId}`)
       .expect(HttpStatus.OK);
 
-    // Vérifier la réponse
     expect(deleteResponse.body).toBeDefined();
     expect(deleteResponse.body.id).toBe(artistId);
 
-    // Vérifier que l'artiste a été effectivement supprimé de la base de données
     const deletedArtist = await prismaService.artist.findUnique({
       where: { id: artistId },
     });
