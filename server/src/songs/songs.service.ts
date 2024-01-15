@@ -6,6 +6,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 @Injectable()
 export class SongsService {
   constructor(private prisma: PrismaService) {}
+
   create(createSongDto: CreateSongDto) {
     return this.prisma.song.create({ data: createSongDto });
   }
