@@ -11,34 +11,24 @@ export class CreateSongDto {
   @ApiProperty()
   audio: string;
 
+  @ApiProperty({ default: 0 })
+  playCount: number;
+
+  @ApiProperty()
+  artist: {
+    connect: Artist;
+  };
+
+  @ApiProperty()
+  genre: {
+    connect: Genre;
+  };
+
   @ApiProperty({ required: false })
-  duration: string;
-
-  @ApiProperty()
-  play_count: number;
-
-  @ApiProperty()
-  artists: {
-    connect: Artist[];
-  };
-
-  @ApiProperty()
-  genres: {
-    connect: Genre[];
-  };
-
-  @ApiProperty()
-  uploaded_by?: {
+  uploadedBy: {
     connect: User;
   };
 
-  @ApiProperty()
-  favourited_by?: {
-    connect: User;
-  };
-
-  @ApiProperty()
-  listened_by?: {
-    connect: User;
-  };
+  @ApiProperty({ default: Date.now() })
+  uploadedAt: Date;
 }

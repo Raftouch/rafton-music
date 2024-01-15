@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Artist, Genre, Song } from '@prisma/client';
+import { Song } from '@prisma/client';
 
 export class SongEntity implements Song {
   @ApiProperty()
@@ -14,28 +14,18 @@ export class SongEntity implements Song {
   @ApiProperty()
   audio: string;
 
-  @ApiProperty({ required: false })
-  duration: string | null;
+  @ApiProperty({ default: 0 })
+  playCount: number;
 
   @ApiProperty()
-  play_count: number;
+  artistId: number;
 
   @ApiProperty()
-  artists: {
-    connect: Artist[];
-  };
-
-  @ApiProperty()
-  genres: {
-    connect: Genre[];
-  };
+  genreId: number;
 
   @ApiProperty({ required: false })
-  uploaded_by_id: number;
+  userId: number;
 
-  @ApiProperty({ required: false })
-  favourited_by_id: number;
-
-  @ApiProperty({ required: false })
-  listened_by_id: number;
+  @ApiProperty({ default: Date.now() })
+  uploadedAt: Date;
 }

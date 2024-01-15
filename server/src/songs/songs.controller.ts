@@ -6,12 +6,15 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  UploadedFiles,
 } from '@nestjs/common';
 import { SongsService } from './songs.service';
 import { CreateSongDto } from './dto/create-song.dto';
 import { UpdateSongDto } from './dto/update-song.dto';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { SongEntity } from './entities/song.entity';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 
 @Controller('api/songs')
 @ApiTags('songs')
@@ -20,7 +23,14 @@ export class SongsController {
 
   @Post()
   @ApiCreatedResponse({ type: SongEntity })
-  create(@Body() createSongDto: CreateSongDto) {
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'image', maxCount: 1 },
+      { name: 'audio', maxCount: 1 },
+    ]),
+  )
+  create(@UploadedFiles() files, @Body() createSongDto: CreateSongDto) {
+    console.log(files);
     return this.songsService.create(createSongDto);
   }
 
