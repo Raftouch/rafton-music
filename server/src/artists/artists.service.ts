@@ -7,26 +7,26 @@ import { PrismaService } from '../prisma/prisma.service';
 export class ArtistsService {
   constructor(private prisma: PrismaService) {}
 
-  create(createArtistDto: CreateArtistDto) {
+  async create(createArtistDto: CreateArtistDto) {
     return this.prisma.artist.create({ data: createArtistDto });
   }
 
-  findAll() {
+  async findAll() {
     return this.prisma.artist.findMany();
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     return this.prisma.artist.findUnique({ where: { id } });
   }
 
-  update(id: number, updateArtistDto: UpdateArtistDto) {
+  async update(id: number, updateArtistDto: UpdateArtistDto) {
     return this.prisma.artist.update({
       where: { id },
       data: updateArtistDto,
     });
   }
 
-  remove(id: number) {
+  async remove(id: number) {
     return this.prisma.artist.delete({ where: { id } });
   }
 }

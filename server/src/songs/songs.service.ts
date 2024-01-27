@@ -7,23 +7,23 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class SongsService {
   constructor(private prisma: PrismaService) {}
 
-  create(createSongDto: CreateSongDto) {
+  async create(createSongDto: CreateSongDto) {
     return this.prisma.song.create({ data: createSongDto });
   }
 
-  findAll() {
+  async findAll() {
     return this.prisma.song.findMany({ where: {} });
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     return this.prisma.song.findUnique({ where: { id } });
   }
 
-  update(id: number, updateSongDto: UpdateSongDto) {
+  async update(id: number, updateSongDto: UpdateSongDto) {
     return this.prisma.song.update({ where: { id }, data: updateSongDto });
   }
 
-  remove(id: number) {
+  async remove(id: number) {
     return this.prisma.song.delete({ where: { id } });
   }
 }

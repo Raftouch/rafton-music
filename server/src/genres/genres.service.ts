@@ -7,23 +7,23 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class GenresService {
   constructor(private prisma: PrismaService) {}
 
-  create(createGenreDto: CreateGenreDto) {
+  async create(createGenreDto: CreateGenreDto) {
     return this.prisma.genre.create({ data: createGenreDto });
   }
 
-  findAll() {
+  async findAll() {
     return this.prisma.genre.findMany();
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     return this.prisma.genre.findUnique({ where: { id } });
   }
 
-  update(id: number, updateGenreDto: UpdateGenreDto) {
+  async update(id: number, updateGenreDto: UpdateGenreDto) {
     return this.prisma.genre.update({ where: { id }, data: updateGenreDto });
   }
 
-  remove(id: number) {
+  async remove(id: number) {
     return this.prisma.genre.delete({ where: { id } });
   }
 }
