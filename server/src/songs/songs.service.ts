@@ -16,7 +16,13 @@ export class SongsService {
   }
 
   async findOne(id: number) {
-    return this.prisma.song.findUnique({ where: { id } });
+    return this.prisma.song.findUnique({
+      where: { id },
+      include: {
+        artist: true,
+        genre: true,
+      },
+    });
   }
 
   async update(id: number, updateSongDto: UpdateSongDto) {
