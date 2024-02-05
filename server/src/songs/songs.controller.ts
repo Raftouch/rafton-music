@@ -30,8 +30,9 @@ export class SongsController {
     ]),
   )
   create(@UploadedFiles() files, @Body() createSongDto: CreateSongDto) {
-    console.log(files);
-    return this.songsService.create(createSongDto);
+    const { image, audio } = files;
+    // console.log(files);
+    return this.songsService.create(createSongDto, image[0], audio[0]);
   }
 
   @Get()
