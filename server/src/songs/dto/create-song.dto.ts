@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Artist, Genre, User } from '@prisma/client';
 
 export class CreateSongDto {
   @ApiProperty()
@@ -12,23 +11,17 @@ export class CreateSongDto {
   audio: string;
 
   @ApiProperty({ default: 0 })
-  playCount: number;
-
-  @ApiProperty()
-  artist: {
-    connect: Artist;
-  };
-
-  @ApiProperty()
-  genre: {
-    connect: Genre;
-  };
-
-  @ApiProperty({ required: false })
-  uploadedBy: {
-    connect: User;
-  };
+  playcount: number;
 
   @ApiProperty({ default: Date.now() })
-  uploadedAt: Date;
+  uploadedat: Date;
+
+  @ApiProperty()
+  artist_id: string;
+
+  @ApiProperty()
+  genre_id: string;
+
+  @ApiProperty({ required: false })
+  user_id: string;
 }

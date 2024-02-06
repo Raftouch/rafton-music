@@ -33,18 +33,18 @@ export class GenresController {
   @Get(':id')
   @ApiOkResponse({ type: GenreEntity })
   findOne(@Param('id') id: string) {
-    return this.genresService.findOne(+id);
+    return this.genresService.findOne(id);
   }
 
   @Patch(':id')
   @ApiOkResponse({ type: GenreEntity })
   update(@Param('id') id: string, @Body() updateGenreDto: UpdateGenreDto) {
-    return this.genresService.update(+id, updateGenreDto);
+    return this.genresService.update(id, updateGenreDto);
   }
 
   @Delete(':id')
   @ApiOkResponse({ type: GenreEntity })
   remove(@Param('id') id: string) {
-    return this.genresService.remove(+id);
+    return this.genresService.remove(id);
   }
 }

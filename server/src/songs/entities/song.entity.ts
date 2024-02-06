@@ -1,31 +1,31 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Song } from '@prisma/client';
+import { songs } from '@prisma/client';
 
-export class SongEntity implements Song {
+export class SongEntity implements songs {
   @ApiProperty()
-  id: number;
+  id: string;
 
   @ApiProperty()
   title: string;
 
   @ApiProperty({ required: false })
-  image: string | null;
+  image: string;
 
   @ApiProperty()
   audio: string;
 
   @ApiProperty({ default: 0 })
-  playCount: number;
-
-  @ApiProperty()
-  artistId: number;
-
-  @ApiProperty()
-  genreId: number;
-
-  @ApiProperty({ required: false })
-  userId: number;
+  playcount: number;
 
   @ApiProperty({ default: Date.now() })
-  uploadedAt: Date;
+  uploadedat: Date;
+
+  @ApiProperty()
+  artist_id: string;
+
+  @ApiProperty()
+  genre_id: string;
+
+  @ApiProperty({ required: false })
+  user_id: string;
 }

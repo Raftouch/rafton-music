@@ -8,22 +8,22 @@ export class GenresService {
   constructor(private prisma: PrismaService) {}
 
   async create(createGenreDto: CreateGenreDto) {
-    return this.prisma.genre.create({ data: createGenreDto });
+    return this.prisma.genres.create({ data: createGenreDto });
   }
 
   async findAll() {
-    return this.prisma.genre.findMany();
+    return this.prisma.genres.findMany();
   }
 
-  async findOne(id: number) {
-    return this.prisma.genre.findUnique({ where: { id } });
+  async findOne(id: string) {
+    return this.prisma.genres.findUnique({ where: { id } });
   }
 
-  async update(id: number, updateGenreDto: UpdateGenreDto) {
-    return this.prisma.genre.update({ where: { id }, data: updateGenreDto });
+  async update(id: string, updateGenreDto: UpdateGenreDto) {
+    return this.prisma.genres.update({ where: { id }, data: updateGenreDto });
   }
 
-  async remove(id: number) {
-    return this.prisma.genre.delete({ where: { id } });
+  async remove(id: string) {
+    return this.prisma.genres.delete({ where: { id } });
   }
 }

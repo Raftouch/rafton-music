@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Genre } from '@prisma/client';
+import { genres } from '@prisma/client';
 
-export class GenreEntity implements Genre {
+export class GenreEntity implements genres {
   @ApiProperty()
-  id: number;
+  id: string;
 
   @ApiProperty()
   type: string;

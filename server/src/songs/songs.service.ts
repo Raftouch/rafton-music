@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateSongDto } from './dto/create-song.dto';
 import { UpdateSongDto } from './dto/update-song.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Song } from '@prisma/client';
+import { songs } from '@prisma/client';
 import { FileType, FilesService } from 'src/files/files.service';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class SongsService {
     private file: FilesService,
   ) {}
 
-  async create(createSongDto: CreateSongDto, image, audio): Promise<Song> {
+  async create(createSongDto: CreateSongDto, image, audio): Promise<songs> {
     const imagePath = this.file.createFile(FileType.IMAGE, image);
     const audioPath = this.file.createFile(FileType.AUDIO, audio);
     const songData = {
@@ -23,39 +23,39 @@ export class SongsService {
     console.log(songData);
     console.log(imagePath);
 
-    const song = await this.prisma.song.create({
+    const song = await this.prisma.songs.create({
       data: songData,
     });
 
     return song;
   }
 
-  async findAll(): Promise<Song[]> {
-    const songs = await this.prisma.song.findMany({ where: {} });
+  async findAll(): Promise<songs[]> {
+    const songs = await this.prisma.songs.findMany({ where: {} });
     return songs;
   }
 
-  async findOne(id: number): Promise<Song> {
-    const song = await this.prisma.song.findUnique({
+  async findOne(id: string): Promise<songs> {
+    const song = await this.prisma.songs.findUnique({
       where: { id },
       include: {
-        artist: true,
-        genre: true,
+        artists: true,
+        genres: true,
       },
     });
     return song;
   }
 
-  async update(id: number, updateSongDto: UpdateSongDto): Promise<Song> {
-    const song = await this.prisma.song.update({
+  async update(id: string, updateSongDto: UpdateSongDto): Promise<songs> {
+    const song = await this.prisma.songs.update({
       where: { id },
       data: updateSongDto,
     });
     return song;
   }
 
-  async remove(id: number): Promise<Song> {
-    const song = await this.prisma.song.delete({ where: { id } });
+  async remove(id: string): Promise<songs> {
+    const song = await this.prisma.songs.delete({ where: { id } });
     return song;
   }
 }
