@@ -1,12 +1,12 @@
-'use client'
+"use client";
 
-import Button from '@/components/Button'
+import Button from "@/components/Button";
 
 export default function Playlists() {
   return (
     <div>
       <h1>Discover Playlists</h1>
-      <Button onClick={() => console.log('open modal')}>Upload New</Button>
+      <Button onClick={() => console.log("open modal")}>Upload New</Button>
     </div>
-  )
+  );
 }
