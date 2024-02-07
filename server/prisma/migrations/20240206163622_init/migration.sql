@@ -11,8 +11,8 @@ CREATE TABLE "artists" (
 
 -- CreateTable
 CREATE TABLE "classify" (
-    "id_song" TEXT NOT NULL,
-    "id_genre" TEXT NOT NULL,
+    "id_song" UUID NOT NULL,
+    "id_genre" UUID NOT NULL,
 
     CONSTRAINT "classify_pkey" PRIMARY KEY ("id_song","id_genre")
 );
