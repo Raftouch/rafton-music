@@ -57,6 +57,8 @@ jobs:
           cache: 'npm'
       - name: Determine server package versions & dependencies (clean-install)
         run: npm ci
+      - name: Migrate database
+        run: npm run prisma:migrate
       - name: Build NestJS server
         run: npm run build --if-present
       - name: Audit dependencies
