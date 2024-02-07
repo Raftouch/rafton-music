@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { CreateSongDto } from './dto/create-song.dto';
 import { UpdateSongDto } from './dto/update-song.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { songs } from '@prisma/client';
-import { FileType, FilesService } from 'src/files/files.service';
+import { FileType, FilesService } from '../files/files.service';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class SongsService {
