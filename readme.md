@@ -20,11 +20,13 @@
 - [x] set up Swagger (API Documentation)
 - [x] Rest API
   - [x] artists
-  - [ ] songs
+  - [x] songs
   - [ ] users
-  - [ ] genres
+  - [x] genres
 - [x] run server tests w/ Jest (to check API routes ok)
 - [x] automate testing for CI
+- [x] upload files on server (images, audios)
+- [ ] CRUD on frontend + navbar, header, footer
 
 #### SETUP
 

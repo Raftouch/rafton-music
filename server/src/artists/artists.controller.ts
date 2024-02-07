@@ -33,18 +33,18 @@ export class ArtistsController {
   @Get(':id')
   @ApiOkResponse({ type: ArtistEntity })
   findOne(@Param('id') id: string) {
-    return this.artistsService.findOne(+id);
+    return this.artistsService.findOne(id);
   }
 
   @Patch(':id')
   @ApiOkResponse({ type: ArtistEntity })
   update(@Param('id') id: string, @Body() updateArtistDto: UpdateArtistDto) {
-    return this.artistsService.update(+id, updateArtistDto);
+    return this.artistsService.update(id, updateArtistDto);
   }
 
   @Delete(':id')
   @ApiOkResponse({ type: ArtistEntity })
   remove(@Param('id') id: string) {
-    return this.artistsService.remove(+id);
+    return this.artistsService.remove(id);
   }
 }

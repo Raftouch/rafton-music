@@ -112,7 +112,7 @@ describe('ArtistsController', () => {
     expect(getResponse.body.id).toBe(artistId);
     expect(getResponse.body.name).toBe(updateArtistDto.name);
 
-    const updatedArtist = await prismaService.artist.findUnique({
+    const updatedArtist = await prismaService.artists.findUnique({
       where: { id: artistId },
     });
 
@@ -141,7 +141,7 @@ describe('ArtistsController', () => {
     expect(deleteResponse.body).toBeDefined();
     expect(deleteResponse.body.id).toBe(artistId);
 
-    const deletedArtist = await prismaService.artist.findUnique({
+    const deletedArtist = await prismaService.artists.findUnique({
       where: { id: artistId },
     });
 

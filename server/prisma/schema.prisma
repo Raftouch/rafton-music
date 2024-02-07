@@ -8,49 +8,88 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id                Int      @id @default(autoincrement())
-  role              Role     @default(BASIC)
-  email             String   @unique
-  password          String
-  username          String   @unique
-  registration_date DateTime @default(now()) @db.Date
-  // updatedAt         DateTime @updatedAt()
-  uploaded_songs    Song[]   @relation("uploaded_songs")
-  favourite_songs   Song[]   @relation("favourite_songs")
-  listened_songs    Song[]   @relation("listened_songs")
+model artists {
+  // id     String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id     String   @id @default(uuid()) @db.Uuid
+  name   String   @db.VarChar(50)
+  songs  songs[]
+  create create[]
 }
 
-model Song {
-  id               Int      @id @default(autoincrement())
-  title            String
-  image            String
-  audio            String
-  duration         String
-  play_count       Int
-  artists          Artist[]
-  genres           Genre[]
-  uploaded_by      User     @relation("uploaded_songs", fields: [uploaded_by_id], references: [id])
-  uploaded_by_id   Int
-  favourited_by    User?    @relation("favourite_songs", fields: [favourited_by_id], references: [id])
-  favourited_by_id Int?
-  listened_by      User?    @relation("listened_songs", fields: [listened_by_id], references: [id])
-  listened_by_id   Int?
+model classify {
+  id_song  String @db.Uuid
+  id_genre String @db.Uuid
+  genres   genres @relation(fields: [id_genre], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  songs    songs  @relation(fields: [id_song], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([id_song, id_genre])
 }
 
-model Genre {
-  id    Int    @id @default(autoincrement())
-  type  String @unique
-  songs Song[]
+model create {
+  id_artist String  @db.Uuid
+  id_song   String  @db.Uuid
+  artists   artists @relation(fields: [id_artist], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  songs     songs   @relation(fields: [id_song], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([id_artist, id_song])
 }
 
-model Artist {
-  id    Int    @id @default(autoincrement())
-  name  String
-  songs Song[]
+model favourite {
+  id_song String @db.Uuid
+  id_user String @db.Uuid
+  songs   songs  @relation(fields: [id_song], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users   users  @relation(fields: [id_user], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([id_song, id_user])
 }
 
-enum Role {
-  BASIC
-  ADMIN
+model genres {
+  // id       String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id       String     @id @default(uuid()) @db.Uuid
+  type     String     @db.VarChar(50)
+  classify classify[]
+  songs    songs[]
+}
+
+model listen {
+  id_song String @db.Uuid
+  id_user String @db.Uuid
+  songs   songs  @relation(fields: [id_song], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users   users  @relation(fields: [id_user], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([id_song, id_user])
+}
+
+model songs {
+  // id         String      @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id         String      @id @default(uuid()) @db.Uuid
+  title      String      @db.VarChar(50)
+  image      String?     @db.VarChar(255)
+  audio      String?     @db.VarChar(255)
+  playcount  Int?
+  uploadedat DateTime    @default(dbgenerated("CURRENT_DATE")) @db.Date
+  artist_id  String?     @db.Uuid
+  genre_id   String?     @db.Uuid
+  user_id    String?     @db.Uuid
+  classify   classify[]
+  create     create[]
+  favourite  favourite[]
+  listen     listen[]
+  artists    artists?    @relation(fields: [artist_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  genres     genres?     @relation(fields: [genre_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users      users?      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model users {
+  // id           String      @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id           String      @id @default(uuid()) @db.Uuid
+  role         String?     @db.VarChar(5)
+  email        String      @db.VarChar(50)
+  password     String      @db.VarChar(255)
+  username     String      @db.VarChar(50)
+  registeredat DateTime    @default(dbgenerated("CURRENT_DATE")) @db.Date
+  updatedat    DateTime    @default(dbgenerated("CURRENT_DATE")) @db.Date
+  favourite    favourite[]
+  listen       listen[]
+  songs        songs[]
 }
