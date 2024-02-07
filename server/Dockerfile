@@ -1,12 +1,14 @@
 FROM node:18
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src/main
 
 COPY package*.json ./
 
 RUN npm install
 
 COPY . .
+
+RUN npx prisma generate
 
 RUN npm run build
 
