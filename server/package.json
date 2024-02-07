@@ -21,7 +21,8 @@
     "db:restart": "docker compose down && docker compose up -d && sleep 1",
     "pretest:i": "dotenv -e .env.test -- prisma migrate reset --force",
     "test:i": "dotenv -e .env.test -- jest --no-cache --config ./test/jest-test.json",
-    "prisma:migrate": "prisma migrate deploy"
+    "prisma:migrate": "prisma migrate deploy",
+    "prisma:generate": "prisma generate"
   },
   "prisma": {
     "engines": {
