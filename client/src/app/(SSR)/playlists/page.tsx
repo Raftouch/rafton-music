@@ -15,7 +15,7 @@ export default async function fetchSongs() {
   const songs: Song[] = await response.json()
 
   return (
-    <div className="flex flex-col items-center gap-3">
+    <div className="grid grid-cols-2 gap-12 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-items-center">
       {/* <Alert>Dynamic Page</Alert> */}
 
       {songs.map((song) => (
