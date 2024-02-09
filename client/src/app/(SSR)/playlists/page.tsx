@@ -1,6 +1,6 @@
+import SongCard from '@/components/SongCard'
 import { Song } from '@/models/song'
 import { Metadata } from 'next'
-import Image from 'next/image'
 
 export const metadata: Metadata = {
   title: 'Playlists - Rafton',
@@ -19,17 +19,7 @@ export default async function fetchSongs() {
       {/* <Alert>Dynamic Page</Alert> */}
 
       {songs.map((song) => (
-        <li key={song.id}>
-          <div>Title: {song.title}</div>
-
-          <Image
-            src={`http://localhost:5000/${song.image}`}
-            width={150}
-            height={150}
-            alt="image"
-            className="rounded-md"
-          />
-        </li>
+        <SongCard song={song} key={song.id} />
       ))}
     </div>
   )
