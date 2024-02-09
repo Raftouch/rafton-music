@@ -9,7 +9,7 @@ interface SongProps {
 export default function SongCard({ song }: SongProps) {
   return (
     <li key={song.id} className="flex flex-col gap-4">
-      <div>Title: {song.title}</div>
+      <div>{song.title}</div>
       <Link href={`/songs/${song.id}`}>
         <Image
           src={`http://localhost:5000/${song.image}`}
