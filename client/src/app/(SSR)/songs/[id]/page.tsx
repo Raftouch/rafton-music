@@ -13,11 +13,8 @@ export function generateMetadata(): Metadata {
 }
 
 export default async function SongDetails({ params: { id } }: DetailsProps) {
-  const response = await fetch('http://localhost:5000/api/songs')
-  const songs: Song[] = await response.json()
-
-  const song = songs.find((song) => id === song.id)
-  if (song == null) return null
+  const response = await fetch(`http://localhost:5000/api/songs/${id}`)
+  const song: Song = await response.json()
 
   return (
     <div className="flex gap-10 justify-center">
@@ -31,6 +28,8 @@ export default async function SongDetails({ params: { id } }: DetailsProps) {
           className="rounded-md"
           priority={true}
         />
+        <p>{song.artists.name}</p>
+        <p>{song.genres.type}</p>
       </div>
     </div>
   )
