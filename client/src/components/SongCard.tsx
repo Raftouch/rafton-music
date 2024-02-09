@@ -17,6 +17,7 @@ export default function SongCard({ song }: SongProps) {
           height={150}
           alt="image"
           className="rounded-md"
+          priority={true}
         />
       </Link>
     </li>

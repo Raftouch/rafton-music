@@ -29,6 +29,7 @@ export default async function SongDetails({ params: { id } }: DetailsProps) {
           height={250}
           alt="image"
           className="rounded-md"
+          priority={true}
         />
       </div>
     </div>
