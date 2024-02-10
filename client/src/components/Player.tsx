@@ -34,6 +34,8 @@ export default function Player() {
         <p>{song.artists.name}</p>
       </div>
       <PlayProgress left={0} right={100} onChange={() => ({})} />
+      <div className='ml-auto'>🔉</div>
+      <PlayProgress left={0} right={100} onChange={() => ({})} />
     </div>
   )
 }
