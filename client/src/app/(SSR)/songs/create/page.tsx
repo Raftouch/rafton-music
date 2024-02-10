@@ -17,20 +17,22 @@ export default function CreateSong() {
     }
   }
   const back = () => {
-    setActiveStep((prev) => prev - 1)
+    if (activeStep !== 0) {
+      setActiveStep((prev) => prev - 1)
+    }
   }
 
   return (
     <StepWrapper activeStep={activeStep}>
-      {activeStep == 0 && <SongInfo />}
+      {activeStep === 0 && <SongInfo />}
 
-      {activeStep == 1 && (
+      {activeStep === 1 && (
         <FileUpload setFile={setImage} accept="image/">
           <button className="text-slate-900">Upload image</button>
         </FileUpload>
       )}
 
-      {activeStep == 2 && (
+      {activeStep === 2 && (
         <FileUpload setFile={setAudio} accept="audio/">
           <button className="text-slate-900">Upload audio</button>
         </FileUpload>
