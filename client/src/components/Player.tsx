@@ -3,6 +3,7 @@
 import React from 'react'
 import Button from './Button'
 import { Song } from '@/models/song'
+import PlayProgress from './PlayProgress'
 
 export default function Player() {
   const song: Song = {
@@ -32,6 +33,7 @@ export default function Player() {
         <p>{song.title}</p>
         <p>{song.artists.name}</p>
       </div>
+      <PlayProgress left={0} right={100} onChange={() => ({})} />
     </div>
   )
 }
