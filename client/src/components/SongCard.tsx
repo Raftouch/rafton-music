@@ -1,9 +1,9 @@
-import { Song } from '@/models/song'
-import Image from 'next/image'
-import Link from 'next/link'
+import { Song } from "@/models/song";
+import Image from "next/image";
+import Link from "next/link";
 
 interface SongProps {
-  song: Song
+  song: Song;
 }
 
 export default function SongCard({ song }: SongProps) {
@@ -21,5 +21,5 @@ export default function SongCard({ song }: SongProps) {
         />
       </Link>
     </li>
-  )
+  );
 }

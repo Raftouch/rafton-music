@@ -1,9 +1,9 @@
-import React, { useRef, LegacyRef } from 'react'
+import React, { useRef, LegacyRef } from "react";
 
 interface FileUploadProps {
-  setFile: Function
-  accept: string
-  children: React.ReactNode
+  setFile: Function;
+  accept: string;
+  children: React.ReactNode;
 }
 
 export default function FileUpload({
@@ -11,14 +11,14 @@ export default function FileUpload({
   accept,
   children,
 }: FileUploadProps) {
-  const ref = useRef<HTMLInputElement>(null)
+  const ref = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0]
+    const selectedFile = e.target.files?.[0];
     if (selectedFile) {
-      setFile(selectedFile)
+      setFile(selectedFile);
     }
-  }
+  };
 
   return (
     <div onClick={() => ref.current?.click()}>
@@ -31,5 +31,5 @@ export default function FileUpload({
       />
       {children}
     </div>
-  )
+  );
 }

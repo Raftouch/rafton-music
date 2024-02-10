@@ -1,15 +1,15 @@
-import React from 'react'
+import React from "react";
 
 interface StepWrapperProps {
-  activeStep: number
-  children: React.ReactNode
+  activeStep: number;
+  children: React.ReactNode;
 }
 
 export default function StepWrapper({
   activeStep,
   children,
 }: StepWrapperProps) {
-  const steps = ['Song information', 'Ipload image', 'Upload audio']
+  const steps = ["Song information", "Ipload image", "Upload audio"];
 
   return (
     <div className="container mx-auto">
@@ -20,12 +20,12 @@ export default function StepWrapper({
               <li key={index}>
                 <div
                   className={`w-8 h-8 text-center rounded-full border-2 ${
-                    activeStep > index ? 'border-blue-500' : 'border-gray-300'
+                    activeStep > index ? "border-blue-500" : "border-gray-300"
                   }`}
                 >
                   <span
                     className={`${
-                      activeStep > index ? 'text-blue-500' : 'text-gray-500'
+                      activeStep > index ? "text-blue-500" : "text-gray-500"
                     }`}
                   >
                     {index + 1}
@@ -33,7 +33,7 @@ export default function StepWrapper({
                 </div>
                 <span
                   className={`${
-                    activeStep > index ? 'text-blue-500' : 'text-gray-500'
+                    activeStep > index ? "text-blue-500" : "text-gray-500"
                   }`}
                 >
                   {step}
@@ -49,5 +49,5 @@ export default function StepWrapper({
         </div>
       </div>
     </div>
-  )
+  );
 }

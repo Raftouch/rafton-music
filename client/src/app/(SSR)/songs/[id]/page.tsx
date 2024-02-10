@@ -1,20 +1,20 @@
-import { Song } from '@/models/song'
-import { Metadata } from 'next'
-import Image from 'next/image'
+import { Song } from "@/models/song";
+import { Metadata } from "next";
+import Image from "next/image";
 
 interface DetailsProps {
-  params: { id: string }
+  params: { id: string };
 }
 
 export function generateMetadata(): Metadata {
   return {
-    title: 'Rafton - your favourite playlists here',
-  }
+    title: "Rafton - your favourite playlists here",
+  };
 }
 
 export default async function SongDetails({ params: { id } }: DetailsProps) {
-  const response = await fetch(`http://localhost:5000/api/songs/${id}`)
-  const song: Song = await response.json()
+  const response = await fetch(`http://localhost:5000/api/songs/${id}`);
+  const song: Song = await response.json();
 
   return (
     <div className="flex gap-10 justify-center">
@@ -32,5 +32,5 @@ export default async function SongDetails({ params: { id } }: DetailsProps) {
         <p>{song.genres.type}</p>
       </div>
     </div>
-  )
+  );
 }
