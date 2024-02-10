@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function SongInfo() {
   return (
-    <table className="text-slate-900 p-5 w-[100%]">
+    <table className="p-5 w-[100%]">
       <tbody className="flex flex-col gap-5">
         <tr className="flex gap-5">
           <td className="w-1/6">Title</td>

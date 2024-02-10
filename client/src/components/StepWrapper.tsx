@@ -43,7 +43,7 @@ export default function StepWrapper({
           </ul>
         </div>
       </div>
-      <div className="flex justify-center items-center mt-14">
+      <div className="flex justify-center items-center mt-14 text-slate-900">
         <div className="w-full max-w-3xl">
           <div className="bg-white p-8 rounded-lg shadow-md">{children}</div>
         </div>
