@@ -1,15 +1,15 @@
 import { PlayerAction, PlayerActionTypes } from '@/models/player'
 import { Song } from '@/models/song'
 
-export const playTrack = (): PlayerAction => {
+export const playSong = (): PlayerAction => {
   return { type: PlayerActionTypes.PLAY }
 }
 
-export const pauseTrack = (): PlayerAction => {
+export const pauseSong = (): PlayerAction => {
   return { type: PlayerActionTypes.PAUSE }
 }
 
-export const setActiveTrack = (payload: Song): PlayerAction => {
+export const setActiveSong = (payload: Song): PlayerAction => {
   return { type: PlayerActionTypes.SET_ACTIVE, payload }
 }
 
