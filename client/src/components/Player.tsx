@@ -29,7 +29,8 @@ export default function Player() {
   const { pause, active, volume, duration, currentTime } = useTypedSelector(
     (state) => state.player
   )
-  const { pauseSong, playSong } = useActions()
+  const { pauseSong, playSong, setVolume, setCurrentTime, setDuration } =
+    useActions()
 
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
@@ -48,6 +49,10 @@ export default function Player() {
     }
   }
 
+  const changeVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setVolume(Number(e.target.value))
+  }
+
   return (
     <div className="w-full h-[60px] fixed bottom-0 flex items-center bg-slate-600">
       <Button onClick={play}>{!pause ? 'PAUSE' : 'PLAY'}</Button>
@@ -57,7 +62,7 @@ export default function Player() {
       </div>
       <PlayProgress left={0} right={100} onChange={() => ({})} />
       <div className="ml-auto">🔉</div>
-      <PlayProgress left={0} right={100} onChange={() => ({})} />
+      <PlayProgress left={volume} right={100} onChange={changeVolume} />
     </div>
   )
 }
