@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import Button from './Button'
 import { Song } from '@/models/song'
 import PlayProgress from './PlayProgress'
@@ -10,18 +10,19 @@ import { useActions } from '@/hooks/useActions'
 export default function Player() {
   const song: Song = {
     id: '123',
-    title: 'Frozen',
+    title: 'Could you be loved',
     image: '',
-    audio: '',
+    audio:
+      'http://localhost:5000/audio/a6177eae-1876-42d1-be82-e88750257cb4.mp3',
     playcount: 0,
     uploadedat: new Date(),
     artists: {
       id: '456',
-      name: 'Madonna',
+      name: 'Bob Marley',
     },
     genres: {
       id: '234',
-      type: 'pop',
+      type: 'Reggae',
     },
   }
 
@@ -30,8 +31,21 @@ export default function Player() {
   )
   const { pauseSong, playSong } = useActions()
 
+  const audioRef = useRef<HTMLAudioElement | null>(null)
+
+  useEffect(() => {
+    // Initialize audio only once when component mounts
+    audioRef.current = new Audio(song.audio)
+  }, [song.audio])
+
   const play = () => {
-    pause ? playSong() : pauseSong()
+    if (pause) {
+      playSong()
+      audioRef.current?.play()
+    } else {
+      pauseSong()
+      audioRef.current?.pause()
+    }
   }
 
   return (
