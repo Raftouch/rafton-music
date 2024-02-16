@@ -1,50 +1,50 @@
-import { Song } from './song'
+import { Song } from "./song";
 
 export interface PlayerState {
-  active: null | Song
-  volume: number
-  duration: number
-  currentTime: number
-  pause: boolean
+  active: null | Song;
+  volume: number;
+  duration: number;
+  currentTime: number;
+  pause: boolean;
 }
 
 // types
 export enum PlayerActionTypes {
-  PLAY = 'PLAY',
-  PAUSE = 'PAUSE',
-  SET_ACTIVE = 'SET_ACTIVE',
-  SET_VOLUME = 'SET_VOLUME',
-  SET_DURATION = 'SET_DURATION',
-  SET_CURRENT_TIME = 'SET_CURRENT_TIME',
+  PLAY = "PLAY",
+  PAUSE = "PAUSE",
+  SET_ACTIVE = "SET_ACTIVE",
+  SET_VOLUME = "SET_VOLUME",
+  SET_DURATION = "SET_DURATION",
+  SET_CURRENT_TIME = "SET_CURRENT_TIME",
 }
 
 // actions
 interface PlayAction {
-  type: PlayerActionTypes.PLAY
+  type: PlayerActionTypes.PLAY;
 }
 
 interface PauseAction {
-  type: PlayerActionTypes.PAUSE
+  type: PlayerActionTypes.PAUSE;
 }
 
 interface SetActiveAction {
-  type: PlayerActionTypes.SET_ACTIVE
-  payload: Song
+  type: PlayerActionTypes.SET_ACTIVE;
+  payload: Song;
 }
 
 interface SetVolumeAction {
-  type: PlayerActionTypes.SET_VOLUME
-  payload: number
+  type: PlayerActionTypes.SET_VOLUME;
+  payload: number;
 }
 
 interface SetDurationAction {
-  type: PlayerActionTypes.SET_DURATION
-  payload: number
+  type: PlayerActionTypes.SET_DURATION;
+  payload: number;
 }
 
 interface SetCurrentTimeAction {
-  type: PlayerActionTypes.SET_CURRENT_TIME
-  payload: number
+  type: PlayerActionTypes.SET_CURRENT_TIME;
+  payload: number;
 }
 
 export type PlayerAction =
@@ -53,4 +53,4 @@ export type PlayerAction =
   | SetActiveAction
   | SetDurationAction
   | SetVolumeAction
-  | SetCurrentTimeAction
+  | SetCurrentTimeAction;

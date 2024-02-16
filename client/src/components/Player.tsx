@@ -39,8 +39,16 @@ export default function Player() {
       // Initialize audio only once when component mounts
       audioRef.current = new Audio(song.audio) // src = song.audio
       audioRef.current.volume = volume / 100 // can be set between 0.0 (muted) and 1.0 (maximum volume)
+      audioRef.current.onloadedmetadata = () => {
+        // after the song play has been launched
+        if (audioRef.current) setDuration(Math.ceil(audioRef.current.duration))
+      }
+      audioRef.current.ontimeupdate = () => {
+        if (audioRef.current)
+          setCurrentTime(Math.ceil(audioRef.current.currentTime))
+      }
     }
-  }, [song.audio, volume])
+  }, [song.audio, volume, setDuration, setCurrentTime])
 
   const play = () => {
     if (pause) {
@@ -59,6 +67,13 @@ export default function Player() {
     }
   }
 
+  const changeCurrentTime = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = Number(e.target.value)
+      setCurrentTime(Number(e.target.value))
+    }
+  }
+
   return (
     <div className="w-full h-[60px] fixed bottom-0 flex items-center bg-slate-600">
       <Button onClick={play}>{!pause ? 'PAUSE' : 'PLAY'}</Button>
@@ -66,7 +81,11 @@ export default function Player() {
         <p>{song.title}</p>
         <p>{song.artists.name}</p>
       </div>
-      <PlayProgress left={0} right={100} onChange={() => ({})} />
+      <PlayProgress
+        left={currentTime}
+        right={duration}
+        onChange={changeCurrentTime}
+      />
       <div className="ml-auto">🔉</div>
       <PlayProgress left={volume} right={100} onChange={changeVolume} />
     </div>

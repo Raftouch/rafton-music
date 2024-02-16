@@ -1,9 +1,9 @@
-import React from 'react'
+import React from "react";
 
 interface PlayProgressProps {
-  left: number // current play time
-  right: number // 100
-  onChange: React.ChangeEventHandler<HTMLInputElement>
+  left: number; // current play time
+  right: number; // 100
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 export default function PlayProgress({
@@ -24,5 +24,5 @@ export default function PlayProgress({
         {left} / {right}
       </div>
     </div>
-  )
+  );
 }
