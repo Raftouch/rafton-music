@@ -35,9 +35,12 @@ export default function Player() {
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
   useEffect(() => {
-    // Initialize audio only once when component mounts
-    audioRef.current = new Audio(song.audio)
-  }, [song.audio])
+    if (!audioRef.current) {
+      // Initialize audio only once when component mounts
+      audioRef.current = new Audio(song.audio) // src = song.audio
+      audioRef.current.volume = volume / 100 // can be set between 0.0 (muted) and 1.0 (maximum volume)
+    }
+  }, [song.audio, volume])
 
   const play = () => {
     if (pause) {
@@ -50,7 +53,10 @@ export default function Player() {
   }
 
   const changeVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setVolume(Number(e.target.value))
+    if (audioRef.current) {
+      audioRef.current.volume = Number(e.target.value) / 100
+      setVolume(Number(e.target.value))
+    }
   }
 
   return (
