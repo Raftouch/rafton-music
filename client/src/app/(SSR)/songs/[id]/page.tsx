@@ -14,14 +14,14 @@ export function generateMetadata(): Metadata {
 }
 
 export default async function SongDetails({ params: { id } }: DetailsProps) {
-  // const response = await fetch(`http://localhost:5000/api/songs/${id}`);
-  // const song: Song = await response.json();
+  const response = await fetch(`http://localhost:5000/api/songs/${id}`)
+  const song: Song = await response.json()
 
   return (
     <div className="flex gap-10 justify-center">
       <div className="w-[420px] h-[550px] flex flex-col items-center gap-4 border p-4">
-        {/* <h1 className="font-bold uppercase">{song.title}</h1> */}
-        {/* <Image
+        <h1 className="font-bold uppercase">{song.title}</h1>
+        <Image
           src={`http://localhost:5000/${song.image}`}
           width={250}
           height={250}
@@ -30,8 +30,7 @@ export default async function SongDetails({ params: { id } }: DetailsProps) {
           priority={true}
         />
         <p>{song.artists.name}</p>
-        <p>{song.genres.type}</p> */}
-        SONG DETAILS
+        <p>{song.genres.type}</p>
         <Link href="/songs">Back</Link>
       </div>
     </div>
