@@ -1,10 +1,12 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import Button from './Button'
 import PlayProgress from './PlayProgress'
 import { useTypedSelector } from '../hooks/useTypedSelector'
 import { useActions } from '@/hooks/useActions'
+
+let audio: HTMLAudioElement
 
 export default function Player() {
   const { pause, active, volume, duration, currentTime } = useTypedSelector(
@@ -13,20 +15,13 @@ export default function Player() {
   const { pauseSong, playSong, setVolume, setCurrentTime, setDuration } =
     useActions()
 
-  const audioRef = useRef<HTMLAudioElement | null>(null)
-
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      // This code will only execute in a browser environment
-      audioRef.current = new Audio()
+    if (!audio) {
+      audio = new Audio()
     }
-  }, [])
-
-  useEffect(() => {
-    const audio = audioRef.current
 
     if (audio && active) {
-      audio.src = active.audio
+      audio.src = 'http://localhost:5000/' + active.audio
       audio.volume = volume / 100
       audio.onloadedmetadata = () => {
         setDuration(Math.ceil(audio.duration))
@@ -41,15 +36,14 @@ export default function Player() {
   const play = () => {
     if (pause) {
       playSong()
-      audioRef.current?.play()
+      audio.play()
     } else {
       pauseSong()
-      audioRef.current?.pause()
+      audio.pause()
     }
   }
 
   const changeVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const audio = audioRef.current
     if (audio) {
       audio.volume = Number(e.target.value) / 100
       setVolume(Number(e.target.value))
@@ -57,7 +51,6 @@ export default function Player() {
   }
 
   const changeCurrentTime = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const audio = audioRef.current
     if (audio) {
       audio.currentTime = Number(e.target.value)
       setCurrentTime(Number(e.target.value))
@@ -73,7 +66,7 @@ export default function Player() {
       <Button onClick={play}>{!pause ? 'PAUSE' : 'PLAY'}</Button>
       <div>
         <p>{active.title}</p>
-        <p>{active.artists.name}</p>
+        {/* <p>{active.artists.name}</p> */}
       </div>
       <PlayProgress
         left={currentTime}

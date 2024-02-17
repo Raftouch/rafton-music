@@ -12,7 +12,7 @@ interface SongProps {
 }
 
 export default function SongCard({ song, active = false }: SongProps) {
-  const { playSong, pauseSong, setActiveSong } = useActions()
+  const { playSong, setActiveSong } = useActions()
 
   const play = () => {
     setActiveSong(song)
@@ -23,18 +23,10 @@ export default function SongCard({ song, active = false }: SongProps) {
     <li key={song.id} className="flex flex-col gap-4">
       <div>{song.title}</div>
       <Link href={`/songs/${song.id}`}>
-        {/* <Image
+        <Image
           src={`http://localhost:5000/${song.image}`}
           width={150}
           height={150}
-          alt="image"
-          className="rounded-md"
-          priority={true}
-        /> */}
-        <Image
-          src={song.image}
-          width={100}
-          height={100}
           alt="image"
           className="rounded-md"
           priority={true}
