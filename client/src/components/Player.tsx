@@ -2,30 +2,11 @@
 
 import React, { useEffect, useRef } from 'react'
 import Button from './Button'
-import { Song } from '@/models/song'
 import PlayProgress from './PlayProgress'
 import { useTypedSelector } from '../hooks/useTypedSelector'
 import { useActions } from '@/hooks/useActions'
 
 export default function Player() {
-  const song: Song = {
-    id: '123',
-    title: 'Could you be loved',
-    image: '',
-    audio:
-      'http://localhost:5000/audio/a6177eae-1876-42d1-be82-e88750257cb4.mp3',
-    playcount: 0,
-    uploadedat: new Date(),
-    artists: {
-      id: '456',
-      name: 'Bob Marley',
-    },
-    genres: {
-      id: '234',
-      type: 'Reggae',
-    },
-  }
-
   const { pause, active, volume, duration, currentTime } = useTypedSelector(
     (state) => state.player
   )
@@ -35,20 +16,27 @@ export default function Player() {
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
   useEffect(() => {
-    if (!audioRef.current) {
-      // Initialize audio only once when component mounts
-      audioRef.current = new Audio(song.audio) // src = song.audio
-      audioRef.current.volume = volume / 100 // can be set between 0.0 (muted) and 1.0 (maximum volume)
-      audioRef.current.onloadedmetadata = () => {
-        // after the song play has been launched
-        if (audioRef.current) setDuration(Math.ceil(audioRef.current.duration))
-      }
-      audioRef.current.ontimeupdate = () => {
-        if (audioRef.current)
-          setCurrentTime(Math.ceil(audioRef.current.currentTime))
-      }
+    if (typeof window !== 'undefined') {
+      // This code will only execute in a browser environment
+      audioRef.current = new Audio()
     }
-  }, [song.audio, volume, setDuration, setCurrentTime])
+  }, [])
+
+  useEffect(() => {
+    const audio = audioRef.current
+
+    if (audio && active) {
+      audio.src = active.audio
+      audio.volume = volume / 100
+      audio.onloadedmetadata = () => {
+        setDuration(Math.ceil(audio.duration))
+      }
+      audio.ontimeupdate = () => {
+        setCurrentTime(Math.ceil(audio.currentTime))
+      }
+      play()
+    }
+  }, [active])
 
   const play = () => {
     if (pause) {
@@ -61,25 +49,31 @@ export default function Player() {
   }
 
   const changeVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (audioRef.current) {
-      audioRef.current.volume = Number(e.target.value) / 100
+    const audio = audioRef.current
+    if (audio) {
+      audio.volume = Number(e.target.value) / 100
       setVolume(Number(e.target.value))
     }
   }
 
   const changeCurrentTime = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (audioRef.current) {
-      audioRef.current.currentTime = Number(e.target.value)
+    const audio = audioRef.current
+    if (audio) {
+      audio.currentTime = Number(e.target.value)
       setCurrentTime(Number(e.target.value))
     }
+  }
+
+  if (!active) {
+    return null
   }
 
   return (
     <div className="w-full h-[60px] fixed bottom-0 flex items-center bg-slate-600">
       <Button onClick={play}>{!pause ? 'PAUSE' : 'PLAY'}</Button>
       <div>
-        <p>{song.title}</p>
-        <p>{song.artists.name}</p>
+        <p>{active.title}</p>
+        <p>{active.artists.name}</p>
       </div>
       <PlayProgress
         left={currentTime}

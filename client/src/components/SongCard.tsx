@@ -1,25 +1,48 @@
-import { Song } from "@/models/song";
-import Image from "next/image";
-import Link from "next/link";
+'use client'
+
+import { useActions } from '@/hooks/useActions'
+import { Song } from '@/models/song'
+import Image from 'next/image'
+import Link from 'next/link'
+import Button from './Button'
 
 interface SongProps {
-  song: Song;
+  song: Song
+  active?: boolean
 }
 
-export default function SongCard({ song }: SongProps) {
+export default function SongCard({ song, active = false }: SongProps) {
+  const { playSong, pauseSong, setActiveSong } = useActions()
+
+  const play = () => {
+    setActiveSong(song)
+    playSong()
+  }
+
   return (
     <li key={song.id} className="flex flex-col gap-4">
       <div>{song.title}</div>
       <Link href={`/songs/${song.id}`}>
-        <Image
+        {/* <Image
           src={`http://localhost:5000/${song.image}`}
           width={150}
           height={150}
           alt="image"
           className="rounded-md"
           priority={true}
+        /> */}
+        <Image
+          src={song.image}
+          width={100}
+          height={100}
+          alt="image"
+          className="rounded-md"
+          priority={true}
         />
       </Link>
+      <Button onClick={play}>{active ? 'PAUSE' : 'PLAY'}</Button>
+      <p>{active && <div>02:45 / 4:07</div>}</p>
+      <button>Delete</button>
     </li>
-  );
+  )
 }
