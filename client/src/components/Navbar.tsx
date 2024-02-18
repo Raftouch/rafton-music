@@ -18,7 +18,7 @@ export default function Navbar() {
           href="/songs"
           className={pathname === "/songs" ? "text-teal-400" : ""}
         >
-          Playlists
+          Playlist
         </Link>
         <Link
           href="/favourites"

@@ -2,20 +2,32 @@ import { Song } from '@/models/song'
 import { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import { notFound } from 'next/navigation'
 
 interface DetailsProps {
   params: { id: string }
 }
 
-export function generateMetadata(): Metadata {
+async function getSong(id: string): Promise<Song> {
+  const response = await fetch(`http://localhost:5000/api/songs/${id}`)
+  if (response.status === 404) notFound()
+
+  return await response.json()
+}
+
+export async function generateMetadata({
+  params: { id },
+}: DetailsProps): Promise<Metadata> {
+  const song: Song = await getSong(id)
+
   return {
-    title: 'Rafton - your favourite playlists here',
+    title:
+      'Rafton - Music platform - ' + song.title + ' - ' + song.artists.name,
   }
 }
 
 export default async function SongDetails({ params: { id } }: DetailsProps) {
-  const response = await fetch(`http://localhost:5000/api/songs/${id}`)
-  const song: Song = await response.json()
+  const song: Song = await getSong(id)
 
   return (
     <div className="flex gap-10 justify-center">
