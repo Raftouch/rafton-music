@@ -5,6 +5,7 @@ import { Song } from '@/models/song'
 import Image from 'next/image'
 import Link from 'next/link'
 import Button from './Button'
+import RemoveBtn from './RemoveBtn'
 
 interface SongProps {
   song: Song
@@ -34,7 +35,7 @@ export default function SongCard({ song, active = false }: SongProps) {
       </Link>
       <Button onClick={play}>{active ? 'PAUSE' : 'PLAY'}</Button>
       <p>{active && <div>02:45 / 4:07</div>}</p>
-      <button>Delete</button>
+      <RemoveBtn id={song.id} />
     </li>
   )
 }
