@@ -1,23 +1,23 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
-import Navbar from '@/components/Navbar'
-import StoreProvider from '@/components/StoreProvider'
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import Navbar from "@/components/Navbar";
+import StoreProvider from "@/components/StoreProvider";
 // import Footer from '@/components/Footer'
-import Player from '@/components/Player'
+import Player from "@/components/Player";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Rafton - Music platform',
-  description: 'Upload your song and become a star',
-  keywords: 'Music, songs, artists',
-}
+  title: "Rafton - Music platform",
+  description: "Upload your song and become a star",
+  keywords: "Music, songs, artists",
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <StoreProvider>
@@ -32,5 +32,5 @@ export default function RootLayout({
         </body>
       </html>
     </StoreProvider>
-  )
+  );
 }

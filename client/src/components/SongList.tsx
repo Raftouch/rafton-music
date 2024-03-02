@@ -1,9 +1,9 @@
-import { Song } from '@/models/song'
-import React from 'react'
-import SongCard from './SongCard'
+import { Song } from "@/models/song";
+import React from "react";
+import SongCard from "./SongCard";
 
 interface SongListProps {
-  songs: Song[]
+  songs: Song[];
 }
 
 export default function SongList({ songs }: SongListProps) {
@@ -15,5 +15,5 @@ export default function SongList({ songs }: SongListProps) {
         ))}
       </div>
     </div>
-  )
+  );
 }

@@ -22,8 +22,8 @@ export default function CreateSong() {
     } else {
       const formData = new FormData()
       formData.append('title', title.value)
-      formData.append('artist_id', artist.value)
-      formData.append('genre_id', genre.value)
+      formData.append('artist[name]', artist.value)
+      formData.append('genre[type]', genre.value)
       formData.append('image', image)
       formData.append('audio', audio)
       fetch('http://localhost:5000/api/songs', {
