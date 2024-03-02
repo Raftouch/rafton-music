@@ -3,7 +3,7 @@ import {
   Get,
   Post,
   Body,
-  // Patch,
+  Patch,
   Param,
   Delete,
   UseInterceptors,
@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { SongsService } from './songs.service';
 import { CreateSongDto } from './dto/create-song.dto';
-// import { UpdateSongDto } from './dto/update-song.dto';
+import { UpdateSongDto } from './dto/update-song.dto';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { SongEntity } from './entities/song.entity';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
@@ -47,11 +47,11 @@ export class SongsController {
     return this.songsService.findOne(id);
   }
 
-  // @Patch(':id')
-  // @ApiOkResponse({ type: SongEntity })
-  // update(@Param('id') id: string, @Body() updateSongDto: UpdateSongDto) {
-  //   return this.songsService.update(id, updateSongDto);
-  // }
+  @Patch(':id')
+  @ApiOkResponse({ type: SongEntity })
+  update(@Param('id') id: string, @Body() updateSongDto: UpdateSongDto) {
+    return this.songsService.update(id, updateSongDto);
+  }
 
   @Delete(':id')
   @ApiOkResponse({ type: SongEntity })

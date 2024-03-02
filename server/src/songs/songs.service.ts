@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateSongDto } from './dto/create-song.dto';
-// import { UpdateSongDto } from './dto/update-song.dto';
+import { UpdateSongDto } from './dto/update-song.dto';
 import { Song } from '@prisma/client';
 import { FileType, FilesService } from '../files/files.service';
 import { PrismaService } from '../prisma/prisma.service';
@@ -66,13 +66,27 @@ export class SongsService {
     return song;
   }
 
-  // async update(id: string, updateSongDto: UpdateSongDto): Promise<Song> {
-  //   const song = await this.prisma.song.update({
-  //     where: { id },
-  //     data: updateSongDto,
-  //   });
-  //   return song;
-  // }
+  async update(id: string, updateSongDto: UpdateSongDto): Promise<Song> {
+    const { title, artist, genre } = updateSongDto;
+    const updatedData: any = {};
+
+    if (title) {
+      updatedData.title = title;
+    }
+    if (artist) {
+      updatedData.artist = { connect: { id: artist.id } };
+    }
+    if (genre) {
+      updatedData.genre = { connect: { id: genre.id } };
+    }
+
+    const song = await this.prisma.song.update({
+      where: { id },
+      data: updatedData,
+    });
+
+    return song;
+  }
 
   async remove(id: string): Promise<Song> {
     const song = await this.prisma.song.delete({ where: { id } });
