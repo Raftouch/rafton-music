@@ -35,6 +35,7 @@ export default function SongCard({ song, active = false }: SongProps) {
       </Link>
       <Button onClick={play}>{active ? 'PAUSE' : 'PLAY'}</Button>
       <p>{active && <div>02:45 / 4:07</div>}</p>
+      <Link href={`/songs/edit/${song.id}`}>Edit</Link>
       <RemoveBtn id={song.id} />
     </li>
   )
