@@ -1,7 +1,7 @@
-import { artists } from '@prisma/client';
+import { Artist } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class ArtistEntity implements artists {
+export class ArtistEntity implements Artist {
   @ApiProperty()
   id: string;
 
