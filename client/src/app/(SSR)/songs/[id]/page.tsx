@@ -22,7 +22,7 @@ export async function generateMetadata({
 
   return {
     title:
-      "Rafton - Music platform - " + song.title + " - " + song.artists.name,
+      "Rafton - Music platform - " + song.title + " - " + song.artist.name,
   };
 }
 
@@ -41,8 +41,8 @@ export default async function SongDetails({ params: { id } }: DetailsProps) {
           className="rounded-md"
           priority={true}
         />
-        <p>{song.artists.name}</p>
-        <p>{song.genres.type}</p>
+        <p>{song.artist.name}</p>
+        <p>{song.genre.type}</p>
         <Link href="/songs">Back</Link>
       </div>
     </div>

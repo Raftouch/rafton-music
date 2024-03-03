@@ -17,8 +17,8 @@ export default function EditSongForm({ song }: EditSongFormProps) {
   const [image, setImage] = useState<string | undefined>(song.image);
   const [audio, setAudio] = useState<string | undefined>(song.audio);
   const title = useInput(song.title);
-  const artist = useInput(song.artists.name);
-  const genre = useInput(song.genres.type);
+  const artist = useInput(song.artist.name);
+  const genre = useInput(song.genre.type);
   const router = useRouter();
 
   useEffect(() => {
