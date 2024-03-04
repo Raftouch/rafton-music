@@ -96,7 +96,7 @@ export class SongsService {
 
       existingArtist
         ? (updateData.artist = { connect: { id: existingArtist.id } })
-        : (updateData.artist = { create: { name: existingArtist.name } });
+        : (updateData.artist = { create: { name: artist.name } });
     }
 
     if (genre) {
@@ -106,7 +106,7 @@ export class SongsService {
 
       existingGenre
         ? (updateData.genre = { connect: { id: existingGenre.id } })
-        : (updateData.genre = { create: { type: existingGenre.type } });
+        : (updateData.genre = { create: { type: genre.type } });
     }
 
     Object.assign(updateData, songData);

@@ -1,55 +1,55 @@
-"use client";
+'use client'
 
-import Button from "@/components/Button";
-import FileUpload from "@/components/FileUpload";
-import StepWrapper from "@/components/StepWrapper";
-import { useInput } from "@/hooks/useInput";
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { Song } from "@/models/song";
+import Button from '@/components/Button'
+import FileUpload from '@/components/FileUpload'
+import StepWrapper from '@/components/StepWrapper'
+import { useInput } from '@/hooks/useInput'
+import React, { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { Song } from '@/models/song'
 
 interface EditSongFormProps {
-  song: Song;
+  song: Song
 }
 
 export default function EditSongForm({ song }: EditSongFormProps) {
-  const [activeStep, setActiveStep] = useState(0);
-  const [image, setImage] = useState<string | undefined>(song.image);
-  const [audio, setAudio] = useState<string | undefined>(song.audio);
-  const title = useInput(song.title);
-  const artist = useInput(song.artist.name);
-  const genre = useInput(song.genre.type);
-  const router = useRouter();
+  const [activeStep, setActiveStep] = useState(0)
+  const [image, setImage] = useState<string | undefined>(song.image)
+  const [audio, setAudio] = useState<string | undefined>(song.audio)
+  const title = useInput(song.title)
+  const artist = useInput(song.artist.name)
+  const genre = useInput(song.genre.type)
+  const router = useRouter()
 
   useEffect(() => {
-    if (song.image) setImage(song.image);
-    if (song.audio) setAudio(song.audio);
-  }, [song]);
+    if (song.image) setImage(song.image)
+    if (song.audio) setAudio(song.audio)
+  }, [song])
 
   const next = () => {
     if (activeStep !== 2) {
-      setActiveStep((prev) => prev + 1);
+      setActiveStep((prev) => prev + 1)
     } else {
-      const formData = new FormData();
-      formData.append("title", title.value);
-      formData.append("artist", artist.value);
-      formData.append("genre", genre.value);
-      if (image) formData.append("image", image);
-      if (audio) formData.append("audio", audio);
+      const formData = new FormData()
+      formData.append('title', title.value)
+      formData.append('artist', artist.value)
+      formData.append('genre', genre.value)
+      if (image) formData.append('image', image)
+      if (audio) formData.append('audio', audio)
       fetch(`http://localhost:5000/api/songs/${song.id}`, {
-        method: "PUT",
+        method: 'PUT',
         body: formData,
       })
-        .then((response) => router.push("/songs"))
-        .catch((e) => console.log(e));
+        .then((response) => router.push('/songs'))
+        .catch((e) => console.log(e))
     }
-  };
+  }
 
   const back = () => {
     if (activeStep !== 0) {
-      setActiveStep((prev) => prev - 1);
+      setActiveStep((prev) => prev - 1)
     }
-  };
+  }
 
   return (
     <StepWrapper activeStep={activeStep}>
@@ -89,5 +89,5 @@ export default function EditSongForm({ song }: EditSongFormProps) {
         <Button onClick={next}>Next</Button>
       </div>
     </StepWrapper>
-  );
+  )
 }
