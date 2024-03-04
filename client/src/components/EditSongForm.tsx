@@ -21,10 +21,10 @@ export default function EditSongForm({ song }: EditSongFormProps) {
   const genre = useInput(song.genre.type)
   const router = useRouter()
 
-  useEffect(() => {
-    if (song.image) setImage(song.image)
-    if (song.audio) setAudio(song.audio)
-  }, [song])
+  // useEffect(() => {
+  //   if (song.image) setImage(song.image)
+  //   if (song.audio) setAudio(song.audio)
+  // }, [song])
 
   const next = () => {
     if (activeStep !== 2) {
@@ -32,12 +32,12 @@ export default function EditSongForm({ song }: EditSongFormProps) {
     } else {
       const formData = new FormData()
       formData.append('title', title.value)
-      formData.append('artist', artist.value)
-      formData.append('genre', genre.value)
+      formData.append('artist[name]', artist.value)
+      formData.append('genre[type]', genre.value)
       if (image) formData.append('image', image)
       if (audio) formData.append('audio', audio)
       fetch(`http://localhost:5000/api/songs/${song.id}`, {
-        method: 'PUT',
+        method: 'PATCH',
         body: formData,
       })
         .then((response) => router.push('/songs'))

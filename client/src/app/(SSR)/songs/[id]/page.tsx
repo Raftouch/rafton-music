@@ -9,10 +9,21 @@ interface DetailsProps {
 }
 
 async function getSong(id: string): Promise<Song> {
-  const response = await fetch(`http://localhost:5000/api/songs/${id}`)
-  if (response.status === 404) notFound()
+  try {
+    const response = await fetch(`http://localhost:5000/api/songs/${id}`, {
+      cache: 'no-cache',
+    })
+    if (response.status === 404) notFound()
 
-  return await response.json()
+    if (!response.ok) {
+      throw new Error('Failed to fetch song data')
+    }
+    const song: Song = await response.json()
+    return song
+  } catch (error) {
+    console.error('Error:', error)
+    throw error
+  }
 }
 
 export async function generateMetadata({
