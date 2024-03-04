@@ -49,8 +49,20 @@ export class SongsController {
 
   @Patch(':id')
   @ApiOkResponse({ type: SongEntity })
-  update(@Param('id') id: string, @Body() updateSongDto: UpdateSongDto) {
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'image', maxCount: 1 },
+      { name: 'audio', maxCount: 1 },
+    ]),
+  )
+  update(
+    @Param('id') id: string,
+    @UploadedFiles() files,
+    @Body() updateSongDto: UpdateSongDto,
+  ) {
+    // const { image, audio } = files;
     return this.songsService.update(id, updateSongDto);
+    // return this.songsService.update(id, updateSongDto, image[0], audio[0]);
   }
 
   @Delete(':id')

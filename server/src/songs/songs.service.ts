@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateSongDto } from './dto/create-song.dto';
 import { UpdateSongDto } from './dto/update-song.dto';
-import { Song } from '@prisma/client';
+import { Prisma, Song } from '@prisma/client';
 import { FileType, FilesService } from '../files/files.service';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -33,6 +33,7 @@ export class SongsService {
     const artistData = existingArtist
       ? { connect: { id: existingArtist.id } }
       : { create: { name: artist.name } };
+
     const genreData = existingGenre
       ? { connect: { id: existingGenre.id } }
       : { create: { type: genre.type } };
@@ -66,26 +67,56 @@ export class SongsService {
     return song;
   }
 
-  async update(id: string, updateSongDto: UpdateSongDto): Promise<Song> {
-    const { title, artist, genre } = updateSongDto;
-    const updatedData: any = {};
+  async update(
+    id: string,
+    updateSongDto: UpdateSongDto,
+    // image: string,
+    // audio: string,
+  ): Promise<Song> {
+    // const imagePath = this.file.createFile(FileType.IMAGE, image);
+    // const audioPath = this.file.createFile(FileType.AUDIO, audio);
+    const updateData: Prisma.SongUpdateInput = {};
+    const { artist, genre, ...songData } = updateSongDto;
 
-    if (title) {
-      updatedData.title = title;
-    }
+    // if (image) {
+    //   const imagePath = this.file.createFile(FileType.IMAGE, image);
+    //   updateData.image = imagePath;
+    //   console.log(imagePath);
+    // }
+
+    // if (audio) {
+    //   const audioPath = this.file.createFile(FileType.AUDIO, audio);
+    //   updateData.audio = audioPath;
+    // }
+
     if (artist) {
-      updatedData.artist = { connect: { id: artist.id } };
-    }
-    if (genre) {
-      updatedData.genre = { connect: { id: genre.id } };
+      const existingArtist = await this.prisma.artist.findFirst({
+        where: { name: artist.name },
+      });
+
+      existingArtist
+        ? (updateData.artist = { connect: { id: existingArtist.id } })
+        : (updateData.artist = { create: { name: existingArtist.name } });
     }
 
-    const song = await this.prisma.song.update({
+    if (genre) {
+      const existingGenre = await this.prisma.genre.findFirst({
+        where: { type: genre.type },
+      });
+
+      existingGenre
+        ? (updateData.genre = { connect: { id: existingGenre.id } })
+        : (updateData.genre = { create: { type: existingGenre.type } });
+    }
+
+    Object.assign(updateData, songData);
+
+    const updatedSong = await this.prisma.song.update({
       where: { id },
-      data: updatedData,
+      data: updateData,
     });
 
-    return song;
+    return updatedSong;
   }
 
   async remove(id: string): Promise<Song> {
