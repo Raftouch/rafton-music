@@ -4,27 +4,27 @@ import Button from '@/components/Button'
 import FileUpload from '@/components/FileUpload'
 import StepWrapper from '@/components/StepWrapper'
 import { useInput } from '@/hooks/useInput'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Song } from '@/models/song'
 
-interface EditSongFormProps {
-  song: Song
+interface SongFormProps {
+  song?: Song
+  isEditMode: boolean
 }
 
-export default function EditSongForm({ song }: EditSongFormProps) {
+export default function SongForm({ song, isEditMode }: SongFormProps) {
   const [activeStep, setActiveStep] = useState(0)
-  const [image, setImage] = useState<string | undefined>(song.image)
-  const [audio, setAudio] = useState<string | undefined>(song.audio)
-  const title = useInput(song.title)
-  const artist = useInput(song.artist.name)
-  const genre = useInput(song.genre.type)
+  const [image, setImage] = useState<string | undefined>(song?.image || '')
+  const [audio, setAudio] = useState<string | undefined>(song?.audio || '')
+  const title = useInput(song?.title || '')
+  const artist = useInput(song?.artist.name || '')
+  const genre = useInput(song?.genre.type || '')
   const router = useRouter()
 
-  // useEffect(() => {
-  //   if (song.image) setImage(song.image)
-  //   if (song.audio) setAudio(song.audio)
-  // }, [song])
+  const url = isEditMode
+    ? `http://localhost:5000/api/songs/${song?.id}`
+    : 'http://localhost:5000/api/songs'
 
   const next = () => {
     if (activeStep !== 2) {
@@ -36,12 +36,18 @@ export default function EditSongForm({ song }: EditSongFormProps) {
       formData.append('genre[type]', genre.value)
       if (image) formData.append('image', image)
       if (audio) formData.append('audio', audio)
-      fetch(`http://localhost:5000/api/songs/${song.id}`, {
-        method: 'PATCH',
+      fetch(url, {
+        method: isEditMode ? 'PATCH' : 'POST',
         body: formData,
       })
-        .then((response) => router.push('/songs'))
-        .catch((e) => console.log(e))
+        .then((response) => {
+          if (response.ok) {
+            router.push('/songs')
+          } else {
+            throw new Error('Failed to submit form')
+          }
+        })
+        .catch((error) => console.error(error))
     }
   }
 

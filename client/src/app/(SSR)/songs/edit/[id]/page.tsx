@@ -1,6 +1,6 @@
 import { Song } from '@/models/song'
 import React from 'react'
-import EditSongForm from '@/components/EditSongForm'
+import SongForm from '@/components/SongForm'
 
 interface UpdateSongProps {
   params: { id: string }
@@ -31,7 +31,8 @@ export default async function UpdateSong({ params: { id } }: UpdateSongProps) {
       throw new Error('No song data available')
     }
 
-    return <EditSongForm song={song} />
+    return <SongForm isEditMode={true} song={song} />
+    
   } catch (error) {
     console.error(error)
     return <div>Error: Failed to retrieve song data</div>
