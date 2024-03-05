@@ -70,24 +70,21 @@ export class SongsService {
   async update(
     id: string,
     updateSongDto: UpdateSongDto,
-    // image: string,
-    // audio: string,
+    image: string,
+    audio: string,
   ): Promise<Song> {
-    // const imagePath = this.file.createFile(FileType.IMAGE, image);
-    // const audioPath = this.file.createFile(FileType.AUDIO, audio);
     const updateData: Prisma.SongUpdateInput = {};
     const { artist, genre, ...songData } = updateSongDto;
 
-    // if (image) {
-    //   const imagePath = this.file.createFile(FileType.IMAGE, image);
-    //   updateData.image = imagePath;
-    //   console.log(imagePath);
-    // }
+    if (image) {
+      const imagePath = this.file.createFile(FileType.IMAGE, image);
+      updateData.image = imagePath;
+    }
 
-    // if (audio) {
-    //   const audioPath = this.file.createFile(FileType.AUDIO, audio);
-    //   updateData.audio = audioPath;
-    // }
+    if (audio) {
+      const audioPath = this.file.createFile(FileType.AUDIO, audio);
+      updateData.audio = audioPath;
+    }
 
     if (artist) {
       const existingArtist = await this.prisma.artist.findFirst({

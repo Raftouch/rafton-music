@@ -60,9 +60,14 @@ export class SongsController {
     @UploadedFiles() files,
     @Body() updateSongDto: UpdateSongDto,
   ) {
-    // const { image, audio } = files;
-    return this.songsService.update(id, updateSongDto);
-    // return this.songsService.update(id, updateSongDto, image[0], audio[0]);
+    const { image, audio } = files;
+
+    return this.songsService.update(
+      id,
+      updateSongDto,
+      image ? image[0] : null,
+      audio ? audio[0] : null,
+    );
   }
 
   @Delete(':id')
