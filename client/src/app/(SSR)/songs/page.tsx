@@ -1,7 +1,6 @@
 import SearchSong from '@/components/SearchSong'
 import SongCard from '@/components/SongCard'
 import SongList from '@/components/SongList'
-import { Song } from '@/models/song'
 import { getAllSongs } from '@/utils/song'
 import { Metadata } from 'next'
 import Link from 'next/link'
@@ -24,8 +23,9 @@ export default async function Playlists({
   const query = searchParams?.query || ''
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="mt-20 mb-10 flex flex-col items-center gap-5">
       <SearchSong placeholder="Search songs..." />
+      <Link href="/songs/create">Upload new</Link>
 
       {query ? (
         <div>
@@ -43,10 +43,6 @@ export default async function Playlists({
       ) : (
         <SongList songs={songs} />
       )}
-
-      <Link className="fixed bottom-24" href="/songs/create">
-        Upload new
-      </Link>
     </div>
   )
 }

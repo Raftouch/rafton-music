@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react'
 
 interface PlayProgressProps {
-  left: number; // current play time
-  right: number; // 100
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  left: number // current play time
+  right: number // 100
+  onChange: React.ChangeEventHandler<HTMLInputElement>
 }
 
 export default function PlayProgress({
@@ -12,7 +12,7 @@ export default function PlayProgress({
   onChange,
 }: PlayProgressProps) {
   return (
-    <div className="flex">
+    <div className="flex gap-2">
       <input
         type="range"
         min={0}
@@ -20,9 +20,9 @@ export default function PlayProgress({
         value={left} // as left will be changed, right is fixed
         onChange={onChange}
       />
-      <div>
+      <div className="text-sm">
         {left} / {right}
       </div>
     </div>
-  );
+  )
 }

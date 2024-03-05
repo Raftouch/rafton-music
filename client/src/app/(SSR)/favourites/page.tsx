@@ -1,3 +1,3 @@
 export default function Favourites() {
-  return <div>My Favourites</div>;
+  return <div className="mt-20">My Favourites</div>;
 }

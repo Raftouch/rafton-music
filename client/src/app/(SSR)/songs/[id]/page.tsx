@@ -1,3 +1,4 @@
+import SongCard from '@/components/SongCard'
 import { getSong } from '@/utils/song'
 import { Metadata } from 'next'
 import Image from 'next/image'
@@ -21,22 +22,23 @@ export async function generateMetadata({
 export default async function SongDetails({ params: { id } }: DetailsProps) {
   const song = await getSong(id)
 
+  if (!song) {
+    throw new Error('No song data available')
+  }
+
   return (
-    <div className="flex gap-10 justify-center">
-      <div className="w-[420px] h-[550px] flex flex-col items-center gap-4 border p-4">
-        <h1 className="font-bold uppercase">{song?.title}</h1>
-        <Image
-          src={`http://localhost:5000/${song?.image}`}
-          width={250}
-          height={250}
-          alt="image"
-          className="rounded-md"
-          priority={true}
-        />
-        <p>{song?.artist.name}</p>
-        <p>{song?.genre.type}</p>
-        <Link href="/songs">Back</Link>
-      </div>
+    <div className="flex gap-10 flex-wrap justify-center mt-20 mb-10">
+      <SongCard song={song} key={song.id} />
+      {/* <div className="flex flex-col"> */}
+        <div className="flex flex-col gap-5">
+          <p>Artist: {song?.artist.name}</p>
+          <p>Genre: {song?.genre.type}</p>
+          <p>Playcount: {song?.playcount}</p>
+        </div>
+        {/* <Link className="mt-auto" href="/songs">
+          Back to playlist
+        </Link> */}
+      {/* </div> */}
     </div>
   )
 }

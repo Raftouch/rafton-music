@@ -29,7 +29,7 @@ export default function SearchSong({ placeholder }: SearchSongProps) {
 
   return (
     <input
-      className="text-slate-900 w-full mb-10"
+      className="w-full p-2 rounded-full bg-transparent border-2 outline-none"
       //   value={text}
       //   placeholder="Search songs..."
       placeholder={placeholder}
