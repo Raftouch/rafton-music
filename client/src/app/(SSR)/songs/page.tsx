@@ -2,6 +2,7 @@ import SearchSong from '@/components/SearchSong'
 import SongCard from '@/components/SongCard'
 import SongList from '@/components/SongList'
 import { Song } from '@/models/song'
+import { getAllSongs } from '@/utils/song'
 import { Metadata } from 'next'
 import Link from 'next/link'
 
@@ -14,12 +15,11 @@ export default async function Playlists({
 }: {
   searchParams?: { query?: string; page?: string }
 }) {
-  const response = await fetch(
-    'http://localhost:5000/api/songs',
-    { next: { revalidate: 0 } }
-    // { cache: 'no-cache' } // or 'no-store'
-  )
-  const songs: Song[] = await response.json()
+  const songs = await getAllSongs()
+
+  if (!songs) {
+    throw new Error('No song data available')
+  }
 
   const query = searchParams?.query || ''
 
