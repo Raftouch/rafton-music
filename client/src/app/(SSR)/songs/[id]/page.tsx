@@ -30,12 +30,12 @@ export default async function SongDetails({ params: { id } }: DetailsProps) {
     <div className="flex gap-10 flex-wrap justify-center mt-20 mb-10">
       <SongCard song={song} key={song.id} />
       {/* <div className="flex flex-col"> */}
-        <div className="flex flex-col gap-5">
-          <p>Artist: {song?.artist.name}</p>
-          <p>Genre: {song?.genre.type}</p>
-          <p>Playcount: {song?.playcount}</p>
-        </div>
-        {/* <Link className="mt-auto" href="/songs">
+      <div className="flex flex-col gap-5">
+        <p>Artist: {song?.artist.name}</p>
+        <p>Genre: {song?.genre.type}</p>
+        <p>Playcount: {song?.playcount}</p>
+      </div>
+      {/* <Link className="mt-auto" href="/songs">
           Back to playlist
         </Link> */}
       {/* </div> */}

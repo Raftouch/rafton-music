@@ -1,5 +1,4 @@
 import SearchSong from '@/components/SearchSong'
-import SongCard from '@/components/SongCard'
 import SongList from '@/components/SongList'
 import { getAllSongs } from '@/utils/song'
 import { Metadata } from 'next'
@@ -20,29 +19,11 @@ export default async function Playlists({
     throw new Error('No song data available')
   }
 
-  const query = searchParams?.query || ''
-
   return (
     <div className="mt-20 mb-10 flex flex-col items-center gap-5">
       <SearchSong placeholder="Search songs..." />
       <Link href="/songs/create">Upload new</Link>
-
-      {query ? (
-        <div>
-          {songs
-            .filter((song) => {
-              const lowerCaseQuery = query.toLowerCase()
-              return lowerCaseQuery === ''
-                ? ''
-                : song.title.toLowerCase().startsWith(lowerCaseQuery)
-            })
-            .map((song) => (
-              <SongCard song={song} key={song.id} />
-            ))}
-        </div>
-      ) : (
-        <SongList songs={songs} />
-      )}
+      <SongList songs={songs} searchParams={searchParams} />
     </div>
   )
 }
