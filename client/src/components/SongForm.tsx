@@ -4,16 +4,23 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Song } from '@/models/song'
 import { z } from 'zod'
-import { ValidationSchema } from '@/utils/schema'
+import { NewSongSchema, UpdateSongSchema } from '@/utils/schema'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import Image from 'next/image'
 
 interface SongFormProps {
   song?: Song
   isEditMode: boolean
 }
 
-type FormFields = z.infer<typeof ValidationSchema>
+const useConditionalSchema = (isEditMode: boolean) => {
+  return isEditMode ? UpdateSongSchema : NewSongSchema
+}
+
+type FormFields =
+  | z.infer<typeof NewSongSchema>
+  | z.infer<typeof UpdateSongSchema>
 
 const steps = [
   {
@@ -30,6 +37,8 @@ export default function SongForm({ song, isEditMode }: SongFormProps) {
   const [currentStep, setCurrentStep] = useState(0)
   const [previousStep, setPreviousStep] = useState(0)
   const router = useRouter()
+
+  const ValidationSchema = useConditionalSchema(isEditMode)
 
   const {
     register,
@@ -49,6 +58,7 @@ export default function SongForm({ song, isEditMode }: SongFormProps) {
       setValue('genre', song.genre.type || '')
       if (song?.image) {
         setValue('image', song.image[0])
+        console.log(song)
       }
       if (song?.audio) {
         setValue('audio', song.audio[0])
@@ -66,8 +76,10 @@ export default function SongForm({ song, isEditMode }: SongFormProps) {
     formData.append('title', song.title)
     formData.append('artist[name]', song.artist)
     formData.append('genre[type]', song.genre)
-    if (song.image) formData.append('image', song.image[0])
-    if (song.audio) formData.append('audio', song.audio[0])
+    // if (formData.image?.length) dataToSend.append('image', formData.image[0]);
+    // if (formData.audio?.length) dataToSend.append('audio', formData.audio[0]);
+    if (song.image?.length) formData.append('image', song.image[0])
+    if (song.audio?.length) formData.append('audio', song.audio[0])
 
     fetch(url, {
       method: isEditMode ? 'PATCH' : 'POST',
@@ -204,6 +216,34 @@ export default function SongForm({ song, isEditMode }: SongFormProps) {
 
         {currentStep === 1 && (
           <div>
+            {song?.image && (
+              <div>
+                <label>Current image</label>
+                <Image
+                  src={`http://localhost:5000/${song?.image}`}
+                  width={150}
+                  height={150}
+                  alt={song?.title}
+                  className="rounded-full"
+                  priority={true}
+                />
+              </div>
+            )}
+            <input
+              type="file"
+              id="image"
+              {...register('image')}
+              className="w-full border-2"
+            />
+            <button className="text-slate-900">Upload image</button>
+            {errors.image?.message && (
+              <p className="mt-2 text-sm text-red-500">Image required</p>
+            )}
+          </div>
+        )}
+
+        {/* {currentStep === 1 && (
+          <div>
             <input
               type="file"
               id="image"
@@ -218,9 +258,36 @@ export default function SongForm({ song, isEditMode }: SongFormProps) {
               </p>
             )}
           </div>
-        )}
+        )} */}
 
         {currentStep === 2 && (
+          <div>
+            {song?.audio && (
+              <div>
+                <label>Current audio</label>
+                <audio controls>
+                  <source
+                    src={`http://localhost:5000/${song?.audio}`}
+                    type="audio/mpeg"
+                  />
+                  Wrong format
+                </audio>
+              </div>
+            )}
+            <input
+              type="file"
+              id="audio"
+              {...register('audio')}
+              className="w-full border-2"
+            />
+            <button className="text-slate-900">Upload audio</button>
+            {errors.audio?.message && (
+              <p className="mt-2 text-sm text-red-500">Audio required</p>
+            )}
+          </div>
+        )}
+
+        {/* {currentStep === 2 && (
           <div>
             <input
               type="file"
@@ -236,7 +303,7 @@ export default function SongForm({ song, isEditMode }: SongFormProps) {
               </p>
             )}
           </div>
-        )}
+        )} */}
 
         <div className="mt-8 pt-5">
           <div className="flex justify-between">

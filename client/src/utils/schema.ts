@@ -11,7 +11,7 @@ const ACCEPTED_IMAGE_TYPES = [
 
 const ACCEPTED_AUDIO_TYPES = ['audio/mpeg', 'audio/wav', 'audio/mp3']
 
-export const ValidationSchema = z.object({
+const BaseSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   artist: z.string().min(1, 'Artist name is required'),
   genre: z.string().min(1, 'Genre type is required'),
@@ -30,4 +30,14 @@ export const ValidationSchema = z.object({
   //   .refine((file) => ACCEPTED_AUDIO_TYPES.includes(file?.[0]?.type), {
   //     message: 'Only .mpeg, .wav and mp3 formats are accepted',
   //   }),
+})
+
+export const NewSongSchema = BaseSchema.extend({
+  image: z.any(),
+  audio: z.any(),
+})
+
+export const UpdateSongSchema = BaseSchema.extend({
+  image: z.any().optional(),
+  audio: z.any().optional(),
 })
