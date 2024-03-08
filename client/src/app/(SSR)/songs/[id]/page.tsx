@@ -31,6 +31,7 @@ export default async function SongDetails({ params: { id } }: DetailsProps) {
       <SongCard song={song} key={song.id} />
       {/* <div className="flex flex-col"> */}
       <div className="flex flex-col gap-5">
+        <p>Title: {song?.title}</p>
         <p>Artist: {song?.artist.name}</p>
         <p>Genre: {song?.genre.type}</p>
         <p>Playcount: {song?.playcount}</p>

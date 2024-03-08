@@ -27,7 +27,7 @@ export default function SongCard({ song, active = false }: SongProps) {
       key={song.id}
       className="bg-white text-rafton-blue py-4 px-6 flex flex-col gap-4 rounded-md"
     >
-      <div>{song.title}</div>
+      <div className="truncate w-40">{song.title}</div>
       <Link href={`/songs/${song.id}`}>
         <Image
           src={`http://localhost:5000/${song.image}`}
