@@ -1,5 +1,5 @@
-import SongForm from '@/components/SongForm'
+import CreateSongForm from '@/components/CreateSongForm'
 
 export default function CreateSong() {
-  return <SongForm isEditMode={false} />
+  return <CreateSongForm />
 }
