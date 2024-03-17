@@ -52,7 +52,12 @@ export class SongsService {
   }
 
   async findAll(): Promise<Song[]> {
-    const songs = await this.prisma.song.findMany({ where: {} });
+    const songs = await this.prisma.song.findMany({
+      where: {},
+      orderBy: {
+        title: 'asc',
+      },
+    });
     return songs;
   }
 
