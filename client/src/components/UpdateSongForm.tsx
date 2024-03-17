@@ -1,50 +1,50 @@
-'use client'
+"use client";
 
-import FileUpload from '@/components/FileUpload'
-import { useInput } from '@/hooks/useInput'
-import React, { FormEvent, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { Song } from '@/models/song'
-import { toast } from 'sonner'
+import FileUpload from "@/components/FileUpload";
+import { useInput } from "@/hooks/useInput";
+import React, { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Song } from "@/models/song";
+import { toast } from "sonner";
 
 interface UpdateSongFormProps {
-  song: Song
+  song: Song;
 }
 
 export default function UpdateSongForm({ song }: UpdateSongFormProps) {
-  const [image, setImage] = useState<File | string | undefined>(song?.image)
-  const [audio, setAudio] = useState<File | string | undefined>(song?.audio)
-  const title = useInput(song?.title)
-  const artist = useInput(song?.artist.name)
-  const genre = useInput(song?.genre.type)
-  const router = useRouter()
+  const [image, setImage] = useState<File | string | undefined>(song?.image);
+  const [audio, setAudio] = useState<File | string | undefined>(song?.audio);
+  const title = useInput(song?.title);
+  const artist = useInput(song?.artist.name);
+  const genre = useInput(song?.genre.type);
+  const router = useRouter();
 
-  const url = `http://localhost:5000/api/songs/${song?.id}`
+  const url = `http://localhost:5000/api/songs/${song?.id}`;
 
   const handleSubmit = (e: FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    const formData = new FormData()
-    formData.append('title', title.value)
-    formData.append('artist[name]', artist.value)
-    formData.append('genre[type]', genre.value)
-    if (image) formData.append('image', image)
-    if (audio) formData.append('audio', audio)
+    const formData = new FormData();
+    formData.append("title", title.value);
+    formData.append("artist[name]", artist.value);
+    formData.append("genre[type]", genre.value);
+    if (image) formData.append("image", image);
+    if (audio) formData.append("audio", audio);
     fetch(url, {
-      method: 'PATCH',
+      method: "PATCH",
       body: formData,
     })
       .then((response) => {
         if (response.ok) {
-          toast.success('Song successfully updated')
-          router.push('/songs')
+          toast.success("Song successfully updated");
+          router.push("/songs");
         } else {
-          toast.error('Failed to update song')
-          throw new Error('Failed to submit form')
+          toast.error("Failed to update song");
+          throw new Error("Failed to submit form");
         }
       })
-      .catch((error) => console.error(error))
-  }
+      .catch((error) => console.error(error));
+  };
 
   return (
     <form
@@ -88,5 +88,5 @@ export default function UpdateSongForm({ song }: UpdateSongFormProps) {
 
       <button type="submit">Update</button>
     </form>
-  )
+  );
 }
