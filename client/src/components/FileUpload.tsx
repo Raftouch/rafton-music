@@ -1,10 +1,10 @@
-import React, { useRef, LegacyRef } from 'react'
+import React, { useRef, LegacyRef } from "react";
 
 interface FileUploadProps {
-  setFile: Function
-  accept: string
-  maxSize: number
-  children: React.ReactNode
+  setFile: Function;
+  accept: string;
+  maxSize: number;
+  children: React.ReactNode;
 }
 
 export default function FileUpload({
@@ -13,18 +13,18 @@ export default function FileUpload({
   maxSize,
   children,
 }: FileUploadProps) {
-  const ref = useRef<HTMLInputElement>(null)
+  const ref = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0]
+    const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       if (maxSize && selectedFile.size > maxSize) {
-        console.error('File size exceeded error')
-        return
+        console.error("File size exceeded error");
+        return;
       }
-      setFile(selectedFile)
+      setFile(selectedFile);
     }
-  }
+  };
 
   return (
     <div onClick={() => ref.current?.click()}>
@@ -37,5 +37,5 @@ export default function FileUpload({
       />
       {children}
     </div>
-  )
+  );
 }

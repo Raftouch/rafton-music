@@ -1,45 +1,45 @@
-import { FormValues } from '@/models/formvalues'
+import { FormValues } from "@/models/formvalues";
 
 export function validate(values: FormValues): Record<string, string> {
-  const errors: Record<string, string> = {}
+  const errors: Record<string, string> = {};
 
   if (!values.title.trim()) {
-    errors.title = 'Title is required'
+    errors.title = "Title is required";
   }
 
   if (!values.artist.trim()) {
-    errors.artist = 'Artist is required'
+    errors.artist = "Artist is required";
   }
 
   if (!values.genre.trim()) {
-    errors.genre = 'Genre is required'
+    errors.genre = "Genre is required";
   }
 
   if (!values.image) {
-    errors.image = 'Image is required'
+    errors.image = "Image is required";
   } else {
     if (values.image.size > 5242880) {
       // 5MB in bytes
-      errors.image = 'Image size should be less than 5MB'
+      errors.image = "Image size should be less than 5MB";
     }
 
-    if (!['image/jpeg', 'image/png'].includes(values.image.type)) {
-      errors.image = 'Image should be in JPEG or PNG format'
+    if (!["image/jpeg", "image/png"].includes(values.image.type)) {
+      errors.image = "Image should be in JPEG or PNG format";
     }
   }
 
   if (!values.audio) {
-    errors.audio = 'Audio is required'
+    errors.audio = "Audio is required";
   } else {
     if (values.audio.size > 10485760) {
       // 10MB in bytes
-      errors.audio = 'Audio size should be less than 10MB'
+      errors.audio = "Audio size should be less than 10MB";
     }
 
-    if (!['audio/mpeg', 'audio/wav'].includes(values.audio.type)) {
-      errors.audio = 'Audio should be in MP3 or WAV format'
+    if (!["audio/mpeg", "audio/wav"].includes(values.audio.type)) {
+      errors.audio = "Audio should be in MP3 or WAV format";
     }
   }
 
-  return errors
+  return errors;
 }

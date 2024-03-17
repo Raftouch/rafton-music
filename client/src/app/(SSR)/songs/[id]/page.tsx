@@ -1,29 +1,29 @@
-import SongCard from '@/components/SongCard'
-import { getSong } from '@/utils/song'
-import { Metadata } from 'next'
-import Image from 'next/image'
-import Link from 'next/link'
+import SongCard from "@/components/SongCard";
+import { getSong } from "@/utils/song";
+import { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
 
 interface DetailsProps {
-  params: { id: string }
+  params: { id: string };
 }
 
 export async function generateMetadata({
   params: { id },
 }: DetailsProps): Promise<Metadata> {
-  const song = await getSong(id)
+  const song = await getSong(id);
 
   return {
     title:
-      'Rafton - Music platform - ' + song?.title + ' - ' + song?.artist.name,
-  }
+      "Rafton - Music platform - " + song?.title + " - " + song?.artist.name,
+  };
 }
 
 export default async function SongDetails({ params: { id } }: DetailsProps) {
-  const song = await getSong(id)
+  const song = await getSong(id);
 
   if (!song) {
-    throw new Error('No song data available')
+    throw new Error("No song data available");
   }
 
   return (
@@ -41,5 +41,5 @@ export default async function SongDetails({ params: { id } }: DetailsProps) {
         </Link> */}
       {/* </div> */}
     </div>
-  )
+  );
 }

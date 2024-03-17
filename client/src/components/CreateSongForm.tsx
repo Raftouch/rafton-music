@@ -1,56 +1,56 @@
-'use client'
+"use client";
 
-import FileUpload from '@/components/FileUpload'
-import React, { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { validate } from '../validations/song'
-import { FormValues } from '@/models/formvalues'
+import FileUpload from "@/components/FileUpload";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { validate } from "../validations/song";
+import { FormValues } from "@/models/formvalues";
 
 export default function CreateSongForm() {
-  const [image, setImage] = useState<File | undefined>(undefined)
-  const [audio, setAudio] = useState<File | undefined>(undefined)
-  const router = useRouter()
+  const [image, setImage] = useState<File | undefined>(undefined);
+  const [audio, setAudio] = useState<File | undefined>(undefined);
+  const router = useRouter();
 
   const [values, setValues] = useState<FormValues>({
-    title: '',
-    artist: '',
-    genre: '',
-  })
+    title: "",
+    artist: "",
+    genre: "",
+  });
 
-  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   function handleInput(event: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = event.target
-    setValues({ ...values, [name]: value })
+    const { name, value } = event.target;
+    setValues({ ...values, [name]: value });
   }
 
-  const url = 'http://localhost:5000/api/songs'
+  const url = "http://localhost:5000/api/songs";
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
+    event.preventDefault();
 
-    const validationErrors = validate({ ...values, image, audio })
-    setErrors(validationErrors)
+    const validationErrors = validate({ ...values, image, audio });
+    setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
-      const formData = new FormData()
-      formData.append('title', values.title)
-      formData.append('artist[name]', values.artist)
-      formData.append('genre[type]', values.genre)
-      if (image) formData.append('image', image)
-      if (audio) formData.append('audio', audio)
+      const formData = new FormData();
+      formData.append("title", values.title);
+      formData.append("artist[name]", values.artist);
+      formData.append("genre[type]", values.genre);
+      if (image) formData.append("image", image);
+      if (audio) formData.append("audio", audio);
       fetch(url, {
-        method: 'POST',
+        method: "POST",
         body: formData,
       })
         .then((response) => {
           if (response.ok) {
-            router.push('/songs')
+            router.push("/songs");
           } else {
-            throw new Error('Failed to submit form')
+            throw new Error("Failed to submit form");
           }
         })
-        .catch((error) => console.error(error))
+        .catch((error) => console.error(error));
     }
   }
 
@@ -118,5 +118,5 @@ export default function CreateSongForm() {
 
       <button type="submit">Create</button>
     </form>
-  )
+  );
 }

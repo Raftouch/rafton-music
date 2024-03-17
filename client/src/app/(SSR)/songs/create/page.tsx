@@ -1,5 +1,5 @@
-import CreateSongForm from '@/components/CreateSongForm'
+import CreateSongForm from "@/components/CreateSongForm";
 
 export default function CreateSong() {
-  return <CreateSongForm />
+  return <CreateSongForm />;
 }

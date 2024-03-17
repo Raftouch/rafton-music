@@ -1,26 +1,26 @@
-'use client'
+"use client";
 
-import { useActions } from '@/hooks/useActions'
-import { Song } from '@/models/song'
-import Image from 'next/image'
-import Link from 'next/link'
-import Button from './Button'
-import RemoveBtn from './RemoveBtn'
-import { useRouter } from 'next/navigation'
+import { useActions } from "@/hooks/useActions";
+import { Song } from "@/models/song";
+import Image from "next/image";
+import Link from "next/link";
+import Button from "./Button";
+import RemoveBtn from "./RemoveBtn";
+import { useRouter } from "next/navigation";
 
 interface SongProps {
-  song: Song
-  active?: boolean
+  song: Song;
+  active?: boolean;
 }
 
 export default function SongCard({ song, active = false }: SongProps) {
-  const router = useRouter()
-  const { playSong, setActiveSong, pauseSong } = useActions()
+  const router = useRouter();
+  const { playSong, setActiveSong, pauseSong } = useActions();
 
   const play = () => {
-    setActiveSong(song)
-    playSong()
-  }
+    setActiveSong(song);
+    playSong();
+  };
 
   return (
     <li
@@ -38,12 +38,12 @@ export default function SongCard({ song, active = false }: SongProps) {
           priority={true}
         />
       </Link>
-      <Button onClick={play}>{active ? 'PAUSE' : 'PLAY'}</Button>
+      <Button onClick={play}>{active ? "PAUSE" : "PLAY"}</Button>
       {/* <p>{active && <div>02:45 / 4:07</div>}</p> */}
       <Button onClick={() => router.push(`/songs/edit/${song.id}`)}>
         Edit
       </Button>
       <RemoveBtn id={song.id} />
     </li>
-  )
+  );
 }
