@@ -1,33 +1,34 @@
-"use client";
+'use client'
 
-import { useActions } from "@/hooks/useActions";
-import { Song } from "@/models/song";
-import Image from "next/image";
-import Link from "next/link";
-import Button from "./Button";
-import RemoveBtn from "./RemoveBtn";
-import { useRouter } from "next/navigation";
+import { useActions } from '@/hooks/useActions'
+import { Song } from '@/models/song'
+import Image from 'next/image'
+import Link from 'next/link'
+import Button from './Button'
+import RemoveBtn from './RemoveBtn'
+import { useRouter } from 'next/navigation'
+import { FaEdit, FaPlay } from 'react-icons/fa'
+import { FaPause } from 'react-icons/fa'
 
 interface SongProps {
-  song: Song;
-  active?: boolean;
+  song: Song
+  active?: boolean
 }
 
 export default function SongCard({ song, active = false }: SongProps) {
-  const router = useRouter();
-  const { playSong, setActiveSong, pauseSong } = useActions();
+  const router = useRouter()
+  const { playSong, setActiveSong, pauseSong } = useActions()
 
   const play = () => {
-    setActiveSong(song);
-    playSong();
-  };
+    setActiveSong(song)
+    playSong()
+  }
 
   return (
     <li
       key={song.id}
-      className="bg-white text-rafton-blue py-4 px-6 flex flex-col gap-4 rounded-md"
+      className="bg-white text-rafton-blue p-6 flex flex-col items-center gap-4 rounded-md hover:bg-rafton-green"
     >
-      <div className="truncate w-40">{song.title}</div>
       <Link href={`/songs/${song.id}`}>
         <Image
           src={`http://localhost:5000/${song.image}`}
@@ -38,12 +39,18 @@ export default function SongCard({ song, active = false }: SongProps) {
           priority={true}
         />
       </Link>
-      <Button onClick={play}>{active ? "PAUSE" : "PLAY"}</Button>
-      {/* <p>{active && <div>02:45 / 4:07</div>}</p> */}
-      <Button onClick={() => router.push(`/songs/edit/${song.id}`)}>
-        Edit
-      </Button>
-      <RemoveBtn id={song.id} />
+      <div className="truncate w-40 font-bold">{song.title}</div>
+      <div className="truncate w-40">
+        {song.artist ? song.artist.name : 'Unknown Artist'}
+      </div>
+      <div className="flex gap-8">
+        <Button onClick={play}>{active ? <FaPause /> : <FaPlay />}</Button>
+        {/* <p>{active && <div>02:45 / 4:07</div>}</p> */}
+        <Button onClick={() => router.push(`/songs/edit/${song.id}`)}>
+          <FaEdit />
+        </Button>
+        <RemoveBtn id={song.id} />
+      </div>
     </li>
-  );
+  )
 }

@@ -1,32 +1,35 @@
-"use client";
+'use client'
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { IoHomeSharp } from 'react-icons/io5'
+import { RiPlayList2Fill } from 'react-icons/ri'
+import { FaHeart } from 'react-icons/fa6'
 
 export default function Navbar() {
-  const pathname = usePathname();
+  const pathname = usePathname()
 
   return (
     <div className="fixed w-full h-[80px] flex justify-between items-center bg-rafton-blue p-5">
       <span>LOGO</span>
 
-      <ul className="flex sm:space-x-10 sm:flex-row flex-col">
-        <Link href="/" className={pathname === "/" ? "text-rafton-green" : ""}>
-          Home
+      <ul className="flex sm:space-x-10 space-x-5">
+        <Link href="/" className={pathname === '/' ? 'text-rafton-green' : ''}>
+          <IoHomeSharp />
         </Link>
         <Link
           href="/songs"
-          className={pathname === "/songs" ? "text-rafton-green" : ""}
+          className={pathname === '/songs' ? 'text-rafton-green' : ''}
         >
-          Playlist
+          <RiPlayList2Fill />
         </Link>
         <Link
           href="/favourites"
-          className={pathname === "/favourites" ? "text-rafton-green" : ""}
+          className={pathname === '/favourites' ? 'text-rafton-green' : ''}
         >
-          Favourites
+          <FaHeart />
         </Link>
       </ul>
     </div>
-  );
+  )
 }
