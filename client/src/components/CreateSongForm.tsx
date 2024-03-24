@@ -59,7 +59,7 @@ export default function CreateSongForm() {
 
   return (
     <form
-      className="flex flex-col bg-white text-rafton-blue mt-20 mb-20 gap-10 p-10 rounded-md"
+      className="flex flex-col min-w-[50%] bg-white text-rafton-blue mt-20 mb-20 gap-10 p-10 rounded-md"
       onSubmit={handleSubmit}
     >
       <div className="space-y-5">
