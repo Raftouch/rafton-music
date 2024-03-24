@@ -1,28 +1,28 @@
-'use client'
+"use client";
 
-import { useActions } from '@/hooks/useActions'
-import { Song } from '@/models/song'
-import Image from 'next/image'
-import Link from 'next/link'
-import Button from './Button'
-import RemoveBtn from './RemoveBtn'
-import { useRouter } from 'next/navigation'
-import { FaEdit, FaPlay } from 'react-icons/fa'
-import { FaPause } from 'react-icons/fa'
+import { useActions } from "@/hooks/useActions";
+import { Song } from "@/models/song";
+import Image from "next/image";
+import Link from "next/link";
+import Button from "./Button";
+import RemoveBtn from "./RemoveBtn";
+import { useRouter } from "next/navigation";
+import { FaEdit, FaPlay } from "react-icons/fa";
+import { FaPause } from "react-icons/fa";
 
 interface SongProps {
-  song: Song
-  active?: boolean
+  song: Song;
+  active?: boolean;
 }
 
 export default function SongCard({ song, active = false }: SongProps) {
-  const router = useRouter()
-  const { playSong, setActiveSong, pauseSong } = useActions()
+  const router = useRouter();
+  const { playSong, setActiveSong, pauseSong } = useActions();
 
   const play = () => {
-    setActiveSong(song)
-    playSong()
-  }
+    setActiveSong(song);
+    playSong();
+  };
 
   return (
     <li
@@ -41,7 +41,7 @@ export default function SongCard({ song, active = false }: SongProps) {
       </Link>
       <div className="truncate w-40 font-bold">{song.title}</div>
       <div className="truncate w-40">
-        {song.artist ? song.artist.name : 'Unknown Artist'}
+        {song.artist ? song.artist.name : "Unknown Artist"}
       </div>
       <div className="flex gap-8">
         <Button onClick={play}>{active ? <FaPause /> : <FaPlay />}</Button>
@@ -52,5 +52,5 @@ export default function SongCard({ song, active = false }: SongProps) {
         <RemoveBtn id={song.id} />
       </div>
     </li>
-  )
+  );
 }

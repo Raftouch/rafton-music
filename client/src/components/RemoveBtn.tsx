@@ -1,33 +1,33 @@
-'use client'
+"use client";
 
-import { useRouter } from 'next/navigation'
-import Button from './Button'
-import { toast } from 'sonner'
-import { useState } from 'react'
-import Modal from './Modal'
-import { RiDeleteBin7Fill } from 'react-icons/ri'
+import { useRouter } from "next/navigation";
+import Button from "./Button";
+import { toast } from "sonner";
+import { useState } from "react";
+import Modal from "./Modal";
+import { RiDeleteBin7Fill } from "react-icons/ri";
 
 interface DeleteSongProps {
-  id: string
+  id: string;
 }
 
 export default function RemoveBtn({ id }: DeleteSongProps) {
-  const [modal, setModal] = useState(false)
-  const router = useRouter()
+  const [modal, setModal] = useState(false);
+  const router = useRouter();
   const openModal = () => {
-    setModal(true)
-  }
+    setModal(true);
+  };
 
   const removeSong = async () => {
     const response = await fetch(`http://localhost:5000/api/songs/${id}`, {
-      method: 'DELETE',
-    })
-    toast.success('Song successfully removed')
+      method: "DELETE",
+    });
+    toast.success("Song successfully removed");
 
     if (response.ok) {
-      router.refresh()
+      router.refresh();
     }
-  }
+  };
 
   return (
     <>
@@ -36,5 +36,5 @@ export default function RemoveBtn({ id }: DeleteSongProps) {
       </Button>
       {modal && <Modal onClose={() => setModal(false)} onDelete={removeSong} />}
     </>
-  )
+  );
 }
