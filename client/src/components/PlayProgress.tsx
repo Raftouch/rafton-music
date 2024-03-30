@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react'
 
 interface PlayProgressProps {
-  left: number; // current play time
-  right: number; // 100
-  classNameLeftRight: string;
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  left: number // current play time
+  right: number // 100
+  classNameLeftRight: string
+  onChange: React.ChangeEventHandler<HTMLInputElement>
 }
 
 export default function PlayProgress({
@@ -16,6 +16,7 @@ export default function PlayProgress({
   return (
     <div className="flex gap-2">
       <input
+        data-cy="duration-value"
         type="range"
         min={0}
         max={right}
@@ -26,5 +27,5 @@ export default function PlayProgress({
         {left} / {right}
       </div>
     </div>
-  );
+  )
 }
