@@ -15,7 +15,7 @@ export default function Navbar() {
     <div className="fixed w-full h-[80px] flex justify-between items-center bg-rafton-blue p-5">
       <Image src={logo} alt="logo Rafton" width={100} height={100} />
 
-      <ul className="flex sm:space-x-10 space-x-5">
+      <ul className="flex sm:space-x-10 space-x-5 text-xl">
         <Link href="/" className={pathname === "/" ? "text-rafton-green" : ""}>
           <IoHomeSharp />
         </Link>
