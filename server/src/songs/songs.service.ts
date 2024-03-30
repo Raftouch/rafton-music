@@ -55,7 +55,7 @@ export class SongsService {
     const songs = await this.prisma.song.findMany({
       where: {},
       orderBy: {
-        title: 'asc',
+        uploadedAt: 'desc',
       },
       include: {
         artist: true,
