@@ -57,6 +57,10 @@ export class SongsService {
       orderBy: {
         title: 'asc',
       },
+      include: {
+        artist: true,
+        genre: true,
+      },
     });
     return songs;
   }
