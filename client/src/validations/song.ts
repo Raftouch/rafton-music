@@ -23,7 +23,7 @@ export function validate(values: FormValues): Record<string, string> {
       errors.image = "Image size should be less than 5MB";
     }
 
-    if (!["image/jpeg", "image/png"].includes(values.image.type)) {
+    if (!["image/jpeg", "image/png", "image/jpg"].includes(values.image.type)) {
       errors.image = "Image should be in JPEG or PNG format";
     }
   }
@@ -36,7 +36,7 @@ export function validate(values: FormValues): Record<string, string> {
       errors.audio = "Audio size should be less than 10MB";
     }
 
-    if (!["audio/mpeg", "audio/wav"].includes(values.audio.type)) {
+    if (!["audio/mpeg", "audio/wav", "audio/mp3"].includes(values.audio.type)) {
       errors.audio = "Audio should be in MP3 or WAV format";
     }
   }
