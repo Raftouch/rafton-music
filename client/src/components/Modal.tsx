@@ -1,8 +1,8 @@
-import React from 'react'
+import React from "react";
 
 interface ModalProps {
-  onClose: () => void
-  onDelete: () => void
+  onClose: () => void;
+  onDelete: () => void;
 }
 
 export default function Modal({ onClose, onDelete }: ModalProps) {
@@ -18,8 +18,8 @@ export default function Modal({ onClose, onDelete }: ModalProps) {
           <button
             className="border rounded px-4 py-2 bg-green-500"
             onClick={() => {
-              onDelete()
-              onClose()
+              onDelete();
+              onClose();
             }}
           >
             Yes
@@ -33,5 +33,5 @@ export default function Modal({ onClose, onDelete }: ModalProps) {
         </div>
       </div>
     </>
-  )
+  );
 }
