@@ -10,7 +10,7 @@ const config: Config = {
     extend: {
       colors: {
         'rafton-blue': '#081E30',
-        'rafton-orange': '#FF846B',
+        'rafton-orange': '#FF4C29',
         'rafton-green': '#00C49A',
       },
     },
