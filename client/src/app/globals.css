@@ -2,6 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-input[type='range'] {
+input[type="range"] {
   accent-color: #ff4c29;
 }
