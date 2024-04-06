@@ -1,27 +1,27 @@
-'use client'
+"use client";
 
-import { useActions } from '@/hooks/useActions'
-import { Song } from '@/models/song'
-import Image from 'next/image'
-import Link from 'next/link'
-import Button from './Button'
-import RemoveBtn from './RemoveBtn'
-import { useRouter } from 'next/navigation'
-import { FaEdit, FaPlay, FaPause } from 'react-icons/fa'
+import { useActions } from "@/hooks/useActions";
+import { Song } from "@/models/song";
+import Image from "next/image";
+import Link from "next/link";
+import Button from "./Button";
+import RemoveBtn from "./RemoveBtn";
+import { useRouter } from "next/navigation";
+import { FaEdit, FaPlay, FaPause } from "react-icons/fa";
 
 interface SongProps {
-  song: Song
-  active?: boolean
+  song: Song;
+  active?: boolean;
 }
 
 export default function SongCard({ song, active = false }: SongProps) {
-  const router = useRouter()
-  const { playSong, setActiveSong, pauseSong } = useActions()
+  const router = useRouter();
+  const { playSong, setActiveSong, pauseSong } = useActions();
 
   const play = () => {
-    setActiveSong(song)
-    playSong()
-  }
+    setActiveSong(song);
+    playSong();
+  };
 
   return (
     <li
@@ -49,5 +49,5 @@ export default function SongCard({ song, active = false }: SongProps) {
         <RemoveBtn id={song.id} />
       </div>
     </li>
-  )
+  );
 }
