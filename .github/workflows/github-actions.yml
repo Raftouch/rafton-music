@@ -22,9 +22,14 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: npm ci
-      - run: npm run build --if-present
-      - run: npm run lint && npm run format
+      - name: Determine client package versions & dependencies (clean-install)
+        run: npm ci
+      - name: Build NextJS client
+        run: npm run build --if-present
+      - name: Format & lint code
+        run: npm run lint && npm run format
+      - name: Launch e2e tests
+        run: npm run cypress
 
   server:
     runs-on: ubuntu-latest
@@ -57,7 +62,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - name: Determine server package versions & dependencies (clean-install)
+      - name: Determine server package versions & dependencies
         run: npm ci
       - name: Migrate database
         run: npm run prisma:migrate
