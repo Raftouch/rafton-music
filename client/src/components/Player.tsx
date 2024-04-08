@@ -1,64 +1,65 @@
-"use client";
+'use client'
 
-import React, { useEffect } from "react";
-import PlayProgress from "./PlayProgress";
-import { useTypedSelector } from "../hooks/useTypedSelector";
-import { useActions } from "@/hooks/useActions";
-import { FaPause, FaPlay, FaVolumeUp } from "react-icons/fa";
+import React, { useEffect } from 'react'
+import PlayProgress from './PlayProgress'
+import { useTypedSelector } from '../hooks/useTypedSelector'
+import { useActions } from '@/hooks/useActions'
+import { FaPause, FaPlay, FaVolumeUp } from 'react-icons/fa'
 
-let audio: HTMLAudioElement;
+let audio: HTMLAudioElement
 
 export default function Player() {
   const { pause, active, volume, duration, currentTime } = useTypedSelector(
-    (state) => state.player,
-  );
+    (state) => state.player
+  )
   const { pauseSong, playSong, setVolume, setCurrentTime, setDuration } =
-    useActions();
+    useActions()
 
   useEffect(() => {
     if (!audio) {
-      audio = new Audio();
+      audio = new Audio()
     }
 
     if (audio && active) {
-      audio.src = "http://localhost:5000/" + active.audio;
-      audio.volume = volume / 100;
+      audio.src = 'http://localhost:5000/' + active.audio
+      audio.volume = volume / 100
       audio.onloadedmetadata = () => {
-        setDuration(Math.ceil(audio.duration));
-      };
+        setDuration(Math.ceil(audio.duration))
+      }
       audio.ontimeupdate = () => {
-        setCurrentTime(Math.ceil(audio.currentTime));
-      };
-      play();
+        setCurrentTime(Math.ceil(audio.currentTime))
+      }
+      play()
     }
-  }, [active]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active])
 
   const play = () => {
     if (pause) {
-      playSong();
-      audio.play();
+      playSong()
+      audio.play()
     } else {
-      pauseSong();
-      audio.pause();
+      pauseSong()
+      audio.pause()
     }
-  };
+  }
 
   const changeVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (audio) {
-      audio.volume = Number(e.target.value) / 100;
-      setVolume(Number(e.target.value));
+      audio.volume = Number(e.target.value) / 100
+      setVolume(Number(e.target.value))
     }
-  };
+  }
 
   const changeCurrentTime = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (audio) {
-      audio.currentTime = Number(e.target.value);
-      setCurrentTime(Number(e.target.value));
+      audio.currentTime = Number(e.target.value)
+      setCurrentTime(Number(e.target.value))
     }
-  };
+  }
 
   if (!active) {
-    return null;
+    return null
   }
 
   return (
@@ -92,5 +93,5 @@ export default function Player() {
         />
       </div>
     </div>
-  );
+  )
 }
