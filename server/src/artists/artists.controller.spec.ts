@@ -39,7 +39,7 @@ describe('ArtistsController', () => {
 
   it('should create a new artist - POST /api/artists', async () => {
     const createArtistDto: CreateArtistDto = {
-      id: faker.string.uuid(),
+      id: faker.datatype.uuid(),
       name: faker.name.findName(),
     };
 
@@ -71,7 +71,7 @@ describe('ArtistsController', () => {
 
   it('should get an artist - GET /api/artists/:id', async () => {
     const createArtistDto: CreateArtistDto = {
-      id: faker.string.uuid(),
+      id: faker.datatype.uuid(),
       name: faker.name.findName(),
     };
 
@@ -126,7 +126,7 @@ describe('ArtistsController', () => {
 
   it('should delete an artist - DELETE /api/artists/:id', async () => {
     const createArtistDto: CreateArtistDto = {
-      id: faker.string.uuid(),
+      id: faker.datatype.uuid(),
       name: faker.name.findName(),
     };
 
