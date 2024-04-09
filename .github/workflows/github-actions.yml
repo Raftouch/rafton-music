@@ -5,32 +5,6 @@ on:
     branches: ['dev']
 
 jobs:
-  client:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: client
-
-    strategy:
-      matrix:
-        node-version: [20.x]
-
-    steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - name: Determine client package versions & dependencies (clean-install)
-        run: npm ci
-      - name: Build NextJS client
-        run: npm run build --if-present
-      - name: Format & lint code
-        run: npm run lint && npm run format
-      - name: Launch e2e tests
-        run: npm run cypress
-
   server:
     runs-on: ubuntu-latest
     defaults:
@@ -56,13 +30,14 @@ jobs:
           - db-data:/var/lib/postgresql/data
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - name: Determine server package versions & dependencies
+      - name: Determine server package versions & dependencies (clean-install)
         run: npm ci
       - name: Migrate database
         run: npm run prisma:migrate
@@ -72,5 +47,36 @@ jobs:
         run: npm audit
       - name: Format & lint code
         run: npm run lint && npm run format
+      - name: Start NestJS server
+        run: npm run start:dev
       - name: Launch integration tests
         run: npm run test
+
+  client:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: client
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - name: Wait for server to be ready
+        run: npx wait-on http://localhost:5000/
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - name: Determine client package versions & dependencies
+        run: npm ci
+      - name: Build NextJS client
+        run: npm run build --if-present
+      - name: Format & lint code
+        run: npm run lint && npm run format
+      - name: Launch e2e tests
+        run: npm run cypress
