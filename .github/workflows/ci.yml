@@ -66,6 +66,7 @@ jobs:
 
       - name: Launch integration tests
         run: npm run test
+        working-directory: server
 
       # Frontend setup
       - name: Setup Node.js for Frontend
