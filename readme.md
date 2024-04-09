@@ -24,9 +24,10 @@
   - [ ] users
   - [x] genres
 - [x] run server tests w/ Jest (to check API routes ok)
-- [x] automate testing for CI
 - [x] upload files on server (images, audios)
-- [ ] CRUD on frontend + navbar, header, footer
+- [x] CRUD for songs on client + player + UI
+- [x] run client tests w/ Cypress
+- [x] automate worklow w/ tests for CI
 
 #### SETUP
 
