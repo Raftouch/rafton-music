@@ -20,7 +20,6 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "db:restart": "docker compose down && docker compose up -d && sleep 1",
     "pretest:i": "dotenv -e .env.test -- prisma migrate reset --force",
-    "test:i": "dotenv -e .env.test -- jest --no-cache --config ./test/jest-test.json",
     "prisma:migrate": "prisma migrate deploy",
     "prisma:generate": "prisma generate"
   },
@@ -37,7 +36,7 @@
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.1.1",
     "@nestjs/core": "^10.0.0",
-    "@nestjs/platform-express": "^10.2.10",
+    "@nestjs/platform-express": "^10.3.7",
     "@nestjs/serve-static": "^4.0.1",
     "@nestjs/swagger": "^7.1.17",
     "@prisma/client": "^5.7.0",

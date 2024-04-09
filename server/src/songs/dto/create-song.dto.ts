@@ -1,6 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { CreateArtistDto } from '../../artists/dto/create-artist.dto';
+import { CreateGenreDto } from '../../genres/dto/create-genre.dto';
 
 export class CreateSongDto {
+  @ApiProperty()
+  id: string;
+
   @ApiProperty()
   title: string;
 
@@ -13,15 +18,12 @@ export class CreateSongDto {
   @ApiProperty({ default: 0 })
   playcount: number;
 
-  @ApiProperty({ default: Date.now() })
-  uploadedat: Date;
+  @ApiProperty({ type: CreateArtistDto })
+  artist: CreateArtistDto;
 
-  @ApiProperty()
-  artist_id: string;
+  @ApiProperty({ type: CreateGenreDto })
+  genre: CreateGenreDto;
 
-  @ApiProperty()
-  genre_id: string;
-
-  @ApiProperty({ required: false })
-  user_id: string;
+  // @ApiProperty({ type: CreateUserDto })
+  // username: CreateUserDto;
 }

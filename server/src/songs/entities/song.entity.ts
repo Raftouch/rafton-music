@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { songs } from '@prisma/client';
 
-export class SongEntity implements songs {
+export class SongEntity {
   @ApiProperty()
   id: string;
 
@@ -18,14 +17,20 @@ export class SongEntity implements songs {
   playcount: number;
 
   @ApiProperty({ default: Date.now() })
-  uploadedat: Date;
+  uploadedAt: Date;
 
   @ApiProperty()
-  artist_id: string;
+  artist: {
+    id: string;
+    name: string;
+  };
 
   @ApiProperty()
-  genre_id: string;
+  genre: {
+    id: string;
+    type: string;
+  };
 
-  @ApiProperty({ required: false })
-  user_id: string;
+  // @ApiProperty()
+  // user_id?: string;
 }

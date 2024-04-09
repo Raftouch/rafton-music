@@ -39,6 +39,7 @@ describe('ArtistsController', () => {
 
   it('should create a new artist - POST /api/artists', async () => {
     const createArtistDto: CreateArtistDto = {
+      id: faker.datatype.uuid(),
       name: faker.name.findName(),
     };
 
@@ -70,6 +71,7 @@ describe('ArtistsController', () => {
 
   it('should get an artist - GET /api/artists/:id', async () => {
     const createArtistDto: CreateArtistDto = {
+      id: faker.datatype.uuid(),
       name: faker.name.findName(),
     };
 
@@ -112,7 +114,7 @@ describe('ArtistsController', () => {
     expect(getResponse.body.id).toBe(artistId);
     expect(getResponse.body.name).toBe(updateArtistDto.name);
 
-    const updatedArtist = await prismaService.artists.findUnique({
+    const updatedArtist = await prismaService.artist.findUnique({
       where: { id: artistId },
     });
 
@@ -124,6 +126,7 @@ describe('ArtistsController', () => {
 
   it('should delete an artist - DELETE /api/artists/:id', async () => {
     const createArtistDto: CreateArtistDto = {
+      id: faker.datatype.uuid(),
       name: faker.name.findName(),
     };
 
@@ -141,7 +144,7 @@ describe('ArtistsController', () => {
     expect(deleteResponse.body).toBeDefined();
     expect(deleteResponse.body.id).toBe(artistId);
 
-    const deletedArtist = await prismaService.artists.findUnique({
+    const deletedArtist = await prismaService.artist.findUnique({
       where: { id: artistId },
     });
 
