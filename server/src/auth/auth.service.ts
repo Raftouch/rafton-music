@@ -76,11 +76,12 @@ export class AuthService {
     }
 
     res.cookie('token', token);
-    return res.send({ message: 'Logged in successfully' });
+    return res.send({ message: 'Login successful' });
   }
 
-  async logout() {
-    return { message: 'Logout successful' };
+  async logout(req: Request, res: Response) {
+    res.clearCookie('token');
+    return res.send({ message: 'Logout successful' });
   }
 
   async hashPassword(password: string) {
