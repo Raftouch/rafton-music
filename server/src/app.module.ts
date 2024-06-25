@@ -8,6 +8,7 @@ import { SongsModule } from './songs/songs.module';
 import { GenresModule } from './genres/genres.module';
 import { FilesModule } from './files/files.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { AuthModule } from './auth/auth.module';
 import * as path from 'path';
 
 @Module({
@@ -21,6 +22,7 @@ import * as path from 'path';
     ServeStaticModule.forRoot({
       rootPath: path.resolve(__dirname, 'static'),
     }),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
