@@ -1,15 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CreateArtistDto } from '../../artists/dto/create-artist.dto';
 import { CreateGenreDto } from '../../genres/dto/create-genre.dto';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateSongDto {
-  @ApiProperty()
-  id: string;
-
+  @IsString()
+  @IsNotEmpty()
   @ApiProperty()
   title: string;
 
-  @ApiProperty({ required: false })
+  @ApiProperty()
   image: string;
 
   @ApiProperty()
