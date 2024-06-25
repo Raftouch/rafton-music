@@ -17,7 +17,7 @@ export class UserEntity implements User {
   @ApiProperty({ default: Role.BASIC })
   role: Role;
 
-  @ApiProperty({ default: Date.now() })
+  @ApiProperty()
   registeredAt: Date;
 
   @ApiProperty()
