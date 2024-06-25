@@ -7,16 +7,16 @@ export class AuthController {
 
   @Post('register')
   register() {
-    return 'Register route';
+    return this.authService.register();
   }
 
   @Post('login')
   login() {
-    return 'Login route';
+    return this.authService.login();
   }
 
   @Get('logout')
   logout() {
-    return 'Logout route';
+    return this.authService.logout();
   }
 }
