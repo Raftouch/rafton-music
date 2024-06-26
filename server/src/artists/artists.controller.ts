@@ -11,7 +11,12 @@ import {
 import { ArtistsService } from './artists.service';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { ArtistEntity } from './entities/artist.entity';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
 
@@ -22,6 +27,7 @@ export class ArtistsController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiCreatedResponse({ type: ArtistEntity })
   create(@Body() createArtistDto: CreateArtistDto) {
     return this.artistsService.create(createArtistDto);
@@ -29,6 +35,7 @@ export class ArtistsController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOkResponse({ type: ArtistEntity, isArray: true })
   findAll() {
     return this.artistsService.findAll();
@@ -36,6 +43,7 @@ export class ArtistsController {
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOkResponse({ type: ArtistEntity })
   findOne(@Param('id') id: string) {
     return this.artistsService.findOne(id);
@@ -43,6 +51,7 @@ export class ArtistsController {
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOkResponse({ type: ArtistEntity })
   update(@Param('id') id: string, @Body() updateArtistDto: UpdateArtistDto) {
     return this.artistsService.update(id, updateArtistDto);
@@ -50,6 +59,7 @@ export class ArtistsController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOkResponse({ type: ArtistEntity })
   remove(@Param('id') id: string) {
     return this.artistsService.remove(id);

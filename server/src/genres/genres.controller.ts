@@ -11,7 +11,12 @@ import {
 import { GenresService } from './genres.service';
 import { CreateGenreDto } from './dto/create-genre.dto';
 import { UpdateGenreDto } from './dto/update-genre.dto';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { GenreEntity } from './entities/genre.entity';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
 
@@ -22,6 +27,7 @@ export class GenresController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiCreatedResponse({ type: GenreEntity })
   create(@Body() createGenreDto: CreateGenreDto) {
     return this.genresService.create(createGenreDto);
@@ -29,6 +35,7 @@ export class GenresController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOkResponse({ type: GenreEntity, isArray: true })
   findAll() {
     return this.genresService.findAll();
@@ -36,6 +43,7 @@ export class GenresController {
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOkResponse({ type: GenreEntity })
   findOne(@Param('id') id: string) {
     return this.genresService.findOne(id);
@@ -43,6 +51,7 @@ export class GenresController {
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOkResponse({ type: GenreEntity })
   update(@Param('id') id: string, @Body() updateGenreDto: UpdateGenreDto) {
     return this.genresService.update(id, updateGenreDto);
@@ -50,6 +59,7 @@ export class GenresController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOkResponse({ type: GenreEntity })
   remove(@Param('id') id: string) {
     return this.genresService.remove(id);
