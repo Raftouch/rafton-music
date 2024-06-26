@@ -1,10 +1,20 @@
-import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/auth-register.dto';
 import { LoginDto } from './dto/auth-login.dto';
 import { Request, Response } from 'express';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { AuthEntity } from './entities/auth.entity';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -30,13 +40,18 @@ export class AuthController {
   }
 
   // private route
-  @Get('logout')
+  @UseGuards(AuthGuard('jwt'))
+  @Post('logout')
+  @HttpCode(HttpStatus.OK)
   logout(@Req() req: Request, @Res() res: Response) {
-    return this.authService.logout(req, res);
+    const user = req.user;
+    return this.authService.logout(req, res, user['id']);
   }
 
   // private route
+  @UseGuards(AuthGuard('jwt-refresh'))
   @Post('refresh')
+  @HttpCode(HttpStatus.OK)
   refreshToken() {
     return this.authService.refreshToken();
   }

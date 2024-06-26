@@ -122,15 +122,22 @@ export class AuthService {
     return tokens;
   }
 
-  async logout(req: Request, res: Response) {
+  async logout(req: Request, res: Response, id: string) {
+    await this.prisma.user.update({
+      where: { id },
+      data: { refreshToken: null },
+    });
+
     res.clearCookie('access_token', {
       httpOnly: true,
       secure: true,
     });
+
     res.clearCookie('refresh_token', {
       httpOnly: true,
       secure: true,
     });
+
     return res.send({ message: 'Logout successful' });
   }
 
