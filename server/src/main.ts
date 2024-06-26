@@ -15,7 +15,7 @@ async function start() {
     .setTitle('Rafton')
     .setDescription('The Rafton API description')
     .setVersion('0.1')
-    .addBearerAuth()
+    .addBearerAuth() // to authorize queries for protected routes in swagger
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
