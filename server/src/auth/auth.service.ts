@@ -14,7 +14,11 @@ export class AuthService {
     private jwt: JwtService,
   ) {}
 
-  async register(authDto: RegisterDto) {
+  async register(
+    authDto: RegisterDto,
+    req: Request,
+    res: Response,
+  ): Promise<AuthEntity> {
     const { username, email, password, role } = authDto;
 
     const usernameAlreadyInUse = await this.prisma.user.findUnique({
@@ -35,7 +39,7 @@ export class AuthService {
 
     const hashedPassword = await this.hashData(password);
 
-    await this.prisma.user.create({
+    const newUser = await this.prisma.user.create({
       data: {
         username: username,
         email: email,
@@ -44,7 +48,29 @@ export class AuthService {
       },
     });
 
-    return { message: 'Registered successfully' };
+    const tokens = await this.signTokens({
+      id: newUser.id,
+      username: newUser.username,
+    });
+
+    if (!tokens) {
+      throw new BadRequestException('Access denied, no token');
+    }
+
+    await this.updateRefreshToken(newUser.id, tokens.refresh_token);
+
+    res.cookie('access_token', tokens.access_token, {
+      httpOnly: true,
+      secure: true,
+    });
+
+    res.cookie('refresh_token', tokens.refresh_token, {
+      httpOnly: true,
+      secure: true,
+    });
+
+    res.send({ message: 'Registration successful' });
+    return tokens;
   }
 
   async login(

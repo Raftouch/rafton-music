@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/auth-register.dto';
 import { LoginDto } from './dto/auth-login.dto';
 import { Request, Response } from 'express';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { AuthEntity } from './entities/auth.entity';
 
 @Controller('auth')
@@ -13,13 +13,18 @@ export class AuthController {
 
   // public route
   @Post('register')
-  register(@Body() authDto: RegisterDto) {
-    return this.authService.register(authDto);
+  @ApiCreatedResponse({ type: AuthEntity })
+  register(
+    @Body() authDto: RegisterDto,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
+    return this.authService.register(authDto, req, res);
   }
 
   // public route
   @Post('login')
-  @ApiOkResponse({ type: AuthEntity })
+  @ApiCreatedResponse({ type: AuthEntity })
   login(@Body() authDto: LoginDto, @Req() req: Request, @Res() res: Response) {
     return this.authService.login(authDto, req, res);
   }
