@@ -109,4 +109,6 @@ export class AuthService {
 
     return this.jwt.signAsync(payload, { secret: process.env.JWT_SECRET });
   }
+
+  async refreshToken() {}
 }
