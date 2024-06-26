@@ -15,6 +15,7 @@ async function start() {
     .setTitle('Rafton')
     .setDescription('The Rafton API description')
     .setVersion('0.1')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
