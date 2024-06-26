@@ -5,7 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { LoginDto } from './dto/auth-login.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Request, Response } from 'express';
-// import { AuthEntity } from './entities/auth.entity';
+import { AuthEntity } from './entities/auth.entity';
 
 @Injectable()
 export class AuthService {
@@ -47,7 +47,11 @@ export class AuthService {
     return { message: 'Registered successfully' };
   }
 
-  async login(authDto: LoginDto, req: Request, res: Response) {
+  async login(
+    authDto: LoginDto,
+    req: Request,
+    res: Response,
+  ): Promise<AuthEntity> {
     const { username, password } = authDto;
 
     const userFound = await this.prisma.user.findUnique({
@@ -58,7 +62,7 @@ export class AuthService {
       throw new BadRequestException('Wrong credentials');
     }
 
-    const passwordsMatch = this.comparePasswords({
+    const passwordsMatch = await this.comparePasswords({
       password,
       hash: userFound.password,
     });
@@ -67,30 +71,38 @@ export class AuthService {
       throw new BadRequestException('Wrong credentials');
     }
 
-    const token = await this.signToken({
+    const tokens = await this.signToken({
       id: userFound.id,
       username: userFound.username,
     });
 
-    if (!token) {
+    if (!tokens) {
       throw new BadRequestException('Access denied, no token');
     }
 
-    res.cookie('token', token, {
+    res.cookie('access_token', tokens.access_token, {
       httpOnly: true,
       secure: true,
     });
-    return res.send({ message: 'Login successful' });
 
-    // const authEntity = new AuthEntity();
-    // authEntity.token = token;
-    // authEntity.message = 'Login successful';
+    res.cookie('refresh_token', tokens.refresh_token, {
+      httpOnly: true,
+      secure: true,
+    });
 
-    // return authEntity;
+    res.send({ message: 'Login successful' });
+    return tokens;
   }
 
   async logout(req: Request, res: Response) {
-    res.clearCookie('token');
+    res.clearCookie('access_token', {
+      httpOnly: true,
+      secure: true,
+    });
+    res.clearCookie('refresh_token', {
+      httpOnly: true,
+      secure: true,
+    });
     return res.send({ message: 'Logout successful' });
   }
 
@@ -103,11 +115,23 @@ export class AuthService {
     return await bcrypt.compare(args.password, args.hash);
   }
 
-  // connected to jwt strategy (jwt.strategy)
-  async signToken(args: { id: string; username: string }) {
+  async signToken(args: { id: string; username: string }): Promise<AuthEntity> {
     const payload = args;
+    const [accessToken, refreshToken] = await Promise.all([
+      this.jwt.signAsync(payload, {
+        secret: process.env.ACCESS_JWT_SECRET,
+        expiresIn: 60 * 15,
+      }), // 15 min
+      this.jwt.signAsync(payload, {
+        secret: process.env.REFRESH_JWT_SECRET,
+        expiresIn: 60 * 60 * 24 * 7,
+      }), // 1 week
+    ]);
 
-    return this.jwt.signAsync(payload, { secret: process.env.JWT_SECRET });
+    return {
+      access_token: accessToken,
+      refresh_token: refreshToken,
+    };
   }
 
   async refreshToken() {}
