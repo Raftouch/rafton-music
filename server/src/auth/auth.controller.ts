@@ -4,6 +4,7 @@ import { RegisterDto } from './dto/auth-register.dto';
 import { LoginDto } from './dto/auth-login.dto';
 import { Request, Response } from 'express';
 import { ApiTags } from '@nestjs/swagger';
+// import { AuthEntity } from './entities/auth.entity';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -16,6 +17,7 @@ export class AuthController {
   }
 
   @Post('login')
+  // @ApiOkResponse({ type: AuthEntity })
   login(@Body() authDto: LoginDto, @Req() req: Request, @Res() res: Response) {
     return this.authService.login(authDto, req, res);
   }

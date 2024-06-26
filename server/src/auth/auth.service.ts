@@ -5,6 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { LoginDto } from './dto/auth-login.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Request, Response } from 'express';
+// import { AuthEntity } from './entities/auth.entity';
 
 @Injectable()
 export class AuthService {
@@ -77,6 +78,12 @@ export class AuthService {
 
     res.cookie('token', token);
     return res.send({ message: 'Login successful' });
+
+    // const authEntity = new AuthEntity();
+    // authEntity.token = token;
+    // authEntity.message = 'Login successful';
+
+    // return authEntity;
   }
 
   async logout(req: Request, res: Response) {
