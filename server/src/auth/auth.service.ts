@@ -76,7 +76,10 @@ export class AuthService {
       throw new BadRequestException('Access denied, no token');
     }
 
-    res.cookie('token', token);
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: true,
+    });
     return res.send({ message: 'Login successful' });
 
     // const authEntity = new AuthEntity();
