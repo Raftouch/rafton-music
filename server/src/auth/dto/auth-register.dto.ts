@@ -1,19 +1,24 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Role } from '@prisma/client';
-import { IsEmail, IsNotEmpty, IsString, Length } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 
 export class RegisterDto {
+  @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  public username: string;
+  username: string;
 
+  @ApiProperty()
   @IsNotEmpty()
   @IsEmail()
-  public email: string;
+  email: string;
 
+  @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  @Length(3, 20, { message: 'Password has to be between 3 and 21 characters' })
-  public password: string;
+  @MinLength(4)
+  password: string;
 
-  public role: Role;
+  @ApiProperty()
+  role: Role;
 }
