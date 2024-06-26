@@ -11,22 +11,26 @@ import { AuthEntity } from './entities/auth.entity';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  // public route
   @Post('register')
   register(@Body() authDto: RegisterDto) {
     return this.authService.register(authDto);
   }
 
+  // public route
   @Post('login')
   @ApiOkResponse({ type: AuthEntity })
   login(@Body() authDto: LoginDto, @Req() req: Request, @Res() res: Response) {
     return this.authService.login(authDto, req, res);
   }
 
+  // private route
   @Get('logout')
   logout(@Req() req: Request, @Res() res: Response) {
     return this.authService.logout(req, res);
   }
 
+  // private route
   @Post('refresh')
   refreshToken() {
     return this.authService.refreshToken();

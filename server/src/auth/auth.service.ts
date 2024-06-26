@@ -33,7 +33,7 @@ export class AuthService {
       throw new BadRequestException('Email already in use');
     }
 
-    const hashedPassword = await this.hashPassword(password);
+    const hashedPassword = await this.hashData(password);
 
     await this.prisma.user.create({
       data: {
@@ -71,7 +71,7 @@ export class AuthService {
       throw new BadRequestException('Wrong credentials');
     }
 
-    const tokens = await this.signToken({
+    const tokens = await this.signTokens({
       id: userFound.id,
       username: userFound.username,
     });
@@ -79,6 +79,8 @@ export class AuthService {
     if (!tokens) {
       throw new BadRequestException('Access denied, no token');
     }
+
+    await this.updateRefreshToken(userFound.id, tokens.refresh_token);
 
     res.cookie('access_token', tokens.access_token, {
       httpOnly: true,
@@ -106,16 +108,19 @@ export class AuthService {
     return res.send({ message: 'Logout successful' });
   }
 
-  async hashPassword(password: string) {
+  async hashData(data: string) {
     const saltOrRounds = 10;
-    return await bcrypt.hash(password, saltOrRounds);
+    return await bcrypt.hash(data, saltOrRounds);
   }
 
   async comparePasswords(args: { password: string; hash: string }) {
     return await bcrypt.compare(args.password, args.hash);
   }
 
-  async signToken(args: { id: string; username: string }): Promise<AuthEntity> {
+  async signTokens(args: {
+    id: string;
+    username: string;
+  }): Promise<AuthEntity> {
     const payload = args;
     const [accessToken, refreshToken] = await Promise.all([
       this.jwt.signAsync(payload, {
@@ -132,6 +137,14 @@ export class AuthService {
       access_token: accessToken,
       refresh_token: refreshToken,
     };
+  }
+
+  async updateRefreshToken(id: string, refreshToken: string) {
+    const hashedRefreshToken = await this.hashData(refreshToken);
+    await this.prisma.user.update({
+      where: { id },
+      data: { refreshToken: hashedRefreshToken },
+    });
   }
 
   async refreshToken() {}
