@@ -8,6 +8,7 @@ import {
   Delete,
   UseInterceptors,
   UploadedFiles,
+  UseGuards,
 } from '@nestjs/common';
 import { SongsService } from './songs.service';
 import { CreateSongDto } from './dto/create-song.dto';
@@ -15,6 +16,7 @@ import { UpdateSongDto } from './dto/update-song.dto';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { SongEntity } from './entities/song.entity';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
 
 @Controller('api/songs')
 @ApiTags('songs')
@@ -22,6 +24,7 @@ export class SongsController {
   constructor(private readonly songsService: SongsService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   @ApiCreatedResponse({ type: SongEntity })
   @UseInterceptors(
     FileFieldsInterceptor([
@@ -36,18 +39,21 @@ export class SongsController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ type: SongEntity, isArray: true })
   findAll() {
     return this.songsService.findAll();
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ type: SongEntity })
   findOne(@Param('id') id: string) {
     return this.songsService.findOne(id);
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ type: SongEntity })
   @UseInterceptors(
     FileFieldsInterceptor([
@@ -71,6 +77,7 @@ export class SongsController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ type: SongEntity })
   remove(@Param('id') id: string) {
     return this.songsService.remove(id);

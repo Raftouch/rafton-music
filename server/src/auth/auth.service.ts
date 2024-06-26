@@ -103,6 +103,7 @@ export class AuthService {
     return await bcrypt.compare(args.password, args.hash);
   }
 
+  // connected to jwt strategy (jwt.strategy)
   async signToken(args: { id: string; username: string }) {
     const payload = args;
 
