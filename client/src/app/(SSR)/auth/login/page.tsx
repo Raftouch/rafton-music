@@ -1,41 +1,41 @@
-"use client";
+'use client'
 
 export default function LoginPage() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    event.preventDefault()
 
     const payload = {
       username: event.currentTarget.username.value,
       password: event.currentTarget.password.value,
-    };
+    }
 
     try {
-      const response = await fetch("http://localhost:5000/auth/login", {
-        method: "POST",
+      const response = await fetch('http://localhost:5000/auth/login', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        credentials: "include",
+        credentials: 'include',
         body: JSON.stringify(payload),
-      });
+      })
 
       if (!response.ok) {
-        throw new Error(`An error has occurred: ${response.statusText}`);
+        throw new Error(`An error has occurred: ${response.statusText}`)
       }
 
-      const data = await response.json();
+      const data = await response.json()
 
-      alert(JSON.stringify(data));
+      alert(JSON.stringify(data))
 
-      window.location.href = "http://localhost:3000/songs";
+      window.location.href = 'http://localhost:3000/songs'
     } catch (e) {
       if (e instanceof Error) {
-        alert(e.message);
+        alert(e.message)
       } else {
-        alert("An unexpected error occurred");
+        alert('An unexpected error occurred')
       }
     }
-  };
+  }
 
   return (
     <main>
@@ -46,7 +46,7 @@ export default function LoginPage() {
         className="flex flex-col min-w-[50%] bg-white text-rafton-blue mt-20 mb-20 gap-10 p-10 rounded-md"
       >
         <div>
-          <label htmlFor="username">Username: </label>
+          <label htmlFor="username">Username</label>
           <input
             type="text"
             id="username"
@@ -56,7 +56,7 @@ export default function LoginPage() {
           />
         </div>
         <div>
-          <label htmlFor="password">Password: </label>
+          <label htmlFor="password">Password</label>
           <input
             type="password"
             id="password"
@@ -69,5 +69,5 @@ export default function LoginPage() {
         <button type="submit">Login</button>
       </form>
     </main>
-  );
+  )
 }
