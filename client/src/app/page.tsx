@@ -1,4 +1,4 @@
-import LandingPage from '@/components/LandingPage'
+import LandingPage from "@/components/LandingPage";
 
 export default function Home() {
   return (
@@ -6,5 +6,5 @@ export default function Home() {
       {/* <h1>Welcome to Rafton</h1> */}
       <LandingPage />
     </div>
-  )
+  );
 }

@@ -1,14 +1,14 @@
-'use client'
+"use client";
 
 export default function LandingPage() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+    event.preventDefault();
 
     const payload = {
       username: event.currentTarget.username.value,
       password: event.currentTarget.password.value,
-    }
-  }
+    };
+  };
   return (
     <main>
       <h1 className="mb-20 text-center">Register Form</h1>
@@ -41,5 +41,5 @@ export default function LandingPage() {
         <button type="submit">Register</button>
       </form>
     </main>
-  )
+  );
 }
