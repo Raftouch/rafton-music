@@ -1,6 +1,6 @@
 'use client'
 
-export default function LandingPage() {
+export default function LoginPage() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
@@ -10,11 +10,12 @@ export default function LandingPage() {
     }
 
     try {
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch('http://localhost:5000/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify(payload),
       })
 
@@ -26,7 +27,6 @@ export default function LandingPage() {
 
       alert(JSON.stringify(data))
 
-      // Redirect the user to songs page
       window.location.href = 'http://localhost:3000/songs'
     } catch (e) {
       if (e instanceof Error) {
@@ -39,7 +39,7 @@ export default function LandingPage() {
 
   return (
     <main>
-      <h1 className="mb-20 text-center">Register Form</h1>
+      <h1 className="mb-20 text-center">Login Form</h1>
 
       <form
         onSubmit={handleSubmit}
@@ -66,7 +66,7 @@ export default function LandingPage() {
           />
         </div>
 
-        <button type="submit">Register</button>
+        <button type="submit">Login</button>
       </form>
     </main>
   )
