@@ -1,4 +1,4 @@
-import LoginPage from '@/components/LoginPage'
+import LoginPage from "@/components/LoginPage";
 
 export default function Home() {
   return (
@@ -6,5 +6,5 @@ export default function Home() {
       {/* <h1>Welcome to Rafton</h1> */}
       <LoginPage />
     </div>
-  )
+  );
 }
