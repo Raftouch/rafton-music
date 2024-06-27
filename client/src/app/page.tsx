@@ -3,5 +3,5 @@ export default function Home() {
     <div className="mt-20">
       <h1>Welcome to Rafton</h1>
     </div>
-  )
+  );
 }

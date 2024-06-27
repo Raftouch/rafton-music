@@ -1,42 +1,42 @@
-'use client'
+"use client";
 
 export default function RegisterPage() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+    event.preventDefault();
 
     const payload = {
       username: event.currentTarget.username.value,
       email: event.currentTarget.email.value,
       password: event.currentTarget.password.value,
-    }
+    };
 
     try {
-      const response = await fetch('http://localhost:5000/auth/register', {
-        method: 'POST',
+      const response = await fetch("http://localhost:5000/auth/register", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        credentials: 'include',
+        credentials: "include",
         body: JSON.stringify(payload),
-      })
+      });
 
       if (!response.ok) {
-        throw new Error(`An error has occurred: ${response.statusText}`)
+        throw new Error(`An error has occurred: ${response.statusText}`);
       }
 
-      const data = await response.json()
+      const data = await response.json();
 
-      alert(JSON.stringify(data))
+      alert(JSON.stringify(data));
 
-      window.location.href = 'http://localhost:3000/login'
+      window.location.href = "http://localhost:3000/login";
     } catch (e) {
       if (e instanceof Error) {
-        alert(e.message)
+        alert(e.message);
       } else {
-        alert('An unexpected error occurred')
+        alert("An unexpected error occurred");
       }
     }
-  }
+  };
 
   return (
     <main>
@@ -80,5 +80,5 @@ export default function RegisterPage() {
         <button type="submit">Register</button>
       </form>
     </main>
-  )
+  );
 }
