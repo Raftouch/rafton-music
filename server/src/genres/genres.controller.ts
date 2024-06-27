@@ -18,7 +18,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { GenreEntity } from './entities/genre.entity';
-import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/auth/guard/auth.guard';
 
 @Controller('api/genres')
 @ApiTags('genres')
