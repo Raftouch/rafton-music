@@ -14,7 +14,8 @@ import { LoginDto } from './dto/auth-login.dto';
 import { Request, Response } from 'express';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { AuthEntity } from './entities/auth.entity';
-import { AuthGuard } from '@nestjs/passport';
+import { JwtRefreshAuthGuard } from './guards/refresh-token.guard';
+import { JwtAuthGuard } from './guards/access-token.guard';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -40,7 +41,7 @@ export class AuthController {
   }
 
   // private route
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtAuthGuard)
   @Post('logout')
   @HttpCode(HttpStatus.OK)
   logout(@Req() req: Request, @Res() res: Response) {
@@ -49,7 +50,7 @@ export class AuthController {
   }
 
   // private route
-  @UseGuards(AuthGuard('jwt-refresh'))
+  @UseGuards(JwtRefreshAuthGuard)
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
   refreshToken(@Req() req: Request, @Res() res: Response) {

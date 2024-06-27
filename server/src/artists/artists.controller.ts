@@ -18,7 +18,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { ArtistEntity } from './entities/artist.entity';
-import { JwtAuthGuard } from 'src/auth/guard/auth.guard';
+import { JwtAuthGuard } from 'src/auth/guards/access-token.guard';
 
 @Controller('api/artists')
 @ApiTags('artists')
