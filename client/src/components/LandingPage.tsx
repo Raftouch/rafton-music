@@ -1,14 +1,42 @@
-"use client";
+'use client'
 
 export default function LandingPage() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    event.preventDefault()
 
     const payload = {
       username: event.currentTarget.username.value,
       password: event.currentTarget.password.value,
-    };
-  };
+    }
+
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      })
+
+      if (!response.ok) {
+        throw new Error(`An error has occurred: ${response.statusText}`)
+      }
+
+      const data = await response.json()
+
+      alert(JSON.stringify(data))
+
+      // Redirect the user to songs page
+      window.location.href = 'http://localhost:3000/songs'
+    } catch (e) {
+      if (e instanceof Error) {
+        alert(e.message)
+      } else {
+        alert('An unexpected error occurred')
+      }
+    }
+  }
+
   return (
     <main>
       <h1 className="mb-20 text-center">Register Form</h1>
@@ -41,5 +69,5 @@ export default function LandingPage() {
         <button type="submit">Register</button>
       </form>
     </main>
-  );
+  )
 }
