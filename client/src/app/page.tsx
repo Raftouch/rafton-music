@@ -1,5 +1,10 @@
-import LandingPage from "@/components/LandingPage";
+import LandingPage from '@/components/LandingPage'
 
 export default function Home() {
-  return <LandingPage />;
+  return (
+    <div className="mt-20">
+      {/* <h1>Welcome to Rafton</h1> */}
+      <LandingPage />
+    </div>
+  )
 }
