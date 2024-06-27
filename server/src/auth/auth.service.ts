@@ -226,7 +226,7 @@ export class AuthService {
       secure: true,
     });
 
-    res.send({ message: 'Login successful' });
+    res.send({ message: 'Refresh token successful' });
     return tokens;
   }
 }
