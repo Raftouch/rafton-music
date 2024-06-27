@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { RegisterDto } from './dto/auth-register.dto';
 import * as bcrypt from 'bcrypt';
@@ -103,7 +107,7 @@ export class AuthService {
     });
 
     if (!tokens) {
-      throw new BadRequestException('Access denied, no token');
+      throw new ForbiddenException('Access denied, no token');
     }
 
     await this.updateRefreshToken(userFound.id, tokens.refresh_token);
@@ -180,5 +184,49 @@ export class AuthService {
     });
   }
 
-  async refreshToken() {}
+  async refreshToken(
+    id: string,
+    refreshToken: string,
+    req: Request,
+    res: Response,
+  ) {
+    const userFound = await this.prisma.user.findUnique({ where: { id } });
+
+    if (!userFound) {
+      throw new BadRequestException('Wrong credentials');
+    }
+
+    const tokensMatch = await bcrypt.compare(
+      refreshToken,
+      userFound.refreshToken,
+    );
+
+    if (!tokensMatch) {
+      throw new ForbiddenException('Access denied');
+    }
+
+    const tokens = await this.signTokens({
+      id: userFound.id,
+      username: userFound.username,
+    });
+
+    if (!tokens) {
+      throw new ForbiddenException('Access denied, no token');
+    }
+
+    await this.updateRefreshToken(userFound.id, tokens.refresh_token);
+
+    res.cookie('access_token', tokens.access_token, {
+      httpOnly: true,
+      secure: true,
+    });
+
+    res.cookie('refresh_token', tokens.refresh_token, {
+      httpOnly: true,
+      secure: true,
+    });
+
+    res.send({ message: 'Login successful' });
+    return tokens;
+  }
 }
