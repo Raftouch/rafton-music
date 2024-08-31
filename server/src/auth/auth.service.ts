@@ -66,11 +66,13 @@ export class AuthService {
     res.cookie('access_token', tokens.access_token, {
       httpOnly: true,
       secure: true,
+      sameSite: 'none',
     });
 
     res.cookie('refresh_token', tokens.refresh_token, {
       httpOnly: true,
       secure: true,
+      sameSite: 'none',
     });
 
     res.send({ message: 'Registration successful' });
@@ -115,11 +117,13 @@ export class AuthService {
     res.cookie('access_token', tokens.access_token, {
       httpOnly: true,
       secure: true,
+      sameSite: 'none',
     });
 
     res.cookie('refresh_token', tokens.refresh_token, {
       httpOnly: true,
       secure: true,
+      sameSite: 'none',
     });
 
     res.send({ message: 'Login successful' });
