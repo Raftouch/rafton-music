@@ -1,6 +1,9 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 export default function LoginPage() {
+  const router = useRouter();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -27,7 +30,7 @@ export default function LoginPage() {
 
       alert(JSON.stringify(data));
 
-      window.location.href = "http://localhost:3000/songs";
+      router.push("/songs");
     } catch (e) {
       if (e instanceof Error) {
         alert(e.message);

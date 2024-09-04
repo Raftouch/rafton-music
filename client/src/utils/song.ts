@@ -20,13 +20,26 @@ export async function getSong(id: string): Promise<Song | null> {
   }
 }
 
-export async function getAllSongs(): Promise<Song[] | null> {
+export async function getAllSongs(): Promise<Song[] | null | "unauthorized"> {
   try {
     const response = await fetch("http://localhost:5000/api/songs", {
       cache: "no-store",
       credentials: "include",
     });
-    if (response.status === 404) notFound();
+    // if (response.status === 404) notFound();
+
+    if (response.status === 401) {
+      return "unauthorized"; // Return a special value for unauthorized access
+    }
+
+    if (response.status === 403) {
+      throw new Error("Forbidden - you do not have permission to view these songs.");
+    } else if (response.status === 404) {
+      notFound();
+      return null;
+    } else if (response.status === 500) {
+      throw new Error("Server error - please try again later.");
+    }
 
     if (!response.ok) {
       throw new Error("Failed to fetch song data");
