@@ -1,44 +1,48 @@
-"use client";
+'use client'
 
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation'
 
 export default function LoginPage() {
-  const router = useRouter();
+  const router = useRouter()
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    event.preventDefault()
 
     const payload = {
       username: event.currentTarget.username.value,
       password: event.currentTarget.password.value,
-    };
+    }
 
     try {
-      const response = await fetch("http://localhost:5000/auth/login", {
-        method: "POST",
+      const response = await fetch('http://localhost:5000/auth/login', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        credentials: "include",
+        credentials: 'include',
         body: JSON.stringify(payload),
-      });
+      })
 
       if (!response.ok) {
-        throw new Error(`An error has occurred: ${response.statusText}`);
+        throw new Error(`An error has occurred: ${response.statusText}`)
       }
 
-      const data = await response.json();
+      const data = await response.json()
+      const { access_token, refresh_token } = data
 
-      alert(JSON.stringify(data));
+      document.cookie = `access_token=${access_token}; Secure; HttpOnly; SameSite=Strict`
+      document.cookie = `refresh_token=${refresh_token}; Secure; HttpOnly; SameSite=Strict`
 
-      router.push("/songs");
+      alert(JSON.stringify(data))
+
+      router.push('/songs')
     } catch (e) {
       if (e instanceof Error) {
-        alert(e.message);
+        alert(e.message)
       } else {
-        alert("An unexpected error occurred");
+        alert('An unexpected error occurred')
       }
     }
-  };
+  }
 
   return (
     <main>
@@ -72,5 +76,5 @@ export default function LoginPage() {
         <button type="submit">Login</button>
       </form>
     </main>
-  );
+  )
 }
