@@ -33,7 +33,7 @@ export class SongsController {
   constructor(
     private readonly songsService: SongsService,
     private readonly jwtService: JwtService,
-  ) { }
+  ) {}
 
   @Post()
   @UseGuards(JwtAuthGuard)

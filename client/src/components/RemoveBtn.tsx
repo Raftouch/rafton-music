@@ -21,6 +21,7 @@ export default function RemoveBtn({ id }: DeleteSongProps) {
   const removeSong = async () => {
     const response = await fetch(`http://localhost:5000/api/songs/${id}`, {
       method: "DELETE",
+      credentials: 'include'
     });
     toast.success("Song successfully removed");
 

@@ -33,6 +33,7 @@ export default function UpdateSongForm({ song }: UpdateSongFormProps) {
     fetch(url, {
       method: "PATCH",
       body: formData,
+      credentials: 'include'
     })
       .then((response) => {
         if (response.ok) {

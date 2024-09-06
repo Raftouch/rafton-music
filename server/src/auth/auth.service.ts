@@ -16,7 +16,7 @@ export class AuthService {
   constructor(
     private prisma: PrismaService,
     private jwt: JwtService,
-  ) { }
+  ) {}
 
   async register(
     authDto: RegisterDto,
@@ -64,15 +64,19 @@ export class AuthService {
     await this.updateRefreshToken(newUser.id, tokens.refresh_token);
 
     res.cookie('access_token', tokens.access_token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'lax',
+      httpOnly: true, // Only accessible by the server
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax', // Required for cross-origin cookies
+      maxAge: 1000 * 60 * 15, // 15 minutes
+      path: '/',
     });
 
     res.cookie('refresh_token', tokens.refresh_token, {
       httpOnly: true,
-      secure: true,
-      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production', // Only send cookies over HTTPS in production
+      sameSite: 'lax', // Ensures cookie is only sent with requests from the same site
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+      path: '/',
     });
 
     res.send({ message: 'Registration successful' });
@@ -120,6 +124,7 @@ export class AuthService {
       secure: process.env.NODE_ENV === 'production', // Only send over HTTPS in production
       sameSite: 'lax', // Required for cross-origin cookies
       maxAge: 1000 * 60 * 15, // 15 minutes
+      path: '/',
     });
 
     res.cookie('refresh_token', tokens.refresh_token, {
@@ -127,6 +132,7 @@ export class AuthService {
       secure: process.env.NODE_ENV === 'production', // Only send cookies over HTTPS in production
       sameSite: 'lax', // Ensures cookie is only sent with requests from the same site
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+      path: '/',
     });
 
     console.log('Cookies set:', res.getHeaders()['set-cookie']); // Log cookies set in response
@@ -143,12 +149,12 @@ export class AuthService {
 
     res.clearCookie('access_token', {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
     });
 
     res.clearCookie('refresh_token', {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
     });
 
     return res.send({ message: 'Logout successful' });
@@ -227,12 +233,16 @@ export class AuthService {
 
     res.cookie('access_token', tokens.access_token, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 1000 * 60 * 15,
     });
 
     res.cookie('refresh_token', tokens.refresh_token, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 1000 * 60 * 60 * 24 * 7,
     });
 
     res.send({ message: 'Refresh token successful' });

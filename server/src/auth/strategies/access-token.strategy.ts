@@ -8,35 +8,39 @@ import { UsersService } from 'src/users/users.service';
 export class AccessTokenStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(private usersService: UsersService) {
     super({
-      // Utilisation d'extracteurs personnalisés : Cookie ou Header
+      // jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), // How the token is extracted
       jwtFromRequest: ExtractJwt.fromExtractors([
-        AccessTokenStrategy.extractJWTFromCookie, // Extraction depuis les cookies
-        ExtractJwt.fromAuthHeaderAsBearerToken(), // Extraction depuis le header Authorization: Bearer
+        AccessTokenStrategy.extractJWT,
+        ExtractJwt.fromAuthHeaderAsBearerToken(),
       ]),
-      ignoreExpiration: false, // Vérifie que le token n'a pas expiré
-      secretOrKey: process.env.ACCESS_JWT_SECRET, // Clé secrète pour vérifier le token
+      ignoreExpiration: false,
+      secretOrKey: process.env.ACCESS_JWT_SECRET,
     });
-    console.log('AccessTokenStrategy initialized'); // Log pour confirmer l'initialisation
+    console.log('JWT Secret:', process.env.ACCESS_JWT_SECRET);
+    console.log('AccessTokenStrategy initialized');
   }
 
-  private static extractJWTFromCookie(req: Request): string | null {
-    console.log('Req COOKIES :', req.cookies); // Log des cookies
-    if (req && req.cookies && 'access_token' in req.cookies) {
-      console.log('Extracted Access Token from cookies:', req.cookies.access_token);
-      return req.cookies.access_token; // Retourne le token
+  private static extractJWT(req: Request): string | null {
+    console.log('Req COOKIES : ', req.cookies);
+    if (
+      req.cookies &&
+      'access_token' in req.cookies &&
+      req.cookies.access_token.length > 0
+    ) {
+      console.log('Access Token : ', req.cookies.access_token);
+      return req.cookies.access_token;
     }
-    console.log('No token found in cookies'); // Log si aucun token trouvé
     return null;
   }
 
-
-  // Méthode appelée pour valider le payload du JWT
   async validate(payload: { id: string }) {
-    console.log('Validating Payload:', payload); // Log pour voir le payload
-    const user = await this.usersService.findOne(payload.id); // Vérifie si l'utilisateur existe
+    console.log('AccessTokenStrategy - Payload:', payload); // Log the payload of the validated token
+
+    const user = await this.usersService.findOne(payload.id);
     if (!user) {
-      throw new UnauthorizedException('Invalid token or user not found'); // Renvoie une erreur si l'utilisateur n'existe pas
+      throw new UnauthorizedException('User not found');
     }
-    return user; // Retourne l'utilisateur validé, qui sera injecté dans `req.user`
+
+    return user;
   }
 }
