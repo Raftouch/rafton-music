@@ -43,6 +43,7 @@ export default function CreateSongForm() {
       fetch(url, {
         method: "POST",
         body: formData,
+        credentials: "include"
       })
         .then((response) => {
           if (response.ok) {

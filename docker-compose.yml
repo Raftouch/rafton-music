@@ -1,34 +1,34 @@
 version: "3.8"
 
 services:
-  client:
-    container_name: music-app-client
-    build:
-      context: ./client
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./client:/usr/src/app
-      - /usr/src/app/node_modules
-      - /usr/src/app/ .next
-    depends_on:
-      - server
+  # client:
+  #   container_name: music-app-client
+  #   build:
+  #     context: ./client
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - ./client:/usr/src/app
+  #     - /usr/src/app/node_modules
+  #     - /usr/src/app/ .next
+  #   depends_on:
+  #     - server
 
-  server:
-    container_name: music-app-server
-    build:
-      context: ./server
-      dockerfile: Dockerfile
-    ports:
-      - "5000:5000"
-    volumes:
-      - ./server:/usr/src/main
-      - /usr/src/main/node_modules
-    environment:
-      DATABASE_URL: postgres://user-name:strong-password@db/music-app
-    depends_on:
-      - db
+  # server:
+  #   container_name: music-app-server
+  #   build:
+  #     context: ./server
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "5000:5000"
+  #   volumes:
+  #     - ./server:/usr/src/main
+  #     - /usr/src/main/node_modules
+  #   environment:
+  #     DATABASE_URL: postgres://user-name:strong-password@db/music-app
+  #   depends_on:
+  #     - db
 
   db:
     image: postgres

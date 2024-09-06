@@ -1,9 +1,20 @@
 'use client'
 
+import axios from 'axios'
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react';
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 
 export default function LoginPage() {
+
   const router = useRouter()
+
+  useEffect(() => {
+    console.log('API_URL:', API_URL); // Doit afficher http://localhost:5000
+  }, []);
+
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
@@ -13,18 +24,18 @@ export default function LoginPage() {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify(payload),
-      })
+      const response = await axios.post(`${API_URL}/auth/login`,
+        payload, // Pas besoin de faire un JSON.stringify ici avec Axios, il le fait automatiquement
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true, // Cela remplace 'credentials: include' pour envoyer les cookies
+        }
+      );
 
-      if (!response.ok) {
-        throw new Error(`An error has occurred: ${response.statusText}`)
-      }
+      // Axios ne nécessite pas de vérifier `response.ok`, il lève automatiquement une erreur pour les codes de statut HTTP hors de la plage 2xx
+
 
       // const data = await response.json()
       // const { access_token, refresh_token } = data

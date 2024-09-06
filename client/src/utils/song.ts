@@ -1,6 +1,7 @@
 import { Song } from '@/models/song'
 import { notFound } from 'next/navigation'
 import axios from 'axios'
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function getSong(
   id: string,
@@ -97,7 +98,7 @@ export async function getSong(
 
 export async function getAllSongs(): Promise<Song[] | null> {
   try {
-    const response = await axios.get('http://localhost:5000/api/songs', {
+    const response = await axios.get(`${API_URL}/api/songs`, {
       withCredentials: true, // This ensures cookies are sent with the request
     })
 
@@ -114,7 +115,7 @@ export async function getAllSongs(): Promise<Song[] | null> {
 
     // The data property contains the parsed JSON data
     const songs: Song[] = response.data
-    
+
     return songs
   } catch (error: any) {
     if (error.response && error.response.status === 500) {

@@ -3,12 +3,20 @@ import React from "react";
 import SongCard from "./SongCard";
 
 interface SongListProps {
-  songs: Song[];
+  songs: Song[] | null;
   searchParams?: { query?: string; page?: string };
 }
 
 export default function SongList({ songs, searchParams }: SongListProps) {
   const query = searchParams?.query || "";
+
+  if (!songs || songs.length === 0) {
+    return (
+      <div>
+        <p>No songs available.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-items-center">
