@@ -1,79 +1,42 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { UsersService } from 'src/users/users.service';
-// import { cookies } from 'next/headers';
 
 @Injectable()
 export class AccessTokenStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(private usersService: UsersService) {
     super({
-      // jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), // How the token is extracted
+      // Utilisation d'extracteurs personnalisés : Cookie ou Header
       jwtFromRequest: ExtractJwt.fromExtractors([
-        AccessTokenStrategy.extractJWT,
-        ExtractJwt.fromAuthHeaderAsBearerToken(),
+        AccessTokenStrategy.extractJWTFromCookie, // Extraction depuis les cookies
+        ExtractJwt.fromAuthHeaderAsBearerToken(), // Extraction depuis le header Authorization: Bearer
       ]),
-      ignoreExpiration: false,
-      secretOrKey: process.env.ACCESS_JWT_SECRET, // Secret key for verifying the token
+      ignoreExpiration: false, // Vérifie que le token n'a pas expiré
+      secretOrKey: process.env.ACCESS_JWT_SECRET, // Clé secrète pour vérifier le token
     });
-    console.log('AccessTokenStrategy initialized'); // Log when the strategy is initialized
+    console.log('AccessTokenStrategy initialized'); // Log pour confirmer l'initialisation
   }
 
-  private static extractJWT(req: Request): string | null {
-    console.log('Req COOKIES : ', req.cookies);
-    if (
-      req.cookies &&
-      'access_token' in req.cookies &&
-      req.cookies.access_token.length > 0
-    ) {
-      console.log('Access Token : ', req.cookies.access_token);
-      return req.cookies.access_token;
+  private static extractJWTFromCookie(req: Request): string | null {
+    console.log('Req COOKIES :', req.cookies); // Log des cookies
+    if (req && req.cookies && 'access_token' in req.cookies) {
+      console.log('Extracted Access Token from cookies:', req.cookies.access_token);
+      return req.cookies.access_token; // Retourne le token
     }
+    console.log('No token found in cookies'); // Log si aucun token trouvé
     return null;
   }
 
-  // private static extractJWT(req: Request): string | null {
-  //   // Log the entire cookies object to understand its structure
-  //   console.log('Req COOKIES : ', req.cookies);
 
-  //   // Retrieve and log the access token from cookies
-  //   const token = req.cookies['access_token'];
-  //   console.log('Access Token : ', token);
-
-  //   return token || null;
-  // }
-
-  // Connected to signToken (auth.service)
+  // Méthode appelée pour valider le payload du JWT
   async validate(payload: { id: string }) {
-    console.log('AccessTokenStrategy - Payload:', payload); // Log the payload of the validated token
-    return payload; // Return the payload after validation
+    console.log('Validating Payload:', payload); // Log pour voir le payload
+    const user = await this.usersService.findOne(payload.id); // Vérifie si l'utilisateur existe
+    if (!user) {
+      throw new UnauthorizedException('Invalid token or user not found'); // Renvoie une erreur si l'utilisateur n'existe pas
+    }
+    return user; // Retourne l'utilisateur validé, qui sera injecté dans `req.user`
   }
 }
-
-// @Injectable()
-// export class CookieAccessTokenStrategy extends PassportStrategy(
-//   Strategy,
-//   'jwt-cookie',
-// ) {
-//   constructor() {
-//     super({
-//       jwtFromRequest: ExtractJwt.fromExtractors([
-//         (request: any) => {
-//           const token = request?.cookies?.access_token;
-//           console.log('COOKIES :', request.cookies);
-//           console.log('Extracting JWT from cookie:', token); // Log when the token is extracted from the cookie
-//           return token;
-//         },
-//       ]),
-//       secretOrKey: process.env.ACCESS_JWT_SECRET, // Secret key for verifying the token
-//     });
-//     console.log('CookieAccessTokenStrategy initialized'); // Log when the strategy is initialized
-//   }
-
-//   // Validation method for the Access Token extracted from the cookie
-//   async validate(payload: { id: string }) {
-//     console.log('CookieAccessTokenStrategy - Payload:', payload); // Log the payload of the validated token
-//     return payload; // Validate and return the payload
-//   }
-// }

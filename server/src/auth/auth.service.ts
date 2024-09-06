@@ -16,7 +16,7 @@ export class AuthService {
   constructor(
     private prisma: PrismaService,
     private jwt: JwtService,
-  ) {}
+  ) { }
 
   async register(
     authDto: RegisterDto,
@@ -66,13 +66,13 @@ export class AuthService {
     res.cookie('access_token', tokens.access_token, {
       httpOnly: true,
       secure: true,
-      sameSite: 'none',
+      sameSite: 'lax',
     });
 
     res.cookie('refresh_token', tokens.refresh_token, {
       httpOnly: true,
       secure: true,
-      sameSite: 'none',
+      sameSite: 'lax',
     });
 
     res.send({ message: 'Registration successful' });
@@ -118,14 +118,14 @@ export class AuthService {
     res.cookie('access_token', tokens.access_token, {
       httpOnly: true, // Only accessible by the server
       secure: process.env.NODE_ENV === 'production', // Only send over HTTPS in production
-      sameSite: 'none', // Required for cross-origin cookies
+      sameSite: 'lax', // Required for cross-origin cookies
       maxAge: 1000 * 60 * 15, // 15 minutes
     });
 
     res.cookie('refresh_token', tokens.refresh_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production', // Only send cookies over HTTPS in production
-      sameSite: 'none', // Ensures cookie is only sent with requests from the same site
+      sameSite: 'lax', // Ensures cookie is only sent with requests from the same site
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
     });
 

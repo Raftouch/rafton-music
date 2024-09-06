@@ -15,7 +15,7 @@ import { RefreshTokenStrategy } from './strategies/refresh-token.strategy';
 @Module({
   imports: [
     PrismaModule,
-    PassportModule.register({ defaultStrategy: 'jwt', session: false }),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: process.env.ACCESS_JWT_SECRET,
       signOptions: { expiresIn: '15m' },
@@ -31,4 +31,4 @@ import { RefreshTokenStrategy } from './strategies/refresh-token.strategy';
     // JwtCookieAuthGuard,
   ],
 })
-export class AuthModule {}
+export class AuthModule { }
