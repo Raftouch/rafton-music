@@ -26,13 +26,14 @@ export default function LoginPage() {
         throw new Error(`An error has occurred: ${response.statusText}`)
       }
 
-      const data = await response.json()
-      const { access_token, refresh_token } = data
+      // const data = await response.json()
+      // const { access_token, refresh_token } = data
 
-      document.cookie = `access_token=${access_token}; Secure; HttpOnly; SameSite=Strict`
-      document.cookie = `refresh_token=${refresh_token}; Secure; HttpOnly; SameSite=Strict`
+      // document.cookie = `access_token=${access_token}; Secure; HttpOnly; SameSite=Strict`
+      // document.cookie = `refresh_token=${refresh_token}; Secure; HttpOnly; SameSite=Strict`
 
-      alert(JSON.stringify(data))
+      // alert(JSON.stringify(data))
+      alert('Login successful!')
 
       router.push('/songs')
     } catch (e) {

@@ -1,7 +1,11 @@
-import { Song } from "@/models/song";
-import { notFound } from "next/navigation";
+import { Song } from '@/models/song'
+import { notFound } from 'next/navigation'
+import axios from 'axios'
 
-export async function getSong(id: string, token?: string): Promise<Song | null> {
+export async function getSong(
+  id: string,
+  token?: string
+): Promise<Song | null> {
   try {
     const response = await fetch(`http://localhost:5000/api/songs/${id}`, {
       method: 'GET',
@@ -9,58 +13,60 @@ export async function getSong(id: string, token?: string): Promise<Song | null> 
         'Content-Type': 'application/json',
         Authorization: token ? `Bearer ${token}` : '', // Include token in Authorization header
       },
-      cache: "no-store",
-      credentials: "include",
-    });
+      cache: 'no-store',
+      credentials: 'include',
+    })
 
     if (response.status === 404) {
-      notFound();
-      return null; // notFound() throws an error, but this is a fallback
+      notFound()
+      return null // notFound() throws an error, but this is a fallback
     }
 
     if (!response.ok) {
-      throw new Error("Failed to fetch song data");
+      throw new Error('Failed to fetch song data')
     }
 
-    const song: Song = await response.json();
-    return song;
+    const song: Song = await response.json()
+    return song
   } catch (error) {
-    console.error("Error fetching song:", error);
-    return null;
+    console.error('Error fetching song:', error)
+    return null
   }
 }
 
-export async function getAllSongs(): Promise<Song[] | null | "unauthorized"> {
-  try {
-    const response = await fetch("http://localhost:5000/api/songs", {
-      cache: "no-store",
-      credentials: "include",
-    });
-    // if (response.status === 404) notFound();
+// export async function getAllSongs(): Promise<Song[] | null> {
+//   try {
+//     const response = await axios.get('http://localhost:5000/api/songs', {
+//       // cache: "no-store",
+//       withCredentials: true,
+//     })
+//     // if (response.status === 404) notFound();
 
-    if (response.status === 401) {
-      return "unauthorized"; // Return a special value for unauthorized access
-    }
+//     // if (response.status === 401) {
+//     //   return "unauthorized"; // Return a special value for unauthorized access
+//     // }
 
-    if (response.status === 403) {
-      throw new Error("Forbidden - you do not have permission to view these songs.");
-    } else if (response.status === 404) {
-      notFound();
-      return null;
-    } else if (response.status === 500) {
-      throw new Error("Server error - please try again later.");
-    }
+//     if (response.status === 403) {
+//       throw new Error(
+//         'Forbidden - you do not have permission to view these songs.'
+//       )
+//     } else if (response.status === 404) {
+//       notFound()
+//       return null
+//     } else if (response.status === 500) {
+//       throw new Error('Server error - please try again later.')
+//     }
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch song data");
-    }
-    const songs: Song[] = await response.json();
-    return songs;
-  } catch (error) {
-    console.error("Error:", error);
-    return null;
-  }
-}
+//     if (!response.ok) {
+//       throw new Error('Failed to fetch song data')
+//     }
+//     const songs: Song[] = await response.json()
+//     return songs
+//   } catch (error) {
+//     console.error('Error:', error)
+//     return null
+//   }
+// }
 
 // export async function getAllSongs(token: string | undefined): Promise<Song[] | 'unauthorized' | null> {
 //   try {
@@ -88,3 +94,34 @@ export async function getAllSongs(): Promise<Song[] | null | "unauthorized"> {
 //     return null;
 //   }
 // }
+
+export async function getAllSongs(): Promise<Song[] | null> {
+  try {
+    const response = await axios.get('http://localhost:5000/api/songs', {
+      withCredentials: true, // This ensures cookies are sent with the request
+    })
+
+    // Since axios automatically throws an error for non-2xx status codes,
+    // you only need to handle specific errors if required
+    if (response.status === 403) {
+      throw new Error(
+        'Forbidden - you do not have permission to view these songs.'
+      )
+    } else if (response.status === 404) {
+      notFound() // Handle the 404 not found scenario if needed
+      return null
+    }
+
+    // The data property contains the parsed JSON data
+    const songs: Song[] = response.data
+    
+    return songs
+  } catch (error: any) {
+    if (error.response && error.response.status === 500) {
+      console.error('Server error - please try again later.')
+    } else {
+      console.error('Error fetching songs:', error.message)
+    }
+    return null
+  }
+}

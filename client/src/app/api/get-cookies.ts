@@ -1,10 +1,10 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import cookie from 'cookie';
+// import { NextApiRequest, NextApiResponse } from 'next';
+// import cookie from 'cookie';
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  const cookies = cookie.parse(req.headers.cookie || '');
-  const accessToken = cookies.access_token || '';
-  const refreshToken = cookies.refresh_token || '';
+// export default function handler(req: NextApiRequest, res: NextApiResponse) {
+//   const cookies = cookie.parse(req.headers.cookie || '');
+//   const accessToken = cookies.access_token || '';
+//   const refreshToken = cookies.refresh_token || '';
 
-  res.status(200).json({ accessToken, refreshToken });
-}
+//   res.status(200).json({ accessToken, refreshToken });
+// }

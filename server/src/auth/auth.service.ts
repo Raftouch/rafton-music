@@ -84,6 +84,7 @@ export class AuthService {
     req: Request,
     res: Response,
   ): Promise<AuthEntity> {
+    console.log('Req COOKIES before setting:', req.cookies); // Log cookies before setting new ones
     const { username, password } = authDto;
 
     const userFound = await this.prisma.user.findUnique({
@@ -115,16 +116,20 @@ export class AuthService {
     await this.updateRefreshToken(userFound.id, tokens.refresh_token);
 
     res.cookie('access_token', tokens.access_token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
+      httpOnly: true, // Only accessible by the server
+      secure: process.env.NODE_ENV === 'production', // Only send over HTTPS in production
+      sameSite: 'none', // Required for cross-origin cookies
+      maxAge: 1000 * 60 * 15, // 15 minutes
     });
 
     res.cookie('refresh_token', tokens.refresh_token, {
       httpOnly: true,
-      secure: true,
-      sameSite: 'none',
+      secure: process.env.NODE_ENV === 'production', // Only send cookies over HTTPS in production
+      sameSite: 'none', // Ensures cookie is only sent with requests from the same site
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
     });
+
+    console.log('Cookies set:', res.getHeaders()['set-cookie']); // Log cookies set in response
 
     res.send({ message: 'Login successful' });
     return tokens;

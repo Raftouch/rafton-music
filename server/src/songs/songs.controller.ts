@@ -9,6 +9,8 @@ import {
   UseInterceptors,
   UploadedFiles,
   UseGuards,
+  Req,
+  // UnauthorizedException,
 } from '@nestjs/common';
 import { SongsService } from './songs.service';
 import { CreateSongDto } from './dto/create-song.dto';
@@ -22,11 +24,16 @@ import {
 import { SongEntity } from './entities/song.entity';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from 'src/auth/guards/access-token.guard';
+import { Request } from 'express';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller('api/songs')
 @ApiTags('songs')
 export class SongsController {
-  constructor(private readonly songsService: SongsService) {}
+  constructor(
+    private readonly songsService: SongsService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   @Post()
   @UseGuards(JwtAuthGuard)
@@ -47,7 +54,36 @@ export class SongsController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: SongEntity, isArray: true })
-  findAll() {
+  // async findAll(@Req() req: Request) {
+  //   const authHeader = req.headers['authorization'];
+  //   const token =
+  //     authHeader && authHeader.startsWith('Bearer ')
+  //       ? authHeader.substring(7, authHeader.length)
+  //       : null;
+
+  //   if (!token) {
+  //     throw new UnauthorizedException('No access token provided');
+  //   }
+
+  //   try {
+  //     const decoded = await this.jwtService.verifyAsync(token);
+  //     console.log('Decoded token:', decoded); // Log token details for debugging
+
+  //     // Proceed to fetch and return the list of songs
+  //     return this.songsService.findAll();
+  //   } catch (error) {
+  //     console.error('Error verifying token:', error);
+  //     throw new UnauthorizedException('Invalid token');
+  //   }
+  async findAll(@Req() req: Request) {
+    // Log the entire cookies object
+    console.log('Cookies:', req.cookies);
+
+    // Log specific access token
+    const accessToken = req.cookies['access_token'];
+    console.log('Access Token from cookies:', accessToken);
+
+    // Fetch and return the list of songs
     return this.songsService.findAll();
   }
 
