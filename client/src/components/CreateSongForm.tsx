@@ -1,60 +1,89 @@
-"use client";
+'use client'
 
-import FileUpload from "@/components/FileUpload";
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import { validate } from "../validations/song";
-import { FormValues } from "@/models/formvalues";
-import { toast } from "sonner";
+import FileUpload from '@/components/FileUpload'
+import React, { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { validate } from '../validations/song'
+import { FormValues } from '@/models/formvalues'
+import { toast } from 'sonner'
+import axios from 'axios'
 
 export default function CreateSongForm() {
-  const [image, setImage] = useState<File | undefined>(undefined);
-  const [audio, setAudio] = useState<File | undefined>(undefined);
-  const router = useRouter();
+  const [image, setImage] = useState<File | undefined>(undefined)
+  const [audio, setAudio] = useState<File | undefined>(undefined)
+  const router = useRouter()
 
   const [values, setValues] = useState<FormValues>({
-    title: "",
-    artist: "",
-    genre: "",
-  });
+    title: '',
+    artist: '',
+    genre: '',
+  })
 
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<Record<string, string>>({})
 
   function handleInput(event: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = event.target;
-    setValues({ ...values, [name]: value });
+    const { name, value } = event.target
+    setValues({ ...values, [name]: value })
   }
 
-  const url = "http://localhost:5000/api/songs";
+  // const url = "http://localhost:5000/api/songs";
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/songs`
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
 
-    const validationErrors = validate({ ...values, image, audio });
-    setErrors(validationErrors);
+    const validationErrors = validate({ ...values, image, audio })
+    setErrors(validationErrors)
 
     if (Object.keys(validationErrors).length === 0) {
-      const formData = new FormData();
-      formData.append("title", values.title);
-      formData.append("artist[name]", values.artist);
-      formData.append("genre[type]", values.genre);
-      if (image) formData.append("image", image);
-      if (audio) formData.append("audio", audio);
-      fetch(url, {
-        method: "POST",
-        body: formData,
-        credentials: "include"
-      })
-        .then((response) => {
-          if (response.ok) {
-            toast.success("Song successfully created");
-            router.push("/songs");
-          } else {
-            toast.error("Failed to create song");
-            throw new Error("Failed to submit form");
-          }
+      //   const formData = new FormData();
+      //   formData.append("title", values.title);
+      //   formData.append("artist[name]", values.artist);
+      //   formData.append("genre[type]", values.genre);
+      //   if (image) formData.append("image", image);
+      //   if (audio) formData.append("audio", audio);
+      //   fetch(url, {
+      //     method: "POST",
+      //     body: formData,
+      //     credentials: "include"
+      //   })
+      //     .then((response) => {
+      //       if (response.ok) {
+      //         toast.success("Song successfully created");
+      //         router.push("/songs");
+      //       } else {
+      //         toast.error("Failed to create song");
+      //         throw new Error("Failed to submit form");
+      //       }
+      //     })
+      //     .catch((error) => console.error(error));
+      // }
+      try {
+        const formData = new FormData()
+        formData.append('title', values.title)
+        formData.append('artist[name]', values.artist)
+        formData.append('genre[type]', values.genre)
+        if (image) formData.append('image', image)
+        if (audio) formData.append('audio', audio)
+
+        // Axios POST request using the environment variable
+        const response = await axios.post(url, formData, {
+          withCredentials: true, // Include cookies for authentication
+          headers: {
+            'Content-Type': 'multipart/form-data', // Handle form data
+          },
         })
-        .catch((error) => console.error(error));
+
+        if (response.status === 201) {
+          toast.success('Song successfully created')
+          router.push('/songs')
+        } else {
+          toast.error('Failed to create song')
+        }
+      } catch (error) {
+        console.error(error)
+        toast.error('An error occurred during song creation')
+      }
     }
   }
 
@@ -122,5 +151,5 @@ export default function CreateSongForm() {
 
       <button type="submit">Create</button>
     </form>
-  );
+  )
 }
