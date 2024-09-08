@@ -64,19 +64,19 @@ export class AuthService {
     await this.updateRefreshToken(newUser.id, tokens.refresh_token);
 
     res.cookie('access_token', tokens.access_token, {
-      httpOnly: true, // Only accessible by the server
+      httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax', // Required for cross-origin cookies
+      sameSite: 'lax',
       maxAge: 1000 * 60 * 15, // 15 minutes
-      path: '/',
+      // path: '/',
     });
 
     res.cookie('refresh_token', tokens.refresh_token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // Only send cookies over HTTPS in production
-      sameSite: 'lax', // Ensures cookie is only sent with requests from the same site
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
-      path: '/',
+      // path: '/',
     });
 
     res.send({ message: 'Registration successful' });
@@ -122,17 +122,17 @@ export class AuthService {
     res.cookie('access_token', tokens.access_token, {
       httpOnly: true, // Only accessible by the server
       secure: process.env.NODE_ENV === 'production', // Only send over HTTPS in production
-      sameSite: 'lax', // Required for cross-origin cookies
+      sameSite: 'lax',
       maxAge: 1000 * 60 * 15, // 15 minutes
-      path: '/',
+      // path: '/',
     });
 
     res.cookie('refresh_token', tokens.refresh_token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // Only send cookies over HTTPS in production
-      sameSite: 'lax', // Ensures cookie is only sent with requests from the same site
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
-      path: '/',
+      // path: '/',
     });
 
     console.log('Cookies set:', res.getHeaders()['set-cookie']); // Log cookies set in response

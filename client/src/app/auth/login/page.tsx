@@ -1,19 +1,10 @@
 'use client'
 
-import axios from 'axios'
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react';
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
 
 export default function LoginPage() {
-
+  const API_URL = process.env.NEXT_PUBLIC_API_URL
   const router = useRouter()
-
-  useEffect(() => {
-    console.log('API_URL:', API_URL); // Doit afficher http://localhost:5000
-  }, []);
-
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -24,28 +15,20 @@ export default function LoginPage() {
     }
 
     try {
-      const response = await axios.post(`${API_URL}/auth/login`,
-        payload, // Pas besoin de faire un JSON.stringify ici avec Axios, il le fait automatiquement
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          withCredentials: true, // Cela remplace 'credentials: include' pour envoyer les cookies
-        }
-      );
+      const response = await fetch(`${API_URL}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+        credentials: 'include',
+      })
 
-      // Axios ne nécessite pas de vérifier `response.ok`, il lève automatiquement une erreur pour les codes de statut HTTP hors de la plage 2xx
+      if (!response.ok) {
+        throw new Error(`Failed to login, status: ${response.status}`)
+      }
 
-
-      // const data = await response.json()
-      // const { access_token, refresh_token } = data
-
-      // document.cookie = `access_token=${access_token}; Secure; HttpOnly; SameSite=Strict`
-      // document.cookie = `refresh_token=${refresh_token}; Secure; HttpOnly; SameSite=Strict`
-
-      // alert(JSON.stringify(data))
       alert('Login successful!')
-
       router.push('/songs')
     } catch (e) {
       if (e instanceof Error) {

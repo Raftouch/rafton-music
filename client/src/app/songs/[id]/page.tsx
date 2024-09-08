@@ -1,29 +1,43 @@
-import SongCard from "@/components/SongCard";
-import { getSong } from "@/utils/song";
-import { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
+'use client'
+
+import React, { useEffect, useState } from 'react'
+import SongCard from '@/components/SongCard'
+import { getSong } from '@/utils/song'
+// import { useRouter } from 'next/navigation'
+import { Song } from '@/models/song'
 
 interface DetailsProps {
-  params: { id: string };
+  params: { id: string }
 }
 
-export async function generateMetadata({
-  params: { id },
-}: DetailsProps): Promise<Metadata> {
-  const song = await getSong(id);
+const SongDetails: React.FC<DetailsProps> = ({ params: { id } }) => {
+  const [song, setSong] = useState<Song | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  // const router = useRouter()
 
-  return {
-    title:
-      "Rafton - Music platform - " + song?.title + " - " + song?.artist.name,
-  };
-}
+  useEffect(() => {
+    const fetchSong = async () => {
+      try {
+        const fetchedSong = await getSong(id)
+        if (fetchedSong === null) {
+          setError('No song data available')
+        } else {
+          setSong(fetchedSong)
+        }
+      } catch (error: any) {
+        setError(error.message || 'An unexpected error occurred')
+      }
+    }
 
-export default async function SongDetails({ params: { id } }: DetailsProps) {
-  const song = await getSong(id);
+    fetchSong()
+  }, [id])
+
+  if (error) {
+    return <div>Error: {error}</div>
+  }
 
   if (!song) {
-    throw new Error("No song data available");
+    return <div>Loading...</div>
   }
 
   return (
@@ -44,5 +58,7 @@ export default async function SongDetails({ params: { id } }: DetailsProps) {
         </Link> */}
       {/* </div> */}
     </div>
-  );
+  )
 }
+
+export default SongDetails

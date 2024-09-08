@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'
 
 export default function RegisterPage() {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL
   const router = useRouter()
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -15,13 +16,13 @@ export default function RegisterPage() {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/auth/register', {
+      const response = await fetch(`${API_URL}/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include',
         body: JSON.stringify(payload),
+        credentials: 'include',
       })
 
       if (!response.ok) {

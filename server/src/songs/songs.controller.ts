@@ -70,7 +70,12 @@ export class SongsController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: SongEntity })
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string, @Req() req: Request) {
+    const accessToken = req.cookies['access_token'];
+    console.log('Access Token for Get by Id:', accessToken);
+    console.log('Request Headers:', req.headers);
+    console.log('Request Cookies:', req.cookies);
+    console.log('Authorization Header:', req.headers['authorization']);
     return this.songsService.findOne(id);
   }
 
