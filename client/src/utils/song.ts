@@ -1,4 +1,7 @@
+'use server'
+
 import { Song } from '@/models/song'
+import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
@@ -9,6 +12,7 @@ export async function getSong(id: string): Promise<Song | null> {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Cookie: cookies().toString(),
       },
       cache: 'no-store',
       credentials: 'include',
@@ -36,6 +40,7 @@ export async function getAllSongs(): Promise<Song[] | null> {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Cookie: cookies().toString(),
       },
       cache: 'no-store',
       credentials: 'include',
