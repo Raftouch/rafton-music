@@ -1,3 +1,4 @@
+import LogoutBtn from '@/components/LogoutBtn'
 import SearchSong from '@/components/SearchSong'
 import SongList from '@/components/SongList'
 import { getAllSongs } from '@/utils/song'
@@ -24,6 +25,7 @@ export default async function Playlists({
       <SearchSong placeholder="Search songs..." />
       <Link href="/songs/create">Upload new</Link>
       <SongList songs={songs} searchParams={searchParams} />
+      <LogoutBtn />
     </div>
   )
 }
