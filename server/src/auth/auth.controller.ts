@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
@@ -47,6 +48,12 @@ export class AuthController {
   logout(@Req() req: Request, @Res() res: Response) {
     const user = req.user;
     return this.authService.logout(req, res, user['id']);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('check-auth')
+  checkAuth(@Req() req: Request, @Res() res: Response) {
+    return res.status(200).json({ authenticated: true });
   }
 
   // private route
