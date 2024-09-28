@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
@@ -18,11 +19,11 @@ export default function LogoutBtn() {
         throw new Error('Logout failed')
       }
 
-      alert('Logout successful!')
+      toast.success('Logout successful!')
       router.push('/')
     } catch (error) {
       console.error(error)
-      alert('An error occurred while logging out')
+      toast.error('Logout failed')
     }
   }
 

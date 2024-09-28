@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 export default function LoginForm() {
   const [error, setError] = useState<string | null>(null)
@@ -35,14 +36,14 @@ export default function LoginForm() {
         )
       }
 
-      alert('Login successful!')
+      toast.success('Login successful')
       router.push('/songs')
     } catch (e) {
       if (e instanceof Error) {
-        alert(e.message)
+        toast.error(e.message)
         // setError(e.message)
       } else {
-        alert('An unexpected error occurred')
+        toast.error('Login failed')
         // setError('An unexpected error occurred')
       }
     }

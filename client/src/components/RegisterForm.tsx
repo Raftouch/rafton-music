@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 export default function RegisterForm() {
   const [error, setError] = useState<string | null>(null)
@@ -36,14 +37,14 @@ export default function RegisterForm() {
         )
       }
 
-      alert('Registration successful!')
+      toast.success('Registration successful')
       router.push('/auth/login')
     } catch (e) {
       if (e instanceof Error) {
-        alert(e.message)
+        toast.error(e.message)
         // setError(e.message)
       } else {
-        alert('An unexpected error occurred')
+        toast.error('Registration failed')
         // setError('An unexpected error occurred')
       }
     }
