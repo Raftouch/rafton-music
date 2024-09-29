@@ -1,6 +1,8 @@
 import SongCard from '@/components/SongCard'
 import { getSong } from '@/utils/song'
 import { Metadata } from 'next'
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 // import Image from 'next/image'
 // import Link from 'next/link'
 
@@ -20,8 +22,11 @@ export async function generateMetadata({
 }
 
 export default async function SongDetails({ params: { id } }: DetailsProps) {
+  const token = cookies().get('access_token')
+  if (!token) {
+    redirect('/auth/login')
+  }
   const song = await getSong(id)
-
   if (!song) {
     throw new Error('No song data available')
   }

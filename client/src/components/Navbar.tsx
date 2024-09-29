@@ -49,12 +49,12 @@ export default function Navbar() {
             >
               Playlist
             </Link>
-            <Link
+            {/* <Link
               href="/favourites"
               className={pathname === '/favourites' ? 'text-rafton-green' : ''}
             >
               Favourites
-            </Link>
+            </Link> */}
             <LogoutBtn />
           </>
         )}

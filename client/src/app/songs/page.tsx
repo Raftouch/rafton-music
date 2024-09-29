@@ -2,6 +2,8 @@ import SearchSong from '@/components/SearchSong'
 import SongList from '@/components/SongList'
 import { getAllSongs } from '@/utils/song'
 import { Metadata } from 'next'
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
@@ -13,8 +15,12 @@ export default async function Playlists({
 }: {
   searchParams?: { query?: string; page?: string }
 }) {
+  const token = cookies().get('access_token')
+  if (!token) {
+    redirect('/auth/login')
+  }
+  
   const songs = await getAllSongs()
-
   if (!songs) {
     throw new Error('No song data available')
   }
