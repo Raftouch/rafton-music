@@ -31,4 +31,4 @@ import { RefreshTokenStrategy } from './strategies/refresh-token.strategy';
     // JwtCookieAuthGuard,
   ],
 })
-export class AuthModule { }
+export class AuthModule {}

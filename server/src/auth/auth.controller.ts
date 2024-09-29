@@ -17,6 +17,7 @@ import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { AuthEntity } from './entities/auth.entity';
 import { JwtRefreshAuthGuard } from './guards/refresh-token.guard';
 import { JwtAuthGuard } from './guards/access-token.guard';
+import { User } from '@prisma/client';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -53,7 +54,10 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('check-auth')
   checkAuth(@Req() req: Request, @Res() res: Response) {
-    return res.status(200).json({ authenticated: true });
+    const user = req.user as User;
+    return res
+      .status(200)
+      .json({ authenticated: true, username: user.username });
   }
 
   // private route
