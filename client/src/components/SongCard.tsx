@@ -1,27 +1,32 @@
-"use client";
+'use client'
 
-import { useActions } from "@/hooks/useActions";
-import { Song } from "@/models/song";
-import Image from "next/image";
-import Link from "next/link";
-import Button from "./Button";
-import RemoveBtn from "./RemoveBtn";
-import { useRouter } from "next/navigation";
-import { FaEdit, FaPlay, FaPause } from "react-icons/fa";
+import { Song } from '@/models/song'
+import Image from 'next/image'
+import Link from 'next/link'
+import Button from './Button'
+import RemoveBtn from './RemoveBtn'
+import { useRouter } from 'next/navigation'
+import { FaEdit, FaPlay, FaPause } from 'react-icons/fa'
+import usePlayerStore from '@/store/player'
 
 interface SongProps {
-  song: Song;
-  active?: boolean;
+  song: Song
 }
 
-export default function SongCard({ song, active = false }: SongProps) {
-  const router = useRouter();
-  const { playSong, setActiveSong, pauseSong } = useActions();
+export default function SongCard({ song }: SongProps) {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL
+  const router = useRouter()
+  const { active, pause, playSong, pauseSong } = usePlayerStore()
 
-  const play = () => {
-    setActiveSong(song);
-    playSong();
-  };
+  const isPlaying = active?.id === song.id && !pause
+
+  const handlePlay = () => {
+    if (isPlaying) {
+      pauseSong()
+    } else {
+      playSong(song)
+    }
+  }
 
   return (
     <li
@@ -30,7 +35,7 @@ export default function SongCard({ song, active = false }: SongProps) {
     >
       <Link href={`/songs/${song.id}`}>
         <Image
-          src={`http://localhost:5000/${song.image}`}
+          src={`${API_URL}/${song.image}`}
           width={150}
           height={150}
           alt="image"
@@ -41,7 +46,9 @@ export default function SongCard({ song, active = false }: SongProps) {
       <div className="truncate w-40 font-bold">{song.title}</div>
       <div className="truncate w-40">{song.artist.name}</div>
       <div className="flex gap-8">
-        <Button onClick={play}>{active ? <FaPause /> : <FaPlay />}</Button>
+        <Button onClick={handlePlay}>
+          {isPlaying ? <FaPause /> : <FaPlay />}
+        </Button>
         {/* <p>{active && <div>02:45 / 4:07</div>}</p> */}
         <Button onClick={() => router.push(`/songs/edit/${song.id}`)}>
           <FaEdit />
@@ -49,5 +56,5 @@ export default function SongCard({ song, active = false }: SongProps) {
         <RemoveBtn id={song.id} />
       </div>
     </li>
-  );
+  )
 }
