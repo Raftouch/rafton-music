@@ -5,6 +5,7 @@ import { Metadata } from 'next'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import useUserStore from '@/store/user'
 
 export const metadata: Metadata = {
   title: 'Rafton - Playlist',
@@ -15,11 +16,12 @@ export default async function Playlists({
 }: {
   searchParams?: { query?: string; page?: string }
 }) {
-  const token = cookies().get('access_token')
-  if (!token) {
+  const { checkAuth, isAuth } = useUserStore.getState()
+  await checkAuth()
+  if (!isAuth) {
     redirect('/auth/login')
   }
-  
+
   const songs = await getAllSongs()
   if (!songs) {
     throw new Error('No song data available')
