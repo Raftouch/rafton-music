@@ -5,11 +5,16 @@ import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 import logo from '../../public/images/rafton.png'
 import LogoutBtn from './LogoutBtn'
-import { useUser } from '@/context/UserContext'
+import useUserStore from '@/store/user'
+import { useEffect } from 'react'
 
 export default function Navbar() {
   const pathname = usePathname()
-  const { user, isAuthenticated } = useUser()
+  const { user, isAuth, checkAuth } = useUserStore()
+
+  useEffect(() => {
+    checkAuth()
+  }, [checkAuth])
 
   return (
     <div className="fixed w-full h-[80px] flex justify-between items-center bg-rafton-blue p-5">
@@ -18,7 +23,7 @@ export default function Navbar() {
       </Link>
 
       <ul className="flex sm:space-x-10 space-x-5 items-center">
-        {!isAuthenticated ? (
+        {!isAuth ? (
           <>
             <Link
               href="/auth/login"
