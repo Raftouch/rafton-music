@@ -55,14 +55,8 @@ export class SongsController {
   @ApiBearerAuth()
   @ApiOkResponse({ type: SongEntity, isArray: true })
   async findAll(@Req() req: Request) {
-    // Log the entire cookies object
-    console.log('Cookies:', req.cookies);
-
-    // Log specific access token
-    const accessToken = req.cookies['access_token'];
-    console.log('Access Token from cookies:', accessToken);
-
-    // Fetch and return the list of songs
+    // const accessToken = req.cookies['access_token'];
+    // console.log('Access Token from cookies:', accessToken);
     return this.songsService.findAll();
   }
 
@@ -71,11 +65,6 @@ export class SongsController {
   @ApiBearerAuth()
   @ApiOkResponse({ type: SongEntity })
   findOne(@Param('id') id: string, @Req() req: Request) {
-    const accessToken = req.cookies['access_token'];
-    console.log('Access Token for Get by Id:', accessToken);
-    console.log('Request Headers:', req.headers);
-    console.log('Request Cookies:', req.cookies);
-    console.log('Authorization Header:', req.headers['authorization']);
     return this.songsService.findOne(id);
   }
 
