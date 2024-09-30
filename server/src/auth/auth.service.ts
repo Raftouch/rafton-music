@@ -137,13 +137,18 @@ export class AuthService {
 
     console.log('Cookies set:', res.getHeaders()['set-cookie']); // Log cookies set in response
 
-    res.send({ message: 'Login successful' });
-    return {
+    const responsePayload: AuthEntity = {
       id: userFound.id,
       username: userFound.username,
       access_token: tokens.access_token,
       refresh_token: tokens.refresh_token,
     };
+
+    console.log('Response Payload : ', responsePayload);
+
+    res.status(200).json(responsePayload);
+
+    return responsePayload;
   }
 
   async logout(req: Request, res: Response, id: string) {

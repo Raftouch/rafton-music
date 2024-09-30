@@ -1,7 +1,8 @@
 import { User } from '@/models/user'
+import { checkAuth } from '@/utils/auth'
 import { create } from 'zustand'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL
+// const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 interface UserState {
   user: User | undefined
@@ -17,19 +18,14 @@ const useUserStore = create<UserState>((set) => ({
   setUser: (user: User | undefined) => set(() => ({ user })),
   setIsAuth: (isAuth: boolean) => set(() => ({ isAuth })),
   checkAuth: async () => {
-    try {
-      const response = await fetch(`${API_URL}/auth/check-auth`, {
-        method: 'GET',
-        credentials: 'include',
+    const res = await checkAuth()
+    console.log('RES : ', res)
+    if (res.authenticated) {
+      set({
+        user: { id: res.id, username: res.username },
+        isAuth: true,
       })
-      if (response.ok) {
-        const data = await response.json()
-        set({ user: { id: data.id, username: data.username }, isAuth: true })
-      } else {
-        set({ user: undefined, isAuth: false })
-      }
-    } catch (error) {
-      console.error('Error checking authentication:', error)
+    } else {
       set({ user: undefined, isAuth: false })
     }
   },

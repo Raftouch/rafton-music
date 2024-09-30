@@ -1,11 +1,13 @@
 'use client'
 
+import useUserStore from '@/store/user'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
 export default function LoginForm() {
   const [error, setError] = useState<string | null>(null)
+  const { setUser, setIsAuth } = useUserStore()
   const router = useRouter()
   const API_URL = process.env.NEXT_PUBLIC_API_URL
 
@@ -30,11 +32,14 @@ export default function LoginForm() {
       })
 
       if (!response.ok) {
-        const data = await response.json()
-        throw new Error(
-          data.message || `Failed to login, status: ${response.status}`
-        )
+        throw new Error(`Login failed, status: ${response.status}`)
       }
+
+      const userData = await response.json()
+      console.log('id : ', userData)
+      console.log('username : ', userData.username)
+      setUser({ id: userData.id, username: userData.username })
+      setIsAuth(true)
 
       toast.success('Login successful')
       router.push('/songs')
