@@ -21,7 +21,7 @@ import {
 } from '@nestjs/swagger';
 import { SongEntity } from './entities/song.entity';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { JwtAuthGuard } from 'src/auth/guards/access-token.guard';
+import { JwtAuthGuard } from '../auth/guards/access-token.guard';
 import { JwtService } from '@nestjs/jwt';
 
 @Controller('api/songs')
