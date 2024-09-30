@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ArtistsController } from './artists.controller';
 import { ArtistsService } from './artists.service';
-import { AppModule } from '../app.module';
+// import { AppModule } from '../app.module';
 import * as request from 'supertest';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { HttpStatus, INestApplication } from '@nestjs/common';
@@ -16,7 +16,7 @@ describe('ArtistsController', () => {
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      // imports: [AppModule],
       controllers: [ArtistsController],
       providers: [ArtistsService, PrismaService],
     }).compile();
