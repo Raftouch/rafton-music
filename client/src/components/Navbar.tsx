@@ -17,8 +17,7 @@ export default function Navbar() {
       await checkAuth()
     }
     checkUserAuth()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [checkAuth])
 
   return (
     <div className="fixed w-full h-[80px] flex justify-between items-center bg-rafton-blue p-5">
