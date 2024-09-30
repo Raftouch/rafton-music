@@ -1,5 +1,6 @@
 'use client'
 
+import useUserStore from '@/store/user'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
@@ -7,6 +8,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 export default function LogoutBtn() {
   const router = useRouter()
+  const { setUser, setIsAuth } = useUserStore()
 
   const handleLogout = async () => {
     try {
@@ -16,8 +18,11 @@ export default function LogoutBtn() {
       })
 
       if (!response.ok) {
-        throw new Error('Logout failed')
+        throw new Error(`Logout failed, status: ${response.status}`)
       }
+
+      setUser(undefined) // Clear user data
+      setIsAuth(false)
 
       toast.success('Logout successful!')
       router.push('/')
