@@ -9,8 +9,6 @@ import {
   UseInterceptors,
   UploadedFiles,
   UseGuards,
-  Req,
-  // UnauthorizedException,
 } from '@nestjs/common';
 import { SongsService } from './songs.service';
 import { CreateSongDto } from './dto/create-song.dto';
@@ -24,7 +22,6 @@ import {
 import { SongEntity } from './entities/song.entity';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from 'src/auth/guards/access-token.guard';
-import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
 
 @Controller('api/songs')
@@ -54,9 +51,7 @@ export class SongsController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: SongEntity, isArray: true })
-  async findAll(@Req() req: Request) {
-    // const accessToken = req.cookies['access_token'];
-    // console.log('Access Token from cookies:', accessToken);
+  async findAll() {
     return this.songsService.findAll();
   }
 
@@ -64,7 +59,7 @@ export class SongsController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: SongEntity })
-  findOne(@Param('id') id: string, @Req() req: Request) {
+  findOne(@Param('id') id: string) {
     return this.songsService.findOne(id);
   }
 

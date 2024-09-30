@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
 } from '@nestjs/common';
 import { GenresService } from './genres.service';
 import { CreateGenreDto } from './dto/create-genre.dto';
@@ -18,7 +17,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { GenreEntity } from './entities/genre.entity';
-import { JwtAuthGuard } from 'src/auth/guards/access-token.guard';
 
 @Controller('api/genres')
 @ApiTags('genres')
@@ -26,7 +24,6 @@ export class GenresController {
   constructor(private readonly genresService: GenresService) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: GenreEntity })
   create(@Body() createGenreDto: CreateGenreDto) {
@@ -34,7 +31,6 @@ export class GenresController {
   }
 
   @Get()
-  // @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: GenreEntity, isArray: true })
   findAll() {
@@ -42,7 +38,6 @@ export class GenresController {
   }
 
   @Get(':id')
-  // @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: GenreEntity })
   findOne(@Param('id') id: string) {
@@ -50,7 +45,6 @@ export class GenresController {
   }
 
   @Patch(':id')
-  // @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: GenreEntity })
   update(@Param('id') id: string, @Body() updateGenreDto: UpdateGenreDto) {
@@ -58,7 +52,6 @@ export class GenresController {
   }
 
   @Delete(':id')
-  // @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: GenreEntity })
   remove(@Param('id') id: string) {

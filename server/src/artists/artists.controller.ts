@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
 } from '@nestjs/common';
 import { ArtistsService } from './artists.service';
 import { CreateArtistDto } from './dto/create-artist.dto';
@@ -18,7 +17,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { ArtistEntity } from './entities/artist.entity';
-import { JwtAuthGuard } from 'src/auth/guards/access-token.guard';
 
 @Controller('api/artists')
 @ApiTags('artists')
@@ -26,7 +24,6 @@ export class ArtistsController {
   constructor(private readonly artistsService: ArtistsService) {}
 
   @Post()
-  // @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: ArtistEntity })
   create(@Body() createArtistDto: CreateArtistDto) {
@@ -34,7 +31,6 @@ export class ArtistsController {
   }
 
   @Get()
-  // @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: ArtistEntity, isArray: true })
   findAll() {
@@ -42,7 +38,6 @@ export class ArtistsController {
   }
 
   @Get(':id')
-  // @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: ArtistEntity })
   findOne(@Param('id') id: string) {
@@ -50,7 +45,6 @@ export class ArtistsController {
   }
 
   @Patch(':id')
-  // @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: ArtistEntity })
   update(@Param('id') id: string, @Body() updateArtistDto: UpdateArtistDto) {
@@ -58,7 +52,6 @@ export class ArtistsController {
   }
 
   @Delete(':id')
-  // @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: ArtistEntity })
   remove(@Param('id') id: string) {
