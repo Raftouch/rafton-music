@@ -34,7 +34,7 @@ export class GenresController {
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: GenreEntity, isArray: true })
   findAll() {
@@ -42,7 +42,7 @@ export class GenresController {
   }
 
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: GenreEntity })
   findOne(@Param('id') id: string) {
@@ -50,7 +50,7 @@ export class GenresController {
   }
 
   @Patch(':id')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: GenreEntity })
   update(@Param('id') id: string, @Body() updateGenreDto: UpdateGenreDto) {
@@ -58,7 +58,7 @@ export class GenresController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: GenreEntity })
   remove(@Param('id') id: string) {

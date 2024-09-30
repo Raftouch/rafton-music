@@ -26,7 +26,7 @@ export class ArtistsController {
   constructor(private readonly artistsService: ArtistsService) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: ArtistEntity })
   create(@Body() createArtistDto: CreateArtistDto) {
@@ -34,7 +34,7 @@ export class ArtistsController {
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: ArtistEntity, isArray: true })
   findAll() {
@@ -42,7 +42,7 @@ export class ArtistsController {
   }
 
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: ArtistEntity })
   findOne(@Param('id') id: string) {
@@ -50,7 +50,7 @@ export class ArtistsController {
   }
 
   @Patch(':id')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: ArtistEntity })
   update(@Param('id') id: string, @Body() updateArtistDto: UpdateArtistDto) {
@@ -58,7 +58,7 @@ export class ArtistsController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: ArtistEntity })
   remove(@Param('id') id: string) {
