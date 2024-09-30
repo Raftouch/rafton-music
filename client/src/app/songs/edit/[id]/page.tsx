@@ -1,6 +1,7 @@
 import UpdateSongForm from '@/components/UpdateSongForm'
-import useUserStore from '@/store/user'
+// import useUserStore from '@/store/user'
 import { getSong } from '@/utils/song'
+import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 interface UpdateSongProps {
@@ -9,11 +10,15 @@ interface UpdateSongProps {
 
 export default async function UpdateSong({ params: { id } }: UpdateSongProps) {
   try {
-    const { checkAuth, isAuth } = useUserStore.getState()
-    await checkAuth()
-    if (!isAuth) {
-      redirect('/auth/login') 
+    const token = cookies().get('access_token')
+    if (!token) {
+      redirect('/auth/login')
     }
+    // const { checkAuth, isAuth } = useUserStore.getState()
+    // await checkAuth()
+    // if (!isAuth) {
+    //   redirect('/auth/login')
+    // }
 
     const song = await getSong(id)
     if (!song) {
