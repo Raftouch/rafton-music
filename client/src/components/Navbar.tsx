@@ -13,8 +13,12 @@ export default function Navbar() {
   const { user, isAuth, checkAuth } = useUserStore()
 
   useEffect(() => {
-    checkAuth()
-  }, [checkAuth])
+    const checkUserAuth = async () => {
+      await checkAuth()
+    }
+    checkUserAuth()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div className="fixed w-full h-[80px] flex justify-between items-center bg-rafton-blue p-5">
