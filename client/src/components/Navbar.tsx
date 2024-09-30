@@ -7,6 +7,7 @@ import logo from '../../public/images/rafton.png'
 import LogoutBtn from './LogoutBtn'
 import useUserStore from '@/store/user'
 import { useEffect } from 'react'
+import React from 'react'
 
 export default function Navbar() {
   const pathname = usePathname()

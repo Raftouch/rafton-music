@@ -3,6 +3,8 @@
 import PlayProgress from './PlayProgress'
 import { FaPause, FaPlay, FaVolumeUp } from 'react-icons/fa'
 import usePlayerStore from '@/store/player'
+import useUserStore from '@/store/user'
+import { useEffect } from 'react'
 
 export default function Player() {
   const {
@@ -16,6 +18,15 @@ export default function Player() {
     setVolume,
     setCurrentTime,
   } = usePlayerStore()
+
+  const { isAuth, checkAuth } = useUserStore()
+
+  useEffect(() => {
+    const checkUserAuth = async () => {
+      await checkAuth()
+    }
+    checkUserAuth()
+  }, [checkAuth])
 
   const play = () => {
     if (pause) {
@@ -33,7 +44,7 @@ export default function Player() {
     setCurrentTime(Number(e.target.value))
   }
 
-  if (!active) {
+  if (!isAuth || !active) {
     return null
   }
 
