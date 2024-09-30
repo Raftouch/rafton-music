@@ -42,7 +42,6 @@ export class AuthController {
     return this.authService.login(authDto, req, res);
   }
 
-  // private route
   @UseGuards(JwtAuthGuard)
   @Post('logout')
   @HttpCode(HttpStatus.OK)

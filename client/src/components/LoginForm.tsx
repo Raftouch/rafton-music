@@ -36,8 +36,6 @@ export default function LoginForm() {
       }
 
       const userData = await response.json()
-      console.log('id : ', userData)
-      console.log('username : ', userData.username)
       setUser({ id: userData.id, username: userData.username })
       setIsAuth(true)
 

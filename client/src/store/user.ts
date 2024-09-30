@@ -2,8 +2,6 @@ import { User } from '@/models/user'
 import { checkAuth } from '@/utils/auth'
 import { create } from 'zustand'
 
-// const API_URL = process.env.NEXT_PUBLIC_API_URL
-
 interface UserState {
   user: User | undefined
   isAuth: boolean
@@ -19,7 +17,6 @@ const useUserStore = create<UserState>((set) => ({
   setIsAuth: (isAuth: boolean) => set(() => ({ isAuth })),
   checkAuth: async () => {
     const res = await checkAuth()
-    console.log('RES : ', res)
     if (res.authenticated) {
       set({
         user: { id: res.id, username: res.username },

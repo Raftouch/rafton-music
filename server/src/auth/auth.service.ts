@@ -88,7 +88,6 @@ export class AuthService {
     req: Request,
     res: Response,
   ): Promise<AuthEntity> {
-    console.log('Req COOKIES before setting:', req.cookies); // Log cookies before setting new ones
     const { username, password } = authDto;
 
     const userFound = await this.prisma.user.findUnique({
@@ -135,16 +134,12 @@ export class AuthService {
       // path: '/',
     });
 
-    console.log('Cookies set:', res.getHeaders()['set-cookie']); // Log cookies set in response
-
     const responsePayload: AuthEntity = {
       id: userFound.id,
       username: userFound.username,
       access_token: tokens.access_token,
       refresh_token: tokens.refresh_token,
     };
-
-    console.log('Response Payload : ', responsePayload);
 
     res.status(200).json(responsePayload);
 
