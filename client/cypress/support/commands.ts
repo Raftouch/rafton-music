@@ -15,5 +15,16 @@ Cypress.Commands.add('login', (username: string, password: string) => {
   cy.get('input[name="username"]').type(username)
   cy.get('input[name="password"]').type(password)
   cy.get('button[type="submit"]').click()
+  cy.request({
+    method: 'POST',
+    url: 'http://localhost:5000/auth/login',
+    body: {
+      username,
+      password,
+    },
+  }).then((response) => {
+    const token = response.body.access_token
+    cy.setCookie('access_token', token)
+  })
   cy.url().should('include', '/songs')
 })
