@@ -2,8 +2,18 @@ import { faker } from '@faker-js/faker'
 import 'cypress-file-upload'
 
 describe('songs on client', () => {
+  beforeEach(() => {
+    cy.visit('/')
+    cy.get('a').contains('Login').click()
+    cy.url().should('include', '/auth/login')
+    cy.get('input[name="username"]').type('rafa')
+    cy.get('input[name="password"]').type('1234')
+    cy.get('button[type="submit"]').click()
+    cy.contains('Login successful').should('be.visible')
+    cy.url().should('include', '/songs')
+  })
+
   it('should create a song', () => {
-    cy.visit('/songs')
     cy.get('a').contains('Upload new').click()
     cy.url().should('include', '/songs/create')
     cy.get('input[name="title"]').type(faker.music.songName())
@@ -20,19 +30,16 @@ describe('songs on client', () => {
   })
 
   it('should read a song', () => {
-    cy.visit('/songs')
     cy.get('li > a').eq(0).click()
     cy.get('[data-cy="song-details"]').should('exist')
-    cy.get('button').eq(0).click()
+    cy.get('button').eq(1).click()
     cy.get('[data-cy="player"]').should('be.visible')
-    cy.get('[data-cy="btn-play"]').click()
     cy.wait(5000)
     cy.get('[data-cy="duration-value"]').should('not.have.value', '0')
   })
 
   it('should update a song', () => {
-    cy.visit('/songs')
-    cy.get('button').eq(1).click()
+    cy.get('button').eq(2).click()
     cy.url().should('include', '/songs/edit')
     cy.get('[data-cy="input-title"]').clear().type(faker.music.songName())
     cy.get('button[type="submit"]').click()
@@ -40,8 +47,7 @@ describe('songs on client', () => {
   })
 
   it('should delete a song', () => {
-    cy.visit('/songs')
-    cy.get('button').eq(2).click()
+    cy.get('button').eq(3).click()
     cy.get('div > h1').contains('Are you sure?').should('be.visible')
     cy.get('button').contains('Yes').click()
     cy.contains('Song successfully removed').should('be.visible')
