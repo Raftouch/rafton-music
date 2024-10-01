@@ -1,0 +1,26 @@
+FROM node:18 AS builder
+
+WORKDIR /usr/src/main
+
+COPY package*.json ./
+
+RUN npm install --only=production
+
+COPY . .
+
+RUN npx prisma generate
+
+RUN npm run build
+
+FROM node:18 AS runner
+
+WORKDIR /usr/src/main
+
+COPY --from=builder /usr/src/main/dist ./dist
+COPY --from=builder /usr/src/main/package*.json ./
+
+RUN npm install --only=production
+
+EXPOSE 5000
+
+CMD ["npm", "run", "start:prod"]
