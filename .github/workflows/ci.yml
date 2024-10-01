@@ -100,4 +100,3 @@ jobs:
           wait-on-timeout: 300
           browser: firefox
           working-directory: client
-          command: run --headless
