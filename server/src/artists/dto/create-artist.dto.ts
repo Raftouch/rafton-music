@@ -1,12 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-// import { IsString, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateArtistDto {
   @ApiProperty()
-  id: string;
-  // @IsUUID()
-
-  @ApiProperty()
-  // @IsString()
+  @IsString()
+  @IsNotEmpty()
   name: string;
 }

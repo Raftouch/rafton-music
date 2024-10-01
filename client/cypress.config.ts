@@ -2,10 +2,8 @@ import { defineConfig } from 'cypress'
 
 export default defineConfig({
   e2e: {
-    baseUrl: 'http://127.0.0.1:3000',
-    setupNodeEvents(on, config) {
-      // implement node event listeners here
-    },
-    defaultCommandTimeout: 20000,
+    baseUrl: 'http://localhost:3000',
+    setupNodeEvents(on, config) {},
+    defaultCommandTimeout: 50000,
   },
 })

@@ -1,65 +1,51 @@
-"use client";
+'use client'
 
-import React, { useEffect } from "react";
-import PlayProgress from "./PlayProgress";
-import { useTypedSelector } from "../hooks/useTypedSelector";
-import { useActions } from "@/hooks/useActions";
-import { FaPause, FaPlay, FaVolumeUp } from "react-icons/fa";
-
-let audio: HTMLAudioElement;
+import PlayProgress from './PlayProgress'
+import { FaPause, FaPlay, FaVolumeUp } from 'react-icons/fa'
+import usePlayerStore from '@/store/player'
+import useUserStore from '@/store/user'
+import { useEffect } from 'react'
 
 export default function Player() {
-  const { pause, active, volume, duration, currentTime } = useTypedSelector(
-    (state) => state.player,
-  );
-  const { pauseSong, playSong, setVolume, setCurrentTime, setDuration } =
-    useActions();
+  const {
+    pause,
+    active,
+    volume,
+    duration,
+    currentTime,
+    playSong,
+    pauseSong,
+    setVolume,
+    setCurrentTime,
+  } = usePlayerStore()
+
+  const { isAuth, checkAuth } = useUserStore()
 
   useEffect(() => {
-    if (!audio) {
-      audio = new Audio();
+    const checkUserAuth = async () => {
+      await checkAuth()
     }
-
-    if (audio && active) {
-      audio.src = "http://localhost:5000/" + active.audio;
-      audio.volume = volume / 100;
-      audio.onloadedmetadata = () => {
-        setDuration(Math.ceil(audio.duration));
-      };
-      audio.ontimeupdate = () => {
-        setCurrentTime(Math.ceil(audio.currentTime));
-      };
-      play();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active]);
+    checkUserAuth()
+  }, [checkAuth])
 
   const play = () => {
     if (pause) {
-      playSong();
-      audio.play();
+      playSong()
     } else {
-      pauseSong();
-      audio.pause();
+      pauseSong()
     }
-  };
+  }
 
   const changeVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (audio) {
-      audio.volume = Number(e.target.value) / 100;
-      setVolume(Number(e.target.value));
-    }
-  };
+    setVolume(Number(e.target.value))
+  }
 
   const changeCurrentTime = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (audio) {
-      audio.currentTime = Number(e.target.value);
-      setCurrentTime(Number(e.target.value));
-    }
-  };
+    setCurrentTime(Number(e.target.value))
+  }
 
-  if (!active) {
-    return null;
+  if (!isAuth || !active) {
+    return null
   }
 
   return (
@@ -93,5 +79,5 @@ export default function Player() {
         />
       </div>
     </div>
-  );
+  )
 }

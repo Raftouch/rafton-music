@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateGenreDto {
   @ApiProperty()
-  id: string;
-
-  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
   type: string;
 }

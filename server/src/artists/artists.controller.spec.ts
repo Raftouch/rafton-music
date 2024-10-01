@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ArtistsController } from './artists.controller';
 import { ArtistsService } from './artists.service';
-import { AppModule } from '../app.module';
+// import { AppModule } from '../app.module';
 import * as request from 'supertest';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { HttpStatus, INestApplication } from '@nestjs/common';
@@ -16,16 +16,17 @@ describe('ArtistsController', () => {
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      // imports: [AppModule],
       controllers: [ArtistsController],
       providers: [ArtistsService, PrismaService],
     }).compile();
 
-    controller = moduleFixture.get<ArtistsController>(ArtistsController);
     app = moduleFixture.createNestApplication();
+    await app.init();
+
+    controller = moduleFixture.get<ArtistsController>(ArtistsController);
     prismaService = moduleFixture.get<PrismaService>(PrismaService);
     // await prismaService.$connect();
-    await app.init();
   });
 
   afterAll(async () => {
@@ -39,7 +40,7 @@ describe('ArtistsController', () => {
 
   it('should create a new artist - POST /api/artists', async () => {
     const createArtistDto: CreateArtistDto = {
-      id: faker.datatype.uuid(),
+      // id: faker.datatype.uuid(),
       name: faker.name.findName(),
     };
 
@@ -71,7 +72,7 @@ describe('ArtistsController', () => {
 
   it('should get an artist - GET /api/artists/:id', async () => {
     const createArtistDto: CreateArtistDto = {
-      id: faker.datatype.uuid(),
+      // id: faker.datatype.uuid(),
       name: faker.name.findName(),
     };
 
@@ -126,7 +127,7 @@ describe('ArtistsController', () => {
 
   it('should delete an artist - DELETE /api/artists/:id', async () => {
     const createArtistDto: CreateArtistDto = {
-      id: faker.datatype.uuid(),
+      // id: faker.datatype.uuid(),
       name: faker.name.findName(),
     };
 

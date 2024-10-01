@@ -98,5 +98,5 @@ jobs:
         with:
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 300
-          browser: firefox
+          browser: electron
           working-directory: client
