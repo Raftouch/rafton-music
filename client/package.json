@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write src",
-    "cypress": "cypress open"
+    "cypress": "cypress run --headless"
   },
   "dependencies": {
     "jsonwebtoken": "^9.0.2",
