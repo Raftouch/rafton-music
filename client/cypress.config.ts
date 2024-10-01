@@ -4,6 +4,6 @@ export default defineConfig({
   e2e: {
     baseUrl: 'http://localhost:3000',
     setupNodeEvents(on, config) {},
-    defaultCommandTimeout: 100000,
+    defaultCommandTimeout: 50000,
   },
 })

@@ -3,14 +3,7 @@ import 'cypress-file-upload'
 
 describe('songs on client', () => {
   beforeEach(() => {
-    cy.visit('/')
-    cy.get('a').contains('Login').click()
-    cy.url().should('include', '/auth/login')
-    cy.get('input[name="username"]').type('rafa')
-    cy.get('input[name="password"]').type('1234')
-    cy.get('button[type="submit"]').click()
-    cy.contains('Login successful').should('be.visible')
-    cy.url().should('include', '/songs')
+    cy.login('rafa', '1234')
   })
 
   it('should create a song', () => {
