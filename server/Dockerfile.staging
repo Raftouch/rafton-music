@@ -4,7 +4,7 @@ WORKDIR /usr/src/main
 
 COPY package*.json ./
 
-RUN npm install --only=production
+RUN npm install --omit=dev --verbose
 
 COPY . .
 
@@ -12,15 +12,14 @@ RUN npx prisma generate
 
 RUN npm run build
 
+FROM nginx:alpine AS nginx
+
+COPY ./nginx.conf /etc/nginx/nginx.conf
+
 FROM node:18 AS runner
 
-WORKDIR /usr/src/main
+COPY --from=builder /usr/src/app/dist /usr/share/nginx/html
 
-COPY --from=builder /usr/src/main/dist ./dist
-COPY --from=builder /usr/src/main/package*.json ./
+EXPOSE 80
 
-RUN npm install --only=production
-
-EXPOSE 5000
-
-CMD ["npm", "run", "start:prod"]
+CMD ["nginx", "-g", "daemon off;"]
