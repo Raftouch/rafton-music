@@ -1,0 +1,31 @@
+# Stage 1: Build the NestJS app
+FROM node:18 AS builder
+
+WORKDIR /usr/src/main
+
+# Install dependencies
+COPY package*.json ./
+RUN npm install --legacy-peer-deps
+
+# Generate Prisma Client
+COPY prisma ./prisma
+RUN npx prisma generate
+
+# Copy application files and build the NestJS app
+COPY . .
+RUN npm run build
+
+# Stage 2: Run the app in production mode
+FROM node:18-alpine AS runner
+
+WORKDIR /usr/src/main
+
+# Copy the built files and necessary resources from the previous stage
+COPY --from=builder /usr/src/main/dist ./dist
+COPY --from=builder /usr/src/main/node_modules ./node_modules
+COPY --from=builder /usr/src/main/package.json ./package.json
+
+EXPOSE 5000
+
+# Run the application in production mode
+CMD ["npm", "run", "start:prod"]
