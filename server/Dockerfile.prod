@@ -7,6 +7,8 @@ WORKDIR /usr/src/main
 COPY package*.json ./
 RUN npm install --legacy-peer-deps
 
+RUN npm rebuild bcrypt --build-from-source
+
 # Generate Prisma Client
 COPY prisma ./prisma
 RUN npx prisma generate
