@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "if [ \"$NODE_ENV\" = \"development\" ]; then husky install; fi"
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
