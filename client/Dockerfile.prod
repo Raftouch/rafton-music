@@ -22,7 +22,11 @@ COPY --from=builder /usr/src/app/public ./public
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/package.json ./package.json
 
-EXPOSE 3000
+# Expose port 3024 for the Next.js app
+EXPOSE 3024
+
+# Set the PORT environment variable to 3024
+ENV PORT=3024
 
 # Use the production start script
 CMD ["npm", "run", "start"]

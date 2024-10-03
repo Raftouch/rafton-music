@@ -7,7 +7,7 @@ services:
       context: ./client
       dockerfile: Dockerfile.prod
     ports:
-      - '3000:3000'
+      - '3024:3024'
     environment:
       NEXT_PUBLIC_API_URL: http://server:5000 # Use environment variables to point to API server
     depends_on:
