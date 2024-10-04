@@ -10,6 +10,7 @@ services:
       NEXT_PUBLIC_API_URL: http://localhost:5000
     depends_on:
       - server
+    pull_policy: build
 
   server:
     container_name: music-app-server-prod
