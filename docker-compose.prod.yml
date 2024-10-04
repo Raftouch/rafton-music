@@ -31,10 +31,10 @@ services:
     ports:
       - '5432:5432'
     environment:
-      POSTGRES_DB: music-app
+      POSTGRES_DB: music-app-prod
       POSTGRES_USER: user-name
       POSTGRES_PASSWORD: strong-password
-      PGDATA: /var/lib/postgresql/data/music-app
+      PGDATA: /var/lib/postgresql/data/music-app-prod
     volumes:
       - db-data:/var/lib/postgresql/data
 
