@@ -1,42 +1,53 @@
-# Stage 1: Build the NestJS app
-FROM node:18 AS builder
+#
+# Production Build
+#
+FROM node:lts-alpine as build
 
-WORKDIR /usr/src/main
+WORKDIR /app
+RUN apk add --no-cache libc6-compat
 
-# Install build tools for native modules
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    python3 \
-    && rm -rf /var/lib/apt/lists/*
+# Set to production environment
+ENV NODE_ENV production
 
-# Install dependencies
-COPY package*.json ./
+# Re-create non-root user for Docker
+RUN addgroup --system --gid 1001 node
+RUN adduser --system --uid 1001 node
 
-# Install dependencies
-RUN npm install --legacy-peer-deps
+# In order to run `yarn build` we need access to the Nest CLI.
+# Nest CLI is a dev dependency.
+COPY --chown=node:node --from=dev /app/node_modules ./node_modules
+# Copy source code
+COPY --chown=node:node . .
 
-# Rebuild bcrypt from source
-RUN npm rebuild bcrypt --build-from-source
+# Generate the production build. The build script runs "nest build" to compile the application.
+RUN yarn build
 
-# Generate Prisma Client
-COPY prisma ./prisma
-RUN npx prisma generate
+# Install only the production dependencies and clean cache to optimize image size.
+RUN yarn --frozen-lockfile --production && yarn cache clean
 
-# Copy application files and build the NestJS app
-COPY . .
-RUN npm run build
+# Set Docker as a non-root user
+USER node
 
-# Stage 2: Run the app in production mode
-FROM node:18-alpine AS runner
+#
+# Production Server
+#
+FROM node:lts-alpine as prod
 
-WORKDIR /usr/src/main
+WORKDIR /app
+RUN apk add --no-cache libc6-compat
 
-# Copy the built files and necessary resources from the previous stage
-COPY --from=builder /usr/src/main/dist ./dist
-COPY --from=builder /usr/src/main/node_modules ./node_modules
-COPY --from=builder /usr/src/main/package.json ./package.json
+# Set to production environment
+ENV NODE_ENV production
 
-EXPOSE 5000
+# Re-create non-root user for Docker
+RUN addgroup --system --gid 1001 node
+RUN adduser --system --uid 1001 node
 
-# Run the application in production mode
-CMD ["npm", "run", "start:prod"]
+# Copy only the necessary files
+COPY --chown=node:node --from=build /app/dist dist
+COPY --chown=node:node --from=build /app/node_modules node_modules
+
+# Set Docker as non-root user
+USER node
+
+CMD ["node", "dist/main.js"]
