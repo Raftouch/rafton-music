@@ -1,53 +1,32 @@
-#
-# Production Build
-#
-FROM node:lts-alpine as build
+FROM node:lts-alpine as builder
 
-WORKDIR /app
-RUN apk add --no-cache libc6-compat
+ENV NODE_ENV build
 
-# Set to production environment
-ENV NODE_ENV production
+USER node
+WORKDIR /usr/src/app
 
-# Re-create non-root user for Docker
-RUN addgroup --system --gid 1001 node
-RUN adduser --system --uid 1001 node
+COPY package*.json ./
+RUN npm ci
 
-# In order to run `yarn build` we need access to the Nest CLI.
-# Nest CLI is a dev dependency.
-COPY --chown=node:node --from=dev /app/node_modules ./node_modules
-# Copy source code
 COPY --chown=node:node . .
+RUN npx prisma generate \
+    && npm run build \
+    && npm prune --omit=dev
 
-# Generate the production build. The build script runs "nest build" to compile the application.
-RUN yarn build
+# ---
 
-# Install only the production dependencies and clean cache to optimize image size.
-RUN yarn --frozen-lockfile --production && yarn cache clean
+FROM node:lts-alpine
 
-# Set Docker as a non-root user
-USER node
-
-#
-# Production Server
-#
-FROM node:lts-alpine as prod
-
-WORKDIR /app
-RUN apk add --no-cache libc6-compat
-
-# Set to production environment
 ENV NODE_ENV production
 
-# Re-create non-root user for Docker
-RUN addgroup --system --gid 1001 node
-RUN adduser --system --uid 1001 node
-
-# Copy only the necessary files
-COPY --chown=node:node --from=build /app/dist dist
-COPY --chown=node:node --from=build /app/node_modules node_modules
-
-# Set Docker as non-root user
 USER node
+WORKDIR /usr/src/app
 
-CMD ["node", "dist/main.js"]
+COPY --from=builder --chown=node:node /usr/src/app/package*.json ./
+COPY --from=builder --chown=node:node /usr/src/app/node_modules/ ./node_modules/
+COPY --from=builder --chown=node:node /usr/src/app/dist/ ./dist/
+COPY --from=builder --chown=node:node /usr/src/app/prisma ./prisma
+
+
+CMD [  "npm", "run", "start:prod" ]
+

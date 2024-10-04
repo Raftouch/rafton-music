@@ -27,8 +27,13 @@ export default async function Playlists({
   // }
 
   const songs = await getAllSongs()
-  if (!songs) {
-    throw new Error('No song data available')
+
+  if (!songs || songs.length === 0) {
+    return (
+      <div>
+        <p>No song data available.</p>
+      </div>
+    );
   }
 
   return (
