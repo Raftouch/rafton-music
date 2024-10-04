@@ -29,14 +29,6 @@ export default async function Playlists({
 
   const songs = await getAllSongs()
 
-  if (!songs || songs.length === 0) {
-    return (
-      <div>
-        <p>No song data available.</p>
-      </div>
-    )
-  }
-
   return (
     <div className="mt-20 mb-20 flex flex-col items-center gap-5">
       {!songs || songs.length === 0 ? (
