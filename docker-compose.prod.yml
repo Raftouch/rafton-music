@@ -7,52 +7,51 @@ services:
       context: ./client
       dockerfile: Dockerfile.prod
     ports:
-      - '3024:3024'
+      - '3024:3000'
     environment:
       NEXT_PUBLIC_API_URL: http://server:5000 # Use environment variables to point to API server
-    depends_on:
-      - server
+    # depends_on:
+    #   - server
+#   server:
+#     container_name: music-app-server-prod
+#     build:
+#       context: ./server
+#       dockerfile: Dockerfile.prod
+#     ports:
+#       - '5000:5000'
+#     environment:
+#       DATABASE_URL: postgres://user-name:strong-password@db/music-app
+#     depends_on:
+#       - db
 
-  server:
-    container_name: music-app-server-prod
-    build:
-      context: ./server
-      dockerfile: Dockerfile.prod
-    ports:
-      - '5000:5000'
-    environment:
-      DATABASE_URL: postgres://user-name:strong-password@db/music-app
-    depends_on:
-      - db
+#   db:
+#     image: postgres
+#     container_name: music-app-postgres-prod
+#     restart: always
+#     ports:
+#       - '5432:5432'
+#     environment:
+#       POSTGRES_DB: music-app-prod
+#       POSTGRES_USER: user-name
+#       POSTGRES_PASSWORD: strong-password
+#       PGDATA: /var/lib/postgresql/data/music-app
+#     volumes:
+#       - db-data:/var/lib/postgresql/data
 
-  db:
-    image: postgres
-    container_name: music-app-postgres-prod
-    restart: always
-    ports:
-      - '5432:5432'
-    environment:
-      POSTGRES_DB: music-app-prod
-      POSTGRES_USER: user-name
-      POSTGRES_PASSWORD: strong-password
-      PGDATA: /var/lib/postgresql/data/music-app
-    volumes:
-      - db-data:/var/lib/postgresql/data
+#   pgadmin:
+#     image: dpage/pgadmin4
+#     container_name: music-app-pgadmin-prod
+#     restart: always
+#     ports:
+#       - '8888:80'
+#     environment:
+#       PGADMIN_DEFAULT_EMAIL: user-name@domain-name.com
+#       PGADMIN_DEFAULT_PASSWORD: strong-password
+#     depends_on:
+#       - db
+#     volumes:
+#       - pgadmin-data:/var/lib/pgadmin
 
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: music-app-pgadmin-prod
-    restart: always
-    ports:
-      - '8888:80'
-    environment:
-      PGADMIN_DEFAULT_EMAIL: user-name@domain-name.com
-      PGADMIN_DEFAULT_PASSWORD: strong-password
-    depends_on:
-      - db
-    volumes:
-      - pgadmin-data:/var/lib/pgadmin
-
-volumes:
-  db-data:
-  pgadmin-data:
+# volumes:
+#   db-data:
+#   pgadmin-data:
