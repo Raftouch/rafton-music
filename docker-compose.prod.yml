@@ -8,10 +8,11 @@ services:
       dockerfile: Dockerfile.prod
     ports:
       - '3024:3000'
-    environment:
-      NEXT_PUBLIC_API_URL: http://localhost:5000 # Use environment variables to point to API server
+    env_file:
+      - .env
     depends_on:
       - server
+
   server:
     container_name: music-app-server-prod
     build:
@@ -26,7 +27,7 @@ services:
 
   db:
     image: postgres
-    container_name: music-app-postgres-prod
+    container_name: music-app
     restart: always
     ports:
       - '5432:5432'
@@ -37,5 +38,21 @@ services:
       PGDATA: /var/lib/postgresql/data/music-app
     volumes:
       - db-data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: music-app-pgadmin-prod
+    restart: always
+    ports:
+      - "8888:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user-name@domain-name.com
+      PGADMIN_DEFAULT_PASSWORD: strong-password
+    depends_on:
+      - db
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
 volumes:
   db-data:
+  pgadmin-data:
