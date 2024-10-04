@@ -10,8 +10,12 @@ async function start() {
   const allowedOrigins = ['http://localhost:3024', 'http://localhost:3000'];
 
   app.use(cookieParser());
-  app.enableCors({ origin: allowedOrigins, credentials: true,   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    allowedHeaders: 'Content-Type, Accept, Authorization',});
+  app.enableCors({
+    origin: allowedOrigins,
+    credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type, Accept, Authorization',
+  });
   // app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
