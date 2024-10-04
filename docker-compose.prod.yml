@@ -8,8 +8,8 @@ services:
       dockerfile: Dockerfile.prod
     ports:
       - '3024:3000'
-    env_file:
-      - .env
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:5000
     depends_on:
       - server
 
@@ -27,7 +27,7 @@ services:
 
   db:
     image: postgres
-    container_name: music-app
+    container_name: music-app-postgres-prod
     restart: always
     ports:
       - '5432:5432'
