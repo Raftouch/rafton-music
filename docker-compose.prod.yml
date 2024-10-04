@@ -19,7 +19,7 @@ services:
     ports:
       - '5000:5000'
     env_file:
-      - .env
+      - /usr/src/app/.env
     depends_on:
       - db
 
