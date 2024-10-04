@@ -5,6 +5,7 @@ import { Metadata } from 'next'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import React from 'react'
 // import useUserStore from '@/store/user'
 
 export const metadata: Metadata = {
@@ -33,14 +34,23 @@ export default async function Playlists({
       <div>
         <p>No song data available.</p>
       </div>
-    );
+    )
   }
 
   return (
     <div className="mt-20 mb-20 flex flex-col items-center gap-5">
-      <SearchSong placeholder="Search songs..." />
-      <Link href="/songs/create">Upload new</Link>
-      <SongList songs={songs} searchParams={searchParams} />
+      {!songs || songs.length === 0 ? (
+        <>
+          <p>No song data available.</p>
+          <Link href="/songs/create">Upload new</Link>
+        </>
+      ) : (
+        <>
+          <SearchSong placeholder="Search songs..." />
+          <Link href="/songs/create">Upload new</Link>
+          <SongList songs={songs} searchParams={searchParams} />
+        </>
+      )}
     </div>
   )
 }
