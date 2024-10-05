@@ -3,8 +3,7 @@
 import { Song } from '@/models/song'
 import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL
+import { API_URL } from './const'
 
 export async function getSong(id: string): Promise<Song | null> {
   try {

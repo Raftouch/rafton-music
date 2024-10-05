@@ -1,6 +1,7 @@
 'use client'
 
 import useUserStore from '@/store/user'
+import { API_URL } from '@/utils/const'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
@@ -9,7 +10,6 @@ export default function LoginForm() {
   const [error, setError] = useState<string | null>(null)
   const { setUser, setIsAuth } = useUserStore()
   const router = useRouter()
-  const API_URL = process.env.NEXT_PUBLIC_API_URL
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()

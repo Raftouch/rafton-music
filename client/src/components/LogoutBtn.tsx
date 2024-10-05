@@ -1,10 +1,9 @@
 'use client'
 
 import useUserStore from '@/store/user'
+import { API_URL } from '@/utils/const'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 export default function LogoutBtn() {
   const router = useRouter()

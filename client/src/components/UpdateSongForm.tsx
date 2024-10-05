@@ -6,6 +6,7 @@ import React, { FormEvent, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Song } from '@/models/song'
 import { toast } from 'sonner'
+import { API_URL } from '@/utils/const'
 
 interface UpdateSongFormProps {
   song: Song
@@ -19,8 +20,6 @@ export default function UpdateSongForm({ song }: UpdateSongFormProps) {
   const genre = useInput(song?.genre.type)
   const router = useRouter()
 
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/songs/${song?.id}`
-
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
 
@@ -30,7 +29,7 @@ export default function UpdateSongForm({ song }: UpdateSongFormProps) {
     formData.append('genre[type]', genre.value)
     if (image) formData.append('image', image)
     if (audio) formData.append('audio', audio)
-    fetch(url, {
+    fetch(`${API_URL}/api/songs/${song?.id}`, {
       method: 'PATCH',
       body: formData,
       credentials: 'include',

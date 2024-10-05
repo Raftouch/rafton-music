@@ -1,4 +1,5 @@
 import { Song } from '@/models/song'
+import { API_URL } from '@/utils/const'
 import { create } from 'zustand'
 
 interface PlayerState {
@@ -15,8 +16,6 @@ interface PlayerState {
 }
 
 let audio: HTMLAudioElement | null = null
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 const usePlayerStore = create<PlayerState>((set, get) => ({
   pause: true,

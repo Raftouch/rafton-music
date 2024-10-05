@@ -1,5 +1,6 @@
 'use client'
 
+import { API_URL } from '@/utils/const'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
@@ -7,7 +8,6 @@ import { toast } from 'sonner'
 export default function RegisterForm() {
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
-  const API_URL = process.env.NEXT_PUBLIC_API_URL
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()

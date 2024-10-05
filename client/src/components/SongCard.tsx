@@ -8,13 +8,13 @@ import RemoveBtn from './RemoveBtn'
 import { useRouter } from 'next/navigation'
 import { FaEdit, FaPlay, FaPause } from 'react-icons/fa'
 import usePlayerStore from '@/store/player'
+import { API_URL } from '@/utils/const'
 
 interface SongProps {
   song: Song
 }
 
 export default function SongCard({ song }: SongProps) {
-  const API_URL = process.env.NEXT_PUBLIC_API_URL
   const router = useRouter()
   const { active, pause, playSong, pauseSong } = usePlayerStore()
 

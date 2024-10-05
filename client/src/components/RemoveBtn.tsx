@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 import Modal from "./Modal";
 import { RiDeleteBin7Fill } from "react-icons/ri";
+import React from "react";
 
 interface DeleteSongProps {
   id: string;
