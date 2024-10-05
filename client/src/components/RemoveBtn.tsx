@@ -7,6 +7,7 @@ import { useState } from "react";
 import Modal from "./Modal";
 import { RiDeleteBin7Fill } from "react-icons/ri";
 import React from "react";
+import { API_URL } from "@/utils/const";
 
 interface DeleteSongProps {
   id: string;
@@ -20,7 +21,7 @@ export default function RemoveBtn({ id }: DeleteSongProps) {
   };
 
   const removeSong = async () => {
-    const response = await fetch(`http://localhost:5000/api/songs/${id}`, {
+    const response = await fetch(`${API_URL}/api/songs/${id}`, {
       method: "DELETE",
       credentials: 'include'
     });
