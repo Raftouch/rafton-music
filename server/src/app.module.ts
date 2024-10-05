@@ -13,6 +13,7 @@ import { UsersModule } from './users/users.module';
 import * as path from 'path';
 import * as cookieParser from 'cookie-parser';
 import { AccessTokenStrategy } from './auth/strategies/access-token.strategy';
+import { HealthController } from './health/health.controller';
 
 @Module({
   imports: [
@@ -28,7 +29,7 @@ import { AccessTokenStrategy } from './auth/strategies/access-token.strategy';
     AuthModule,
     UsersModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, HealthController],
   providers: [AppService, AccessTokenStrategy],
 })
 export class AppModule implements NestModule {
