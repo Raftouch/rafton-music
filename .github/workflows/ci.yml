@@ -62,7 +62,12 @@ jobs:
           PORT: 5000
           DATABASE_URL: ${{ env.DATABASE_URL }}
         working-directory: server
-        timeout-minutes: 5
+        timeout-minutes: 5 # Gives server 5 minutes to start
+
+      # Wait for server to be fully ready before proceeding to the client setup
+      - name: Wait for Backend to be Ready
+        run: |
+          npx wait-on http://localhost:5000
 
       - name: Launch integration tests
         run: npm run test
@@ -90,6 +95,7 @@ jobs:
         run: npm run dev &
         env:
           PORT: 3000
+          NEXT_PUBLIC_API_URL: http://localhost:5000
         working-directory: client
 
       # E2E Tests
