@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   client:
     container_name: music-app-client-prod
@@ -7,10 +9,10 @@ services:
     ports:
       - '3024:3000'
     environment:
-      NEXT_PUBLIC_API_URL: http://localhost:5000
+      NEXT_PUBLIC_API_URL: http://server:5000
     depends_on:
       - server
-    pull_policy: build
+    # pull_policy: build
 
   server:
     container_name: music-app-server-prod
@@ -23,6 +25,11 @@ services:
       - .env
     depends_on:
       - db
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://localhost:5000/health"]      
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   db:
     image: postgres

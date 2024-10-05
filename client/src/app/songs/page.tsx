@@ -6,6 +6,7 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import React from 'react'
+import useUserStore from '@/store/user'
 // import useUserStore from '@/store/user'
 
 export const metadata: Metadata = {
@@ -18,11 +19,13 @@ export default async function Playlists({
   searchParams?: { query?: string; page?: string }
 }) {
   const token = cookies().get('access_token')
+  console.log('Token value : ', token?.value)
   if (!token) {
     redirect('/auth/login')
   }
-  // const { checkAuth, isAuth } = useUserStore.getState()
-  // await checkAuth()
+  const { checkAuth, isAuth } = useUserStore.getState()
+  console.log('is auth ? : ', isAuth)
+  await checkAuth()
   // if (!isAuth) {
   //   redirect('/auth/login')
   // }
@@ -31,6 +34,12 @@ export default async function Playlists({
 
   return (
     <div className="mt-20 mb-20 flex flex-col items-center gap-5">
+      {/* {!token?.value ? (
+        <>
+          <p>No access, please log in</p>
+          <Link href="/auth/login">To login page</Link>
+        </>
+      ) : !songs || songs.length === 0 ? ( */}
       {!songs || songs.length === 0 ? (
         <>
           <p>No song data available.</p>
