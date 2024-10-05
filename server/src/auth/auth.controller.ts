@@ -19,7 +19,7 @@ import { JwtRefreshAuthGuard } from './guards/refresh-token.guard';
 import { JwtAuthGuard } from './guards/access-token.guard';
 import { User } from '@prisma/client';
 
-@Controller('auth')
+@Controller('api/auth')
 @ApiTags('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

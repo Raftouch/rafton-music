@@ -5,7 +5,7 @@ import { API_URL } from './const'
 
 export async function checkAuth() {
   try {
-    const response = await fetch(`${API_URL}/auth/check-auth`, {
+    const response = await fetch(`${API_URL}/api/auth/check-auth`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
