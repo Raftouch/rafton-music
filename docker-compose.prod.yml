@@ -6,10 +6,15 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile.prod
+    environment:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+        NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL}
     ports:
       - '3024:3000'
-    environment:
-      NEXT_PUBLIC_API_URL: http://server:5000
+    env_file:
+      - .env
+    # environment:
+    #   NEXT_PUBLIC_API_URL: http://server:5000
     depends_on:
       - server
     # pull_policy: build
@@ -19,6 +24,16 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile.prod
+    environment:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+        NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL}
+        POSTGRES_HOST: ${POSTGRES_HOST}
+        POSTGRES_PORT: ${POSTGRES_PORT}
+        POSTGRES_DATABASE: ${POSTGRES_DATABASE}
+        POSTGRES_USER: ${POSTGRES_USER}
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        ACCESS_JWT_SECRET: ${ACCESS_JWT_SECRET}
+        REFRESH_JWT_SECRET: ${REFRESH_JWT_SECRET} 
     ports:
       - '5000:5000'
     env_file:
@@ -38,10 +53,10 @@ services:
     ports:
       - '5432:5432'
     environment:
-      POSTGRES_DB: music-app-prod
-      POSTGRES_USER: user-name
-      POSTGRES_PASSWORD: strong-password
-      PGDATA: /var/lib/postgresql/data/music-app-prod
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: /var/lib/postgresql/data
     volumes:
       - db-data:/var/lib/postgresql/data
 
@@ -52,8 +67,8 @@ services:
     ports:
       - '8888:80'
     environment:
-      PGADMIN_DEFAULT_EMAIL: user-name@domain-name.com
-      PGADMIN_DEFAULT_PASSWORD: strong-password
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     depends_on:
       - db
     volumes:
