@@ -13,8 +13,6 @@ services:
       - '3024:3000'
     env_file:
       - .env
-    # environment:
-    #   NEXT_PUBLIC_API_URL: http://server:5000
     depends_on:
       - server
     # pull_policy: build
