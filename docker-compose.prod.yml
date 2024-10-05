@@ -11,8 +11,6 @@ services:
         NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL}
     ports:
       - '3024:3000'
-    env_file:
-      - .env
     depends_on:
       - server
     # pull_policy: build
