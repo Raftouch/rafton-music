@@ -7,6 +7,7 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import React from 'react'
 import useUserStore from '@/store/user'
+import { API_URL } from '@/utils/const'
 // import useUserStore from '@/store/user'
 
 export const metadata: Metadata = {
@@ -31,6 +32,7 @@ export default async function Playlists({
   // }
 
   const songs = await getAllSongs()
+  console.log('API URL:', API_URL)
 
   return (
     <div className="mt-20 mb-20 flex flex-col items-center gap-5">
