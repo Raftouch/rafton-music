@@ -14,7 +14,7 @@ async function start() {
     origin: allowedOrigins,
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    allowedHeaders: 'Content-Type, Accept, Authorization',
+    allowedHeaders: 'Content-Type, Accept, Authorization, Cookie',
   });
   // app.useGlobalPipes(new ValidationPipe());
 
