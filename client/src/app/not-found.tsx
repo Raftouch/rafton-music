@@ -1,3 +1,5 @@
 export default function NotFound() {
-  return <div>Sorry, Buddy, the page could not be found 😞</div>;
+  return (
+    <div className="mt-20">Sorry, Buddy, the page could not be found 😞</div>
+  )
 }
