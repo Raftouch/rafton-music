@@ -11,14 +11,15 @@ services:
       NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL}
     ports:
       - "3000:3000"
-    env_file:
-      - ./client/.env.local
+    # env_file:
+    #   - ./client/.env.local
     volumes:
       - ./client:/usr/src/app
       - /usr/src/app/node_modules
       - /usr/src/app/ .next
     depends_on:
       - server
+    entrypoint: /bin/sh -c "sleep 5; npm run dev"
 
   server:
     container_name: music-server-dev
