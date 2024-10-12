@@ -54,9 +54,17 @@ export class AuthController {
   @Get('check-auth')
   checkAuth(@Req() req: Request, @Res() res: Response) {
     const user = req.user as User;
-    return res
-      .status(200)
-      .json({ authenticated: true, username: user.username });
+    if (!user) {
+      return res.status(401).json({ authenticated: false });
+    }
+    return res.status(200).json({
+      authenticated: true,
+      id: user.id, // Ensure you're sending the ID back
+      username: user.username,
+    });
+    // return res
+    //   .status(200)
+    //   .json({ authenticated: true, username: user.username });
   }
 
   // private route

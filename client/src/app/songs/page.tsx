@@ -23,14 +23,18 @@ export default async function Playlists({
   if (!token) {
     redirect('/auth/login')
   }
-  const { checkAuth, isAuth } = useUserStore.getState()
-  await checkAuth()
-  console.log('is auth ? : ', isAuth)
+  // const { checkAuth, isAuth } = useUserStore.getState()
+  // await checkAuth()
+  // console.log('is auth ? : ', isAuth)
   // if (!isAuth) {
   //   redirect('/auth/login')
   // }
 
-  const songs = await getAllSongs()
+  const songs = await getAllSongs().catch((error) => {
+    console.error('Error fetching songs:', error)
+    return []
+  })
+  console.log('Fetched songs:', songs)
   console.log('API URL:', API_URL)
 
   return (

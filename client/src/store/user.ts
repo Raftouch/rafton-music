@@ -16,13 +16,17 @@ const useUserStore = create<UserState>((set) => ({
   setUser: (user: User | undefined) => set(() => ({ user })),
   setIsAuth: (isAuth: boolean) => set(() => ({ isAuth })),
   checkAuth: async () => {
+    console.log('Starting authentication check...')
     const res = await checkAuth()
+    console.log('Auth check response:', res)
     if (res.authenticated) {
+      console.log('User authenticated:', { id: res.id, username: res.username })
       set({
         user: { id: res.id, username: res.username },
         isAuth: true,
       })
     } else {
+      console.log('User not authenticated')
       set({ user: undefined, isAuth: false })
     }
   },
