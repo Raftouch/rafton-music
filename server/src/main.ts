@@ -11,7 +11,13 @@ async function start() {
 
   app.use(cookieParser());
   app.enableCors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type, Accept, Authorization, Cookie',
@@ -27,6 +33,9 @@ async function start() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  await app.listen(port, () => console.log(`Server running on port ${port}`));
+  // to ensure that NestJS binds to 0.0.0.0 (all network interfaces) instead of localhost (for Docker env)
+  await app.listen(port, '0.0.0.0', () =>
+    console.log(`Server running on port ${port}`),
+  );
 }
 start();
