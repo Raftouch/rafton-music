@@ -14,7 +14,7 @@ import { SongsService } from './songs.service';
 import { CreateSongDto } from './dto/create-song.dto';
 import { UpdateSongDto } from './dto/update-song.dto';
 import {
-  ApiBearerAuth,
+  // ApiBearerAuth,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiTags,
@@ -34,7 +34,7 @@ export class SongsController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  // @ApiBearerAuth()
   @ApiCreatedResponse({ type: SongEntity })
   @UseInterceptors(
     FileFieldsInterceptor([
@@ -49,7 +49,7 @@ export class SongsController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  // @ApiBearerAuth()
   @ApiOkResponse({ type: SongEntity, isArray: true })
   async findAll() {
     return this.songsService.findAll();
@@ -57,7 +57,7 @@ export class SongsController {
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  // @ApiBearerAuth()
   @ApiOkResponse({ type: SongEntity })
   findOne(@Param('id') id: string) {
     return this.songsService.findOne(id);
@@ -65,7 +65,7 @@ export class SongsController {
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  // @ApiBearerAuth()
   @ApiOkResponse({ type: SongEntity })
   @UseInterceptors(
     FileFieldsInterceptor([
@@ -90,7 +90,7 @@ export class SongsController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  // @ApiBearerAuth()
   @ApiOkResponse({ type: SongEntity })
   remove(@Param('id') id: string) {
     return this.songsService.remove(id);
