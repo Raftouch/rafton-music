@@ -1,6 +1,18 @@
 version: '3.8'
 
 services:
+  nginx:
+    image: nginx:stable-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - './nginx.conf:/etc/nginx/nginx.conf'
+    depends_on:
+      - server
+      - client
+    networks:
+      - bridge
+
   client:
     container_name: music-client-prod
     build:
@@ -14,6 +26,8 @@ services:
     depends_on:
       - server
     # pull_policy: build
+    networks:
+      - bridge
 
   server:
     container_name: music-server-prod
@@ -38,6 +52,8 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+    networks:
+      - bridge
 
   db:
     image: postgres
@@ -52,6 +68,8 @@ services:
       PGDATA: /var/lib/postgresql/data
     volumes:
       - db-data:/var/lib/postgresql/data
+    networks:
+      - bridge
 
   pgadmin:
     image: dpage/pgadmin4
@@ -66,7 +84,12 @@ services:
       - db
     volumes:
       - pgadmin-data:/var/lib/pgadmin
+    networks:
+      - bridge
 
 volumes:
   db-data:
   pgadmin-data:
+
+networks:
+  bridge:
