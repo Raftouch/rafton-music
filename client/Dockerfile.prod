@@ -48,6 +48,15 @@ COPY --from=builder --chown=nextjs:nodejs /usr/src/app/.next/static ./.next/stat
 
 USER nextjs
 
+# Nginx Stage to serve the Next.js app
+FROM nginx:stable-alpine
+
+# Copy the built Next.js app from the runner stage
+COPY --from=runner /usr/src/app /usr/share/nginx/html
+
+# Copy your custom nginx configuration file (ensure it's available in your context)
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 EXPOSE 3000
 
 ENV PORT=3000
@@ -55,4 +64,8 @@ ENV PORT=3000
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
 # ENV HOSTNAME="0.0.0.0"
-CMD ["node", "server.js"]
+
+# CMD ["node", "server.js"]
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]
