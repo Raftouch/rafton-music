@@ -1,8 +1,8 @@
-version: "3.8"
+version: '3.8'
 
 services:
   client:
-    container_name: music-client-dev
+    container_name: client
     build:
       context: ./client
       dockerfile: Dockerfile.dev
@@ -10,7 +10,9 @@ services:
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
       NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL}
     ports:
-      - "3000:3000"
+      - '3000:3000'
+    # environment:
+    #   NEXT_PUBLIC_API_URL: 'http://server:5000'
     # env_file:
     #   - ./client/.env.local
     volumes:
@@ -22,7 +24,7 @@ services:
     # entrypoint: /bin/sh -c "sleep 5; npm run dev"
 
   server:
-    container_name: music-server-dev
+    container_name: server
     build:
       context: ./server
       dockerfile: Dockerfile.dev
@@ -36,7 +38,7 @@ services:
       ACCESS_JWT_SECRET: ${ACCESS_JWT_SECRET}
       REFRESH_JWT_SECRET: ${REFRESH_JWT_SECRET}
     ports:
-      - "5000:5000"
+      - '5000:5000'
     volumes:
       - ./server:/usr/src/main
       - /usr/src/main/node_modules
@@ -45,10 +47,10 @@ services:
 
   db:
     image: postgres
-    container_name: music-postgres-dev
+    container_name: postgres
     restart: always
     ports:
-      - "5432:5432"
+      - '5432:5432'
     environment:
       POSTGRES_DB: ${POSTGRES_DATABASE}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -59,10 +61,10 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4
-    container_name: music-pgadmin-dev
+    container_name: pgadmin
     restart: always
     ports:
-      - "8888:80"
+      - '8888:80'
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}

@@ -48,7 +48,8 @@ export async function getAllSongs(): Promise<Song[] | null> {
     if (response.status === 401) {
       throw new Error('Unathorized')
     } else if (response.status === 404) {
-      notFound()
+      return [];
+      // notFound()
     } else if (!response.ok) {
       throw new Error(`An error has occurred: ${response.statusText}`)
     } else {
@@ -57,6 +58,7 @@ export async function getAllSongs(): Promise<Song[] | null> {
     }
   } catch (error) {
     console.error('Error fetching songs:', error)
-    return null
+    return []; 
+    // return null
   }
 }

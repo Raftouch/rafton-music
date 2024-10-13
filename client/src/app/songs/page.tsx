@@ -30,10 +30,7 @@ export default async function Playlists({
   //   redirect('/auth/login')
   // }
 
-  const songs = await getAllSongs().catch((error) => {
-    console.error('Error fetching songs:', error)
-    return []
-  })
+  const songs = await getAllSongs()
   console.log('Fetched songs:', songs)
   console.log('API URL:', API_URL)
 

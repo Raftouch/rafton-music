@@ -11,16 +11,10 @@ async function start() {
 
   app.use(cookieParser());
   app.enableCors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
+    origin: allowedOrigins,
     credentials: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    allowedHeaders: 'Content-Type, Accept, Authorization, Cookie',
+    // methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    // allowedHeaders: 'Content-Type, Accept, Authorization, Cookie',
   });
   // app.useGlobalPipes(new ValidationPipe());
 
@@ -28,14 +22,11 @@ async function start() {
     .setTitle('Rafton')
     .setDescription('The Rafton API description')
     .setVersion('0.1')
-    .addBearerAuth() // to authorize queries for protected routes in swagger
+    // .addBearerAuth() // to authorize queries for protected routes in swagger
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  // to ensure that NestJS binds to 0.0.0.0 (all network interfaces) instead of localhost (for Docker env)
-  await app.listen(port, '0.0.0.0', () =>
-    console.log(`Server running on port ${port}`),
-  );
+  await app.listen(port, () => console.log(`Server running on port ${port}`));
 }
 start();
