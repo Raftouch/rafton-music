@@ -1,20 +1,8 @@
 version: '3.8'
 
 services:
-  nginx:
-    image: nginx:stable-alpine
-    ports:
-      - "80:80"
-    volumes:
-      - './nginx.conf:/etc/nginx/nginx.conf'
-    depends_on:
-      - server
-      - client
-    networks:
-      - bridge
-
   client:
-    container_name: music-client-prod
+    container_name: client
     build:
       context: ./client
       dockerfile: Dockerfile.prod
@@ -26,11 +14,9 @@ services:
     depends_on:
       - server
     # pull_policy: build
-    networks:
-      - bridge
 
   server:
-    container_name: music-server-prod
+    container_name: server
     build:
       context: ./server
       dockerfile: Dockerfile.prod
@@ -42,22 +28,20 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       ACCESS_JWT_SECRET: ${ACCESS_JWT_SECRET}
-      REFRESH_JWT_SECRET: ${REFRESH_JWT_SECRET} 
+      REFRESH_JWT_SECRET: ${REFRESH_JWT_SECRET}
     ports:
       - '5000:5000'
     depends_on:
       - db
     healthcheck:
-      test: ["CMD", "wget", "--spider", "http://localhost:5000/health"]      
+      test: ['CMD', 'wget', '--spider', 'http://localhost:5000/health']
       interval: 30s
       timeout: 10s
       retries: 5
-    networks:
-      - bridge
 
   db:
     image: postgres
-    container_name: music-postgres-prod
+    container_name: postgres
     restart: always
     ports:
       - '5432:5432'
@@ -68,12 +52,10 @@ services:
       PGDATA: /var/lib/postgresql/data
     volumes:
       - db-data:/var/lib/postgresql/data
-    networks:
-      - bridge
 
   pgadmin:
     image: dpage/pgadmin4
-    container_name: music-pgadmin-prod
+    container_name: pgadmin
     restart: always
     ports:
       - '8888:80'
@@ -84,12 +66,7 @@ services:
       - db
     volumes:
       - pgadmin-data:/var/lib/pgadmin
-    networks:
-      - bridge
 
 volumes:
   db-data:
   pgadmin-data:
-
-networks:
-  bridge:
