@@ -1,13 +1,9 @@
-version: '3.8'
-
 services:
   client:
     container_name: client
     build:
       context: ./client
       dockerfile: Dockerfile.prod
-    env_file:
-      - .env
     environment:
       NEXT_PUBLIC_API_URL: "http://localhost:5000"
       NEXT_PUBLIC_BASE_URL: "http://localhost:3000"
@@ -21,8 +17,6 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile.prod
-    env_file:
-      - .env
     environment:
       DATABASE_URL: "postgresql://user-name:strong-password@db:5432/music-app"
       POSTGRES_HOST: "db"
@@ -48,8 +42,6 @@ services:
     restart: always
     ports:
       - '5432:5432'
-    env_file:
-      - .env
     environment:
       POSTGRES_DB: "music-app"
       POSTGRES_USER: "user-name"
@@ -64,8 +56,6 @@ services:
     restart: always
     ports:
       - '8888:80'
-    env_file:
-      - .env
     environment:
       PGADMIN_DEFAULT_EMAIL: "user-name@domain-name.com"
       PGADMIN_DEFAULT_PASSWORD: "strong-password"
@@ -77,4 +67,3 @@ services:
 volumes:
   db-data:
   pgadmin-data:
-
