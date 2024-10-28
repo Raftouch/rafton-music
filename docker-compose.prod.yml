@@ -9,8 +9,8 @@ services:
       NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL}
     ports:
       - '3024:3000'
-    env_file:
-      - stack.env
+    # env_file:
+    #   - stack.env
     depends_on:
       - server
     # networks:
@@ -33,12 +33,12 @@ services:
       REFRESH_JWT_SECRET: ${REFRESH_JWT_SECRET}
     ports:
       - '5000:5000'
-    env_file:
-      - stack.env
+    # env_file:
+    #   - stack.env
     depends_on:
       - db
     healthcheck:
-      test: ['CMD', 'wget', '--spider', 'http://localhost:5000/health']
+      test: ['CMD', 'wget', '--spider', 'http://localhost:5000/api/health']
       interval: 30s
       timeout: 10s
       retries: 5
@@ -51,8 +51,8 @@ services:
     restart: always
     ports:
       - '5433:5432'
-    env_file:
-      - stack.env
+    # env_file:
+    #   - stack.env
     environment:
       POSTGRES_DB: ${POSTGRES_DATABASE}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -69,8 +69,8 @@ services:
     restart: always
     ports:
       - '8888:80'
-    env_file:
-      - stack.env
+    # env_file:
+    #   - stack.env
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
@@ -84,7 +84,6 @@ services:
 volumes:
   db-data:
   pgadmin-data:
-
 # networks:
 #   app-network:
 #     driver: bridge
