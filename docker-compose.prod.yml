@@ -11,6 +11,8 @@ services:
       - '3024:3000'
     depends_on:
       - server
+    networks:
+      - app-network
 
   server:
     container_name: server
@@ -35,6 +37,8 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+    networks:
+      - app-network
 
   db:
     image: postgres
@@ -49,6 +53,8 @@ services:
       PGDATA: "/var/lib/postgresql/data"
     volumes:
       - db-data:/var/lib/postgresql/data
+    networks:
+      - app-network
 
   pgadmin:
     image: dpage/pgadmin4
@@ -63,7 +69,13 @@ services:
       - db
     volumes:
       - pgadmin-data:/var/lib/pgadmin
+    networks:
+      - app-network
 
 volumes:
   db-data:
   pgadmin-data:
+
+networks:
+  app-network:
+    driver: bridge
