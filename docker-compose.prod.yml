@@ -15,6 +15,7 @@ services:
       - server
     networks:
       - app-network
+    pull_policy: build
 
   server:
     container_name: server
