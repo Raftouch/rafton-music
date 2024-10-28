@@ -21,6 +21,7 @@ export default function RegisterForm() {
     }
 
     console.log('API URL:', API_URL)
+    console.log('API URL NODE_ENV:', process.env.NODE_ENV)
 
     try {
       const response = await fetch(`${API_URL}/api/auth/register`, {
