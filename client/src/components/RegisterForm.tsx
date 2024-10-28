@@ -20,6 +20,8 @@ export default function RegisterForm() {
       password: formData.get('password'),
     }
 
+    console.log('API URL:', API_URL)
+
     try {
       const response = await fetch(`${API_URL}/api/auth/register`, {
         method: 'POST',
