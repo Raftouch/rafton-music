@@ -4,11 +4,13 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile.prod
-    environment:
-      NEXT_PUBLIC_API_URL: "http://localhost:5000"
-      NEXT_PUBLIC_BASE_URL: "http://localhost:3000"
+    # environment:
+    #   NEXT_PUBLIC_API_URL: "http://localhost:5000"
+    #   NEXT_PUBLIC_BASE_URL: "http://localhost:3000"
     ports:
       - '3024:3000'
+    env_file:
+      - stack.env
     depends_on:
       - server
     networks:
@@ -19,17 +21,19 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile.prod
-    environment:
-      DATABASE_URL: "postgresql://user-name:strong-password@db:5432/music-app"
-      POSTGRES_HOST: "db"
-      POSTGRES_PORT: "5432"
-      POSTGRES_DATABASE: "music-app"
-      POSTGRES_USER: "user-name"
-      POSTGRES_PASSWORD: "strong-password"
-      ACCESS_JWT_SECRET: "accessjwtsecretkey123"
-      REFRESH_JWT_SECRET: "refreshjwtsecretkey123"
+    # environment:
+    #   DATABASE_URL: "postgresql://user-name:strong-password@db:5432/music-app"
+    #   POSTGRES_HOST: "db"
+    #   POSTGRES_PORT: "5432"
+    #   POSTGRES_DATABASE: "music-app"
+    #   POSTGRES_USER: "user-name"
+    #   POSTGRES_PASSWORD: "strong-password"
+    #   ACCESS_JWT_SECRET: "accessjwtsecretkey123"
+    #   REFRESH_JWT_SECRET: "refreshjwtsecretkey123"
     ports:
       - '5000:5000'
+    env_file:
+      - stack.env
     depends_on:
       - db
     healthcheck:
@@ -46,15 +50,17 @@ services:
     restart: always
     ports:
       - '5433:5432'
-    environment:
-      POSTGRES_DB: "music-app"
-      POSTGRES_USER: "user-name"
-      POSTGRES_PASSWORD: "strong-password"
-      PGDATA: "/var/lib/postgresql/data"
+    # environment:
+    #   POSTGRES_DB: "music-app"
+    #   POSTGRES_USER: "user-name"
+    #   POSTGRES_PASSWORD: "strong-password"
+    #   PGDATA: "/var/lib/postgresql/data"
     volumes:
       - db-data:/var/lib/postgresql/data
     networks:
       - app-network
+    env_file:
+      - stack.env
 
   pgadmin:
     image: dpage/pgadmin4
@@ -62,15 +68,17 @@ services:
     restart: always
     ports:
       - '8888:80'
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "user-name@domain-name.com"
-      PGADMIN_DEFAULT_PASSWORD: "strong-password"
+    # environment:
+    #   PGADMIN_DEFAULT_EMAIL: "user-name@domain-name.com"
+    #   PGADMIN_DEFAULT_PASSWORD: "strong-password"
     depends_on:
       - db
     volumes:
       - pgadmin-data:/var/lib/pgadmin
     networks:
       - app-network
+    env_file:
+      - stack.env
 
 volumes:
   db-data:
