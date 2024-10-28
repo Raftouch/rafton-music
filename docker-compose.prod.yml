@@ -9,30 +9,29 @@ services:
     env_file:
       - .env
     environment:
-      NEXT_PUBLIC_API_URL=http://localhost:5000
-      NEXT_PUBLIC_BASE_URL=http://localhost:3000
+      NEXT_PUBLIC_API_URL: "http://localhost:5000"
+      NEXT_PUBLIC_BASE_URL: "http://localhost:3000"
     ports:
       - '3024:3000'
     depends_on:
       - server
-    # pull_policy: build
 
   server:
     container_name: server
     build:
       context: ./server
-      dockerfile: Dockerfile.prod
+    dockerfile: Dockerfile.prod
     env_file:
       - .env
     environment:
-      DATABASE_URL: postgresql://user-name:strong-password@db:5432/music-app
-      POSTGRES_HOST: db
-      POSTGRES_PORT: 5432
-      POSTGRES_DATABASE: music-app
-      POSTGRES_USER: user-name
-      POSTGRES_PASSWORD: strong-password
-      ACCESS_JWT_SECRET: accessjwtsecretkey123
-      REFRESH_JWT_SECRET: refreshjwtsecretkey123
+      DATABASE_URL: "postgresql://user-name:strong-password@db:5432/music-app"
+      POSTGRES_HOST: "db"
+      POSTGRES_PORT: "5432"
+      POSTGRES_DATABASE: "music-app"
+      POSTGRES_USER: "user-name"
+      POSTGRES_PASSWORD: "strong-password"
+      ACCESS_JWT_SECRET: "accessjwtsecretkey123"
+      REFRESH_JWT_SECRET: "refreshjwtsecretkey123"
     ports:
       - '5000:5000'
     depends_on:
@@ -52,10 +51,10 @@ services:
     env_file:
       - .env
     environment:
-      POSTGRES_DB: music-app
-      POSTGRES_USER: user-name
-      POSTGRES_PASSWORD: strong-password
-      PGDATA: /var/lib/postgresql/data
+      POSTGRES_DB: "music-app"
+      POSTGRES_USER: "user-name"
+      POSTGRES_PASSWORD: "strong-password"
+      PGDATA: "/var/lib/postgresql/data"
     volumes:
       - db-data:/var/lib/postgresql/data
 
@@ -68,8 +67,8 @@ services:
     env_file:
       - .env
     environment:
-      PGADMIN_DEFAULT_EMAIL: user-name@domain-name.com
-      PGADMIN_DEFAULT_PASSWORD: strong-password
+      PGADMIN_DEFAULT_EMAIL: "user-name@domain-name.com"
+      PGADMIN_DEFAULT_PASSWORD: "strong-password"
     depends_on:
       - db
     volumes:
@@ -78,3 +77,4 @@ services:
 volumes:
   db-data:
   pgadmin-data:
+
