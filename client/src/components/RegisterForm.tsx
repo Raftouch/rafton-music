@@ -20,8 +20,8 @@ export default function RegisterForm() {
       password: formData.get('password'),
     }
 
-    console.log('API URL:', API_URL)
-    console.log('API URL NODE_ENV:', process.env.NODE_ENV)
+    console.log('API URL:', process.env.NEXT_PUBLIC_API_URL) // undefined
+    console.log('API URL NODE_ENV:', process.env.NODE_ENV) // prod
 
     try {
       const response = await fetch(`${API_URL}/api/auth/register`, {
