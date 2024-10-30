@@ -8,14 +8,18 @@ async function start() {
   const app = await NestFactory.create(AppModule);
   const port = process.env.PORT || 5000;
   // const allowedOrigins = ['http://localhost:3024', 'http://localhost:3000'];
+  const allowedOrigins = ['http://localhost:3000', 'http://127.0.0.1:3000'];
+
 
   app.use(cookieParser());
   app.enableCors({
-    // origin: allowedOrigins,
-    origin: true,
+    origin: allowedOrigins,
+    // origin: true,
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type, Accept, Authorization, Cookie',
+    preflightContinue: false, // Assure que la réponse CORS est gérée avant le handler de requête
+
   });
   // app.useGlobalPipes(new ValidationPipe());
 

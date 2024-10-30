@@ -1,27 +1,31 @@
-version: '3.8'
-
 services:
-  client:
-    container_name: client
-    build:
-      context: ./client
-      dockerfile: Dockerfile.dev
-    environment:
-      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
-      NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL}
+  db:
+    image: postgres
+    container_name: postgres
+    restart: always
     ports:
-      - '3000:3000'
-    # environment:
-    #   NEXT_PUBLIC_API_URL: 'http://server:5000'
-    # env_file:
-    #   - ./client/.env.local
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: /var/lib/postgresql/data
     volumes:
-      - ./client:/usr/src/app
-      - /usr/src/app/node_modules
-      - /usr/src/app/ .next
+      - db-data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    restart: always
+    ports:
+      - "8888:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     depends_on:
-      - server
-    # entrypoint: /bin/sh -c "sleep 5; npm run dev"
+      - db
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
 
   server:
     container_name: server
@@ -38,40 +42,29 @@ services:
       ACCESS_JWT_SECRET: ${ACCESS_JWT_SECRET}
       REFRESH_JWT_SECRET: ${REFRESH_JWT_SECRET}
     ports:
-      - '5000:5000'
+      - "5000:5000"
     volumes:
       - ./server:/usr/src/main
       - /usr/src/main/node_modules
     depends_on:
       - db
 
-  db:
-    image: postgres
-    container_name: postgres
-    restart: always
-    ports:
-      - '5432:5432'
+  client:
+    container_name: client
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
     environment:
-      POSTGRES_DB: ${POSTGRES_DATABASE}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      PGDATA: /var/lib/postgresql/data
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+      NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL}
+    ports:
+      - "3000:3000"
     volumes:
-      - db-data:/var/lib/postgresql/data
-
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin
-    restart: always
-    ports:
-      - '8888:80'
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      - ./client:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/ .next
     depends_on:
-      - db
-    volumes:
-      - pgadmin-data:/var/lib/pgadmin
+      - server
 
 volumes:
   db-data:
