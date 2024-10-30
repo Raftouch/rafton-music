@@ -1,7 +1,4 @@
-'use server'
-
 import { Song } from '@/models/song'
-import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { API_URL } from './const'
 
@@ -11,7 +8,6 @@ export async function getSong(id: string): Promise<Song | null> {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Cookie: cookies().toString(),
       },
       cache: 'no-store',
       credentials: 'include',
@@ -35,11 +31,11 @@ export async function getSong(id: string): Promise<Song | null> {
 
 export async function getAllSongs(): Promise<Song[] | null> {
   try {
+    console.log(`${API_URL}/api/songs`);
     const response = await fetch(`${API_URL}/api/songs`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Cookie: cookies().toString(),
       },
       cache: 'no-store',
       credentials: 'include',
@@ -58,7 +54,7 @@ export async function getAllSongs(): Promise<Song[] | null> {
     }
   } catch (error) {
     console.error('Error fetching songs:', error)
-    return []; 
+    return [];
     // return null
   }
 }

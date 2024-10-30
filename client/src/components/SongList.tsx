@@ -25,9 +25,9 @@ export default function SongList({ songs, searchParams }: SongListProps) {
           {songs
             .filter((song) => {
               const lowerCaseQuery = query.toLowerCase();
-              return lowerCaseQuery === ""
-                ? ""
-                : song.title.toLowerCase().startsWith(lowerCaseQuery);
+              return lowerCaseQuery
+              ? song.title.toLowerCase().startsWith(lowerCaseQuery)
+              : true; // Ne filtre pas si la query est vide
             })
             .map((song) => (
               <SongCard song={song} key={song.id} />
