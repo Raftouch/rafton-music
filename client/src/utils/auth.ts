@@ -1,6 +1,3 @@
-'use server'
-
-import { cookies } from 'next/headers'
 import { API_URL } from './const'
 
 export async function checkAuth() {
@@ -9,7 +6,6 @@ export async function checkAuth() {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Cookie: cookies().toString(),
       },
       cache: 'no-store',
       credentials: 'include',

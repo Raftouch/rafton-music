@@ -13,8 +13,14 @@ interface UserState {
 const useUserStore = create<UserState>((set) => ({
   user: undefined,
   isAuth: false,
-  setUser: (user: User | undefined) => set(() => ({ user })),
-  setIsAuth: (isAuth: boolean) => set(() => ({ isAuth })),
+  setUser: (user: User | undefined) => {
+    console.log('Setting user:', user)
+    set(() => ({ user }))
+  },
+  setIsAuth: (isAuth: boolean) => {
+    console.log('Setting isAuth:', isAuth)
+    set(() => ({ isAuth }))
+  },
   checkAuth: async () => {
     console.log('Starting authentication check...')
     const res = await checkAuth()
