@@ -10,7 +10,6 @@ async function start() {
   // const allowedOrigins = ['http://localhost:3024', 'http://localhost:3000'];
   const allowedOrigins = ['http://localhost:3000', 'http://127.0.0.1:3000'];
 
-
   app.use(cookieParser());
   app.enableCors({
     origin: allowedOrigins,
@@ -18,8 +17,7 @@ async function start() {
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type, Accept, Authorization, Cookie',
-    preflightContinue: false, // Assure que la réponse CORS est gérée avant le handler de requête
-
+    // preflightContinue: false,
   });
   // app.useGlobalPipes(new ValidationPipe());
 
