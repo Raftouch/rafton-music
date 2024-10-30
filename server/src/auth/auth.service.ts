@@ -65,8 +65,7 @@ export class AuthService {
 
     res.cookie('access_token', tokens.access_token, {
       httpOnly: true,
-      secure: false,
-      // secure: process.env.NODE_ENV === 'production',
+      secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 1000 * 60 * 15, // 15 minutes
       // path: '/',
@@ -74,8 +73,7 @@ export class AuthService {
 
     res.cookie('refresh_token', tokens.refresh_token, {
       httpOnly: true,
-      secure: false,
-      // secure: process.env.NODE_ENV === 'production',
+      secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
       // path: '/',
@@ -122,8 +120,7 @@ export class AuthService {
 
     res.cookie('access_token', tokens.access_token, {
       httpOnly: true, // Only accessible by the server
-      secure: false,
-      // secure: process.env.NODE_ENV === 'production', // Only send over HTTPS in production
+      secure: process.env.NODE_ENV === 'production', // Only send over HTTPS in production
       sameSite: 'lax',
       maxAge: 1000 * 60 * 15, // 15 minutes
       // path: '/',
@@ -131,8 +128,7 @@ export class AuthService {
 
     res.cookie('refresh_token', tokens.refresh_token, {
       httpOnly: true,
-      secure: false,
-      // secure: process.env.NODE_ENV === 'production',
+      secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
       // path: '/',
