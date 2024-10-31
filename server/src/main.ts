@@ -24,15 +24,28 @@ async function start() {
   ];
 
   app.use(cookieParser());
+  // app.enableCors({
+  //   origin: allowedOrigins,
+  //   // origin: true,
+  //   credentials: true,
+  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  //   allowedHeaders: 'Content-Type, Accept, Authorization, Cookie, Origin',
+  //   // preflightContinue: false,
+  // });
+  // app.useGlobalPipes(new ValidationPipe());
+
   app.enableCors({
-    origin: allowedOrigins,
-    // origin: true,
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type, Accept, Authorization, Cookie, Origin',
-    // preflightContinue: false,
   });
-  // app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
     .setTitle('Rafton')
