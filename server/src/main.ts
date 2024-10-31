@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 // import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
+import { CORSMiddleware } from 'cors.middleware';
 
 async function start() {
   const app = await NestFactory.create(AppModule);
@@ -17,13 +18,14 @@ async function start() {
   //       ]
   //     : ['http://localhost:3000', 'http://localhost:3024'];
 
-  const allowedOrigins = [
-    'http://localhost:3000',
-    'http://localhost:3024',
-    'http://portainer-cda3b.dev-formation.com:3024',
-  ];
+  // const allowedOrigins = [
+  //   'http://localhost:3000',
+  //   'http://localhost:3024',
+  //   'http://portainer-cda3b.dev-formation.com:3024',
+  // ];
 
   app.use(cookieParser());
+  app.use(CORSMiddleware);
   // app.enableCors({
   //   origin: allowedOrigins,
   //   // origin: true,
@@ -48,19 +50,19 @@ async function start() {
   //   preflightContinue: false,
   // });
 
-  app.enableCors({
-    origin: allowedOrigins,
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: [
-      'Content-Type',
-      'Accept',
-      'Authorization',
-      'X-Requested-With',
-      'Access-Control-Allow-Origin',
-      'Access-Control-Allow-Credentials',
-    ],
-  });
+  // app.enableCors({
+  //   origin: allowedOrigins,
+  //   credentials: true,
+  //   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  //   allowedHeaders: [
+  //     'Content-Type',
+  //     'Accept',
+  //     'Authorization',
+  //     'X-Requested-With',
+  //     'Access-Control-Allow-Origin',
+  //     'Access-Control-Allow-Credentials',
+  //   ],
+  // });
 
   const config = new DocumentBuilder()
     .setTitle('Rafton')

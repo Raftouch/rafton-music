@@ -14,6 +14,7 @@ import * as path from 'path';
 import * as cookieParser from 'cookie-parser';
 import { AccessTokenStrategy } from './auth/strategies/access-token.strategy';
 import { HealthController } from './health/health.controller';
+import { CORSMiddleware } from 'cors.middleware';
 
 @Module({
   imports: [
@@ -35,6 +36,6 @@ import { HealthController } from './health/health.controller';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(cookieParser()).forRoutes('*'); // Apply cookie-parser to all routes
+    consumer.apply(cookieParser(), CORSMiddleware).forRoutes('*');
   }
 }
