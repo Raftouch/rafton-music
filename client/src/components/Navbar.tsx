@@ -23,7 +23,14 @@ export default function Navbar() {
   return (
     <div className="fixed w-full h-[80px] flex justify-between items-center bg-rafton-blue p-5">
       <Link href="/">
-        <Image src={logo} alt="logo Rafton" width={100} height={100} />
+        <Image
+          src={logo}
+          alt="logo Rafton"
+          width={100}
+          height={100}
+          priority={true}
+          unoptimized
+        />
       </Link>
 
       <ul className="flex sm:space-x-10 space-x-5 items-center">
