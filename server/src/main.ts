@@ -25,7 +25,7 @@ async function start() {
   // ];
 
   app.use(cookieParser());
-  app.use(CORSMiddleware);
+  app.use(new CORSMiddleware().use);
   // app.enableCors({
   //   origin: allowedOrigins,
   //   // origin: true,
