@@ -44,7 +44,7 @@ export default function Playlists({
       setSongs(songsData)
     }
     fetchSongs()
-  }, [isAuth, router])
+  }, [])
 
   if (loadingAuth) return <Loader />
 
