@@ -45,6 +45,7 @@ async function start() {
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type, Accept, Authorization, Cookie, Origin',
+    preflightContinue: false,
   });
 
   const config = new DocumentBuilder()
