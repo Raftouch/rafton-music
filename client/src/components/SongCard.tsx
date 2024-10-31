@@ -41,6 +41,7 @@ export default function SongCard({ song }: SongProps) {
           alt="image"
           className="rounded-full"
           priority={true}
+          unoptimized
         />
       </Link>
       <div className="truncate w-40 font-bold">{song.title}</div>
