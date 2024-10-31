@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
+  crossOrigin: 'use-credentials',
   images: {
     remotePatterns: [
       {
