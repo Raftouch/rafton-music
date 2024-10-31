@@ -7,13 +7,13 @@ import * as cookieParser from 'cookie-parser';
 async function start() {
   const app = await NestFactory.create(AppModule);
   const port = process.env.PORT || 5000;
-  // const allowedOrigins = ['http://localhost:3024', 'http://localhost:3000'];
-  const allowedOrigins = [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
-    'http://localhost:3024',
-    'http://portainer-cda3b.dev-formation.com:3024',
-  ];
+  const allowedOrigins =
+    process.env.NODE_ENV === 'production'
+      ? [
+          'http://portainer-cda3b.dev-formation.com:3024',
+          'http://portainer-cda3b.dev-formation.com:5000',
+        ]
+      : ['http://localhost:3000', 'http://localhost:3024'];
 
   app.use(cookieParser());
   app.enableCors({
@@ -21,7 +21,8 @@ async function start() {
     // origin: true,
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    allowedHeaders: 'Content-Type, Accept, Authorization, Cookie',
+    allowedHeaders:
+      'Content-Type, Accept, Authorization, Cookie, Origin, x-csrf-token',
     // preflightContinue: false,
   });
   // app.useGlobalPipes(new ValidationPipe());
