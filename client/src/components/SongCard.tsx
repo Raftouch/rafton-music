@@ -39,7 +39,9 @@ export default function SongCard({ song }: SongProps) {
           width={150}
           height={150}
           alt="image"
-          className="rounded-full"
+          className={`rounded-full transition-transform duration-1000 ${
+            isPlaying ? 'animate-slow-spin' : ''
+          }`}
           priority={true}
           unoptimized
         />

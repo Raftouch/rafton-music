@@ -13,6 +13,15 @@ const config: Config = {
         'rafton-orange': '#FF4C29',
         'rafton-green': '#00C49A',
       },
+      animation: {
+        'slow-spin': 'slow-spin 5s linear infinite',
+      },
+      keyframes: {
+        'slow-spin': {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
+      },
     },
   },
   plugins: [],
