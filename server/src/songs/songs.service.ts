@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateSongDto } from './dto/create-song.dto';
 import { UpdateSongDto } from './dto/update-song.dto';
 import { Prisma, Song } from '@prisma/client';
 import { FileType, FilesService } from '../files/files.service';
 import { PrismaService } from '../prisma/prisma.service';
+import * as path from 'path';
 
 @Injectable()
 export class SongsService {
@@ -126,7 +127,34 @@ export class SongsService {
   }
 
   async remove(id: string): Promise<Song> {
-    const song = await this.prisma.song.delete({ where: { id } });
-    return song;
+    const song = await this.prisma.song.findUnique({
+      where: { id },
+    });
+
+    if (!song) {
+      throw new HttpException('Song not found', HttpStatus.NOT_FOUND);
+    }
+
+    if (song.image) {
+      // Extract the filename from the path
+      const imageFileName = path.basename(song.image);
+      try {
+        await this.file.removeFile(FileType.IMAGE, imageFileName);
+      } catch (error) {
+        console.error(`Failed to delete image file: ${error.message}`);
+      }
+    }
+
+    if (song.audio) {
+      // Extract the filename from the path
+      const audioFileName = path.basename(song.audio);
+      try {
+        await this.file.removeFile(FileType.AUDIO, audioFileName);
+      } catch (error) {
+        console.error(`Failed to delete audio file: ${error.message}`);
+      }
+    }
+
+    return await this.prisma.song.delete({ where: { id } });
   }
 }
