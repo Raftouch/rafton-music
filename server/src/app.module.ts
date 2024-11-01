@@ -24,8 +24,8 @@ import { HealthController } from './health/health.controller';
     GenresModule,
     FilesModule,
     ServeStaticModule.forRoot({
-      rootPath: path.resolve(__dirname, 'static'),
-      // rootPath: path.join(__dirname, '..', 'dist', 'static'),
+      rootPath: path.resolve(process.cwd(), 'static'),
+      // rootPath: path.resolve(__dirname, 'static'),
     }),
     AuthModule,
     UsersModule,
