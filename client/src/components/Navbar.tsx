@@ -21,13 +21,13 @@ export default function Navbar() {
   }, [checkAuth])
 
   return (
-    <div className="fixed w-full h-[80px] flex justify-between items-center bg-rafton-blue p-5">
+    <div className="z-10 fixed w-full h-[80px] flex justify-between items-center bg-rafton-blue p-5">
       <Link href="/">
         <Image
           src={logo}
           alt="logo Rafton"
-          width={100}
-          height={100}
+          width={80}
+          height={80}
           priority={true}
           unoptimized
         />
