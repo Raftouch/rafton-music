@@ -1,10 +1,11 @@
-import React from "react";
+import { formatTime } from '@/utils/format'
+import React from 'react'
 
 interface PlayProgressProps {
-  left: number; // current play time
-  right: number; // 100
-  classNameLeftRight: string;
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  left: number // current play time
+  right: number // 100
+  classNameLeftRight: string
+  onChange: React.ChangeEventHandler<HTMLInputElement>
 }
 
 export default function PlayProgress({
@@ -24,8 +25,8 @@ export default function PlayProgress({
         onChange={onChange}
       />
       <div className={`text-sm ${classNameLeftRight}`}>
-        {left} / {right}
+        {formatTime(left)} / {formatTime(right)}
       </div>
     </div>
-  );
+  )
 }
