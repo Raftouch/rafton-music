@@ -26,8 +26,8 @@ export default function Navbar() {
         <Image
           src={logo}
           alt="logo Rafton"
-          width={80}
-          height={80}
+          width={95}
+          height={95}
           priority={true}
           unoptimized
         />
