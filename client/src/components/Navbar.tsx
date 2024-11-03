@@ -6,16 +6,17 @@ import Image from 'next/image'
 import logo from '../../public/images/rafton.png'
 import LogoutBtn from './LogoutBtn'
 import useUserStore from '@/store/user'
-import { useEffect } from 'react'
-import React from 'react'
+import { useEffect, useState } from 'react'
 
 export default function Navbar() {
   const pathname = usePathname()
   const { user, isAuth, checkAuth } = useUserStore()
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const checkUserAuth = async () => {
       await checkAuth()
+      setLoading(false)
     }
     checkUserAuth()
   }, [checkAuth])
@@ -34,29 +35,29 @@ export default function Navbar() {
       </Link>
 
       <ul className="flex sm:space-x-10 space-x-5 items-center">
-        {!isAuth ? (
+        {loading ? null : !isAuth ? (
           <>
             <Link
               href="/auth/login"
-              className={pathname === '/auth/login' ? 'text-rafton-green' : ''}
+              // className={pathname === '/auth/login' ? 'text-rafton-green' : ''}
             >
               Login
             </Link>
             <Link
               href="/auth/register"
-              className={
-                pathname === '/auth/register' ? 'text-rafton-green' : ''
-              }
+              // className={
+              //   pathname === '/auth/register' ? 'text-rafton-green' : ''
+              // }
             >
               Register
             </Link>
           </>
         ) : (
           <>
-            <span>{user?.username} 🤍</span>
+            <span className="text-rafton-green">{user?.username}</span>
             <Link
               href="/songs"
-              className={pathname === '/songs' ? 'text-rafton-green' : ''}
+              className={pathname === '/songs' ? 'border-b-2' : ''}
             >
               Playlist
             </Link>
