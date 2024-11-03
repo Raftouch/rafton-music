@@ -39,15 +39,13 @@ export default function Navbar() {
           <>
             <Link
               href="/auth/login"
-              // className={pathname === '/auth/login' ? 'text-rafton-green' : ''}
+              className={pathname === '/auth/login' ? 'border-b-2' : ''}
             >
               Login
             </Link>
             <Link
               href="/auth/register"
-              // className={
-              //   pathname === '/auth/register' ? 'text-rafton-green' : ''
-              // }
+              className={pathname === '/auth/register' ? 'border-b-2' : ''}
             >
               Register
             </Link>
@@ -63,7 +61,7 @@ export default function Navbar() {
             </Link>
             {/* <Link
               href="/favourites"
-              className={pathname === '/favourites' ? 'text-rafton-green' : ''}
+              className={pathname === '/favourites' ? 'border-b-2' : ''}
             >
               Favourites
             </Link> */}
