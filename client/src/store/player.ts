@@ -36,12 +36,18 @@ const usePlayerStore = create<PlayerState>((set, get) => ({
       audio.volume = state.volume / 100
       audio.play()
 
+      // Set duration and currentTime as before
       audio.onloadedmetadata = () => {
         set({ duration: Math.ceil(audio!.duration) })
       }
 
       audio.ontimeupdate = () => {
         set({ currentTime: Math.ceil(audio!.currentTime) })
+      }
+
+      // Add an event listener for when the song ends
+      audio.onended = () => {
+        set({ pause: true }) // Update pause state to show the play button
       }
 
       set({
