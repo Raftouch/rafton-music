@@ -50,13 +50,17 @@ export default function Playlists({
 
   return (
     <div className="mt-20 mb-20 flex flex-col items-center gap-5">
-      <SearchSong placeholder="Search songs..." />
-      <Link href="/songs/create">Upload new</Link>
-      {songs !== null ? (
-        <SongList songs={songs} searchParams={searchParams} />
-      ) : (
-        <p>No song data available. Please try again later</p>
-      )}
+      {isAuth ? (
+        <>
+          <SearchSong placeholder="Search songs..." />
+          <Link href="/songs/create">Upload new</Link>
+          {songs !== null ? (
+            <SongList songs={songs} searchParams={searchParams} />
+          ) : (
+            <p>No song data available. Please try again later</p>
+          )}
+        </>
+      ) : null}
     </div>
   )
 }
