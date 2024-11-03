@@ -42,12 +42,18 @@ const usePlayerStore = create<PlayerState>((set, get) => ({
       }
 
       audio.ontimeupdate = () => {
-        set({ currentTime: Math.ceil(audio!.currentTime) })
+        const clampedTime = Math.min(
+          Math.ceil(audio!.currentTime),
+          get().duration
+        )
+        set({ currentTime: clampedTime })
+        // set({ currentTime: Math.ceil(audio!.currentTime) })
       }
 
       // Add an event listener for when the song ends
       audio.onended = () => {
-        set({ pause: true }) // Update pause state to show the play button
+        set({ pause: true, currentTime: 0 }) // Reset to 0 when song ends
+        // set({ pause: true }) // Update pause state to show the play button
       }
 
       set({
