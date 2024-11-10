@@ -17,6 +17,7 @@ export class SongsService {
     createSongDto: CreateSongDto,
     image: string,
     audio: string,
+    userId: string,
   ): Promise<Song> {
     const imagePath = this.file.createFile(FileType.IMAGE, image);
     const audioPath = this.file.createFile(FileType.AUDIO, audio);
@@ -46,6 +47,7 @@ export class SongsService {
         audio: audioPath,
         artist: artistData,
         genre: genreData,
+        uploadedBy: { connect: { id: userId } },
       },
     });
 
@@ -61,6 +63,7 @@ export class SongsService {
       include: {
         artist: true,
         genre: true,
+        uploadedBy: true,
       },
     });
     return songs;
@@ -72,6 +75,7 @@ export class SongsService {
       include: {
         artist: true,
         genre: true,
+        uploadedBy: true,
       },
     });
     return song;
@@ -82,7 +86,24 @@ export class SongsService {
     updateSongDto: UpdateSongDto,
     image: string,
     audio: string,
+    userId: string,
   ): Promise<Song> {
+    const song = await this.prisma.song.findUnique({
+      where: { id },
+      include: { uploadedBy: true },
+    });
+
+    if (!song) {
+      throw new HttpException('Song not found', HttpStatus.NOT_FOUND);
+    }
+
+    if (song.uploadedById !== userId) {
+      throw new HttpException(
+        'Forbidden: You can only update your own songs',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
     const updateData: Prisma.SongUpdateInput = {};
     const { artist, genre, ...songData } = updateSongDto;
 
@@ -126,14 +147,25 @@ export class SongsService {
     return updatedSong;
   }
 
-  async remove(id: string): Promise<Song> {
+  async remove(id: string, userId: string): Promise<Song> {
     const song = await this.prisma.song.findUnique({
       where: { id },
+      include: { uploadedBy: true },
     });
 
     if (!song) {
       throw new HttpException('Song not found', HttpStatus.NOT_FOUND);
     }
+
+    if (song.uploadedById !== userId) {
+      throw new HttpException(
+        'Forbidden: You can only delete your own songs',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
+    // console.log('Song uploadedById:', song.uploadedById);
+    // console.log('User attempting update userId:', userId);
 
     if (song.image) {
       // Extract the filename from the path

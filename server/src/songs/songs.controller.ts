@@ -9,6 +9,7 @@ import {
   UseInterceptors,
   UploadedFiles,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { SongsService } from './songs.service';
 import { CreateSongDto } from './dto/create-song.dto';
@@ -23,6 +24,7 @@ import { SongEntity } from './entities/song.entity';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '../auth/guards/access-token.guard';
 import { JwtService } from '@nestjs/jwt';
+import { Request } from 'express';
 
 @Controller('api/songs')
 @ApiTags('songs')
@@ -42,9 +44,15 @@ export class SongsController {
       { name: 'audio', maxCount: 1 },
     ]),
   )
-  create(@UploadedFiles() files, @Body() createSongDto: CreateSongDto) {
+  create(
+    @UploadedFiles() files,
+    @Body() createSongDto: CreateSongDto,
+    @Req() req: Request,
+  ) {
     const { image, audio } = files;
-    return this.songsService.create(createSongDto, image[0], audio[0]);
+    const userId = req.user['id'];
+
+    return this.songsService.create(createSongDto, image[0], audio[0], userId);
   }
 
   @Get()
@@ -77,7 +85,9 @@ export class SongsController {
     @Param('id') id: string,
     @UploadedFiles() files,
     @Body() updateSongDto: UpdateSongDto,
+    @Req() req: Request,
   ) {
+    const userId = req.user['id'];
     const { image, audio } = files;
 
     return this.songsService.update(
@@ -85,6 +95,7 @@ export class SongsController {
       updateSongDto,
       image ? image[0] : null,
       audio ? audio[0] : null,
+      userId,
     );
   }
 
@@ -92,7 +103,9 @@ export class SongsController {
   @UseGuards(JwtAuthGuard)
   // @ApiBearerAuth()
   @ApiOkResponse({ type: SongEntity })
-  remove(@Param('id') id: string) {
-    return this.songsService.remove(id);
+  remove(@Param('id') id: string, @Req() req: Request) {
+    const userId = req.user['id'];
+
+    return this.songsService.remove(id, userId);
   }
 }
