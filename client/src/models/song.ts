@@ -6,10 +6,10 @@ export interface Song {
   image?: string
   audio: string
   playcount: number
-  uploadedat: Date
+  uploadedAt: Date
+  uploadedBy: User
   artist: Artist
   genre: Genre
-  users?: User[]
 }
 
 interface Artist {
