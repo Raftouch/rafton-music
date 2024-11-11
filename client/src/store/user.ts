@@ -2,10 +2,15 @@ import { User } from '@/models/user'
 import { checkAuth } from '@/utils/auth'
 import { create } from 'zustand'
 
+// interface MinimalUser {
+//   id: string;
+//   username: string;
+// }
+
 interface UserState {
-  user: User | undefined
+  user: Partial<User> | undefined
   isAuth: boolean
-  setUser: (user: User | undefined) => void
+  setUser: (user: Partial<User> | undefined) => void
   setIsAuth: (isAuth: boolean) => void
   checkAuth: () => Promise<void>
 }
@@ -13,7 +18,7 @@ interface UserState {
 const useUserStore = create<UserState>((set) => ({
   user: undefined,
   isAuth: false,
-  setUser: (user: User | undefined) => {
+  setUser: (user: Partial<User> | undefined) => {
     console.log('Setting user:', user)
     set(() => ({ user }))
   },
