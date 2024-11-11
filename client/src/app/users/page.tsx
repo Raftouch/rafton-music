@@ -3,6 +3,7 @@
 import Loader from '@/components/Loader'
 import { User } from '@/models/user'
 import useUserStore from '@/store/user'
+import { formatName } from '@/utils/format'
 import { getAllUsers } from '@/utils/user'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -26,14 +27,16 @@ export default function UsersList() {
   if (loading) return <Loader />
 
   return (
-    <div className="mt-20">
-      <h1 className="mb-10">Users List</h1>
+    <div className="mt-20 w-[80%]">
+      <h1 className="mb-10 text-center">Users List</h1>
       {users ? (
-        <ul>
+        <ul className="flex flex-col gap-4 justify-start">
           {users
             .filter((user) => user.role !== 'ADMIN')
-            .map((user) => (
-              <li key={user.id}>{user.username}</li>
+            .map((user, index) => (
+              <li key={user.id}>
+                {index + 1}. {formatName(user.username)}
+              </li>
             ))}
         </ul>
       ) : (
