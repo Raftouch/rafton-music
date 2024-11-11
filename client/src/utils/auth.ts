@@ -13,7 +13,12 @@ export async function checkAuth() {
 
     if (response.ok) {
       const data = await response.json()
-      return { authenticated: true, id: data.id, username: data.username }
+      return {
+        authenticated: true,
+        id: data.id,
+        username: data.username,
+        role: data.role,
+      }
     } else {
       console.error('Authentication failed with status:', response.status)
       const errorData = await response.json() // Optional: log the error message

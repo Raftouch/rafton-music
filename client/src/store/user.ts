@@ -31,9 +31,13 @@ const useUserStore = create<UserState>((set) => ({
     const res = await checkAuth()
     console.log('Auth check response:', res)
     if (res.authenticated) {
-      console.log('User authenticated:', { id: res.id, username: res.username })
+      console.log('User authenticated:', {
+        id: res.id,
+        username: res.username,
+        role: res.role,
+      })
       set({
-        user: { id: res.id, username: res.username },
+        user: { id: res.id, username: res.username, role: res.role },
         isAuth: true,
       })
     } else {

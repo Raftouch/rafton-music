@@ -59,8 +59,9 @@ export class AuthController {
     }
     return res.status(200).json({
       authenticated: true,
-      id: user.id, // Ensure you're sending the ID back
+      id: user.id,
       username: user.username,
+      role: user.role,
     });
     // return res
     //   .status(200)

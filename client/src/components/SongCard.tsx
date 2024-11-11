@@ -24,6 +24,7 @@ export default function SongCard({ song }: SongProps) {
   const isSongOwner = user?.id === song.uploadedBy.id
 
   console.log('user songs : ', user?.uploadedSongs)
+  console.log('user : ', user)
 
   const handlePlay = () => {
     if (isPlaying) {
