@@ -23,6 +23,8 @@ export default function SongCard({ song }: SongProps) {
   const isPlaying = active?.id === song.id && !pause
   const isSongOwner = user?.id === song.uploadedBy.id
 
+  console.log('user songs : ', user?.uploadedSongs)
+
   const handlePlay = () => {
     if (isPlaying) {
       pauseSong()
@@ -30,9 +32,6 @@ export default function SongCard({ song }: SongProps) {
       playSong(song)
     }
   }
-
-  console.log('user : ', user)
-  console.log('song : ', song.uploadedBy.id)
 
   return (
     <li
