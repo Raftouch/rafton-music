@@ -6,7 +6,7 @@ export interface Song {
   image: string
   audio: string
   playcount: number
-  uploadedAt: Date
+  uploadedAt: string
   uploadedBy: User
   artist: Artist
   genre: Genre

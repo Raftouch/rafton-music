@@ -4,22 +4,14 @@ export function formatTime(seconds: number): string {
   return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`
 }
 
-export function formatDate(date: any): string {
-  let parsedDate: Date
+export function formatDate(date: string): string {
+  const d = new Date(date)
 
-  if (typeof date === 'string') {
-    parsedDate = new Date(date)
-  } else if (date instanceof Date) {
-    parsedDate = date
-  } else {
-    throw new Error('Invalid date format')
-  }
-
-  if (isNaN(parsedDate.getTime())) {
+  if (isNaN(d.getTime())) {
     throw new Error('Invalid date')
   }
 
-  return parsedDate.toLocaleDateString('en-US', {
+  return d.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
