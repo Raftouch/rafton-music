@@ -59,7 +59,7 @@ export default function SongCard({ song }: SongProps) {
           {isPlaying ? <FaPause /> : <FaPlay />}
         </Button>
 
-        {isSongOwner && (
+        {isSongOwner || user?.role === 'ADMIN' ? (
           <>
             {/* <p>{active && <div>02:45 / 4:07</div>}</p> */}
             <Button onClick={() => router.push(`/songs/edit/${song.id}`)}>
@@ -67,7 +67,7 @@ export default function SongCard({ song }: SongProps) {
             </Button>
             <RemoveBtn id={song.id} />
           </>
-        )}
+        ) : null}
       </div>
     </li>
   )
