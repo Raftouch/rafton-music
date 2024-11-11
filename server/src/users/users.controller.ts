@@ -19,6 +19,7 @@ import { UserEntity } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from '../auth/guards/access-token.guard';
+import { OnlyAdminGuard } from 'src/auth/guards/admin.guard';
 
 @Controller('api/users')
 @ApiTags('users')
@@ -32,7 +33,7 @@ export class UsersController {
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, OnlyAdminGuard)
   // @ApiBearerAuth()
   @ApiOkResponse({ type: UserEntity, isArray: true })
   findAll() {
