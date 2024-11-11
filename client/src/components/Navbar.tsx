@@ -40,31 +40,31 @@ export default function Navbar() {
           <>
             <Link
               href="/auth/login"
-              className={pathname === '/auth/login' ? 'border-b-2' : ''}
+              className={pathname === '/auth/login' ? 'text-rafton-green' : ''}
             >
               Login
             </Link>
             <Link
               href="/auth/register"
-              className={pathname === '/auth/register' ? 'border-b-2' : ''}
+              className={
+                pathname === '/auth/register' ? 'text-rafton-green' : ''
+              }
             >
               Register
             </Link>
           </>
         ) : (
           <>
-            <span className="text-rafton-green">
-              {formatName(user?.username || '', 3)}
-            </span>
+            <span className="">Hi, {formatName(user?.username || '', 3)}</span>
             <Link
               href="/songs"
-              className={pathname === '/songs' ? 'border-b-2' : ''}
+              className={pathname === '/songs' ? 'text-rafton-green' : ''}
             >
               Playlist
             </Link>
             {/* <Link
               href="/favourites"
-              className={pathname === '/favourites' ? 'border-b-2' : ''}
+              className={pathname === '/favourites' ? 'text-rafton-green' : ''}
             >
               Favourites
             </Link> */}
