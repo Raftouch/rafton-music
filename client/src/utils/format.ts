@@ -17,3 +17,8 @@ export function formatDate(date: string): string {
     day: 'numeric',
   })
 }
+
+export function formatName(text: string): string {
+  if (!text) return ''
+  return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase()
+}

@@ -4,7 +4,7 @@ import Loader from '@/components/Loader'
 import SongCard from '@/components/SongCard'
 import { Song } from '@/models/song'
 import useUserStore from '@/store/user'
-import { formatDate } from '@/utils/format'
+import { formatDate, formatName } from '@/utils/format'
 import { getSong } from '@/utils/song'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -66,7 +66,7 @@ export default function SongDetails({ params: { id } }: DetailsProps) {
             <p>Title: {song?.title}</p>
             <p>Artist: {song?.artist.name}</p>
             <p>Genre: {song?.genre.type}</p>
-            <p>Uploaded by: {song?.uploadedBy.username}</p>
+            <p>Uploaded by: {formatName(song?.uploadedBy.username)}</p>
             <p>Uploaded at: {formatDate(song?.uploadedAt)}</p>
             <p>Playcount: {song?.playcount}</p>
           </div>
