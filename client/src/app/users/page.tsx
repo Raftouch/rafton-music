@@ -9,22 +9,8 @@ import { useEffect, useState } from 'react'
 
 export default function UsersList() {
   const [users, setUsers] = useState<User[] | null>(null)
-  const { user, isAuth, checkAuth } = useUserStore()
+  const { user, isAuth } = useUserStore()
   const [loading, setLoading] = useState(true)
-  const router = useRouter()
-
-  useEffect(() => {
-    const authenticateUser = async () => {
-      await checkAuth()
-      setLoading(false)
-      if (!isAuth) {
-        router.push('/auth/login')
-      } else if (user?.role !== 'ADMIN') {
-        router.push('/songs')
-      }
-    }
-    authenticateUser()
-  }, [checkAuth, user?.role, isAuth, router])
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -32,6 +18,7 @@ export default function UsersList() {
         const usersData = await getAllUsers()
         setUsers(usersData)
       }
+      setLoading(false)
     }
     fetchUsers()
   }, [isAuth, user?.role])
