@@ -66,7 +66,7 @@ export default function SongDetails({ params: { id } }: DetailsProps) {
             <p>Title: {song?.title}</p>
             <p>Artist: {song?.artist.name}</p>
             <p>Genre: {song?.genre.type}</p>
-            <p>Uploaded by: {formatName(song?.uploadedBy.username)}</p>
+            <p>Uploaded by: {formatName(song?.uploadedBy.username || '')}</p>
             <p>Uploaded at: {formatDate(song?.uploadedAt)}</p>
             <p>Playcount: {song?.playcount}</p>
           </div>

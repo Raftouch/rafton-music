@@ -18,7 +18,10 @@ export function formatDate(date: string): string {
   })
 }
 
-export function formatName(text: string): string {
+export function formatName(text: string, maxLength?: number): string {
   if (!text) return ''
-  return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase()
+  const trimmedText = maxLength ? text.slice(0, maxLength) : text
+  return (
+    trimmedText.charAt(0).toUpperCase() + trimmedText.slice(1).toLowerCase()
+  )
 }

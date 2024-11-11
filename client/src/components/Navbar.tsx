@@ -7,6 +7,7 @@ import logo from '../../public/images/rafton.png'
 import LogoutBtn from './LogoutBtn'
 import useUserStore from '@/store/user'
 import { useEffect, useState } from 'react'
+import { formatName } from '@/utils/format'
 
 export default function Navbar() {
   const pathname = usePathname()
@@ -52,7 +53,9 @@ export default function Navbar() {
           </>
         ) : (
           <>
-            <span className="text-rafton-green">{user?.username}</span>
+            <span className="text-rafton-green">
+              {formatName(user?.username || '', 3)}
+            </span>
             <Link
               href="/songs"
               className={pathname === '/songs' ? 'border-b-2' : ''}
