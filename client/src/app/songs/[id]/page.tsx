@@ -6,7 +6,7 @@ import { Song } from '@/models/song'
 import useUserStore from '@/store/user'
 import { formatDate, formatName } from '@/utils/format'
 import { getSong } from '@/utils/song'
-import Link from 'next/link'
+// import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 // import { Metadata } from 'next'
 // import { cookies } from 'next/headers'
@@ -21,37 +21,39 @@ interface DetailsProps {
 
 export default function SongDetails({ params: { id } }: DetailsProps) {
   const [song, setSong] = useState<Song | null>(null)
-  const [loadingAuth, setLoadingAuth] = useState(true)
+  const [loading, setLoading] = useState(true)
   const router = useRouter()
 
-  const { checkAuth, isAuth } = useUserStore()
-
-  console.log('date before format : ', song?.uploadedAt) // 2024-11-10T00:00:00.000Z
+  const { checkAuth } = useUserStore()
 
   useEffect(() => {
-    const authenticateUser = async () => {
+    const authAndFetchSong = async () => {
       await checkAuth()
-      setLoadingAuth(false)
 
       const { isAuth } = useUserStore.getState()
-      console.log('Updated isAuth after authentication:', isAuth)
 
       if (!isAuth) {
         router.push('/auth/login')
+        return
       }
-    }
-    authenticateUser()
-  }, [checkAuth, isAuth, router])
 
-  useEffect(() => {
-    const fetchSong = async () => {
       const songData = await getSong(id)
       setSong(songData)
+      setLoading(false)
     }
-    fetchSong()
-  }, [id])
 
-  if (loadingAuth) return <Loader />
+    authAndFetchSong()
+  }, [checkAuth, id, router])
+
+  // useEffect(() => {
+  //   const fetchSong = async () => {
+  //     const songData = await getSong(id)
+  //     setSong(songData)
+  //   }
+  //   fetchSong()
+  // }, [id])
+
+  if (loading) return <Loader />
 
   return (
     <div className="mt-20 text-center">
