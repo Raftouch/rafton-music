@@ -21,13 +21,11 @@ export default function Playlists({
   const [loading, setLoading] = useState(true)
   const router = useRouter()
 
-  const { checkAuth } = useUserStore()
+  const { checkAuth, isAuth } = useUserStore()
 
   useEffect(() => {
     const authAndFetchSongs = async () => {
       await checkAuth()
-
-      const { isAuth } = useUserStore.getState()
 
       if (!isAuth) {
         router.push('/auth/login')
@@ -45,7 +43,7 @@ export default function Playlists({
     }
 
     authAndFetchSongs()
-  }, [checkAuth, router])
+  }, [checkAuth, router, isAuth])
 
   if (loading) return <Loader />
 
