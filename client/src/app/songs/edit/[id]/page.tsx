@@ -5,7 +5,7 @@ import UpdateSongForm from '@/components/UpdateSongForm'
 import { Song } from '@/models/song'
 import useUserStore from '@/store/user'
 import { getSong } from '@/utils/song'
-import { useRouter } from 'next/navigation'
+import { notFound, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 interface UpdateSongProps {
@@ -14,35 +14,35 @@ interface UpdateSongProps {
 
 export default function UpdateSong({ params: { id } }: UpdateSongProps) {
   const [song, setSong] = useState<Song | null>(null)
-  const [loadingAuth, setLoadingAuth] = useState(true)
+  const [loading, setLoading] = useState(true)
   const router = useRouter()
 
   const { checkAuth, isAuth } = useUserStore()
 
   useEffect(() => {
-    const authenticateUser = async () => {
+    const authAndUpdateSong = async () => {
       await checkAuth()
-      setLoadingAuth(false)
-
-      const { isAuth } = useUserStore.getState()
-      console.log('Updated isAuth after authentication:', isAuth)
 
       if (!isAuth) {
         router.push('/auth/login')
+        return
+      }
+
+      try {
+        const songData = await getSong(id)
+        setSong(songData)
+      } catch (error) {
+        console.error('Error fetching song data:', error)
+        notFound()
+      } finally {
+        setLoading(false)
       }
     }
-    authenticateUser()
-  }, [checkAuth, isAuth, router])
 
-  useEffect(() => {
-    const fetchSong = async () => {
-      const songData = await getSong(id)
-      setSong(songData)
-    }
-    fetchSong()
-  }, [id])
+    authAndUpdateSong()
+  }, [checkAuth, router, id, isAuth])
 
-  if (loadingAuth) return <Loader />
+  if (loading) return <Loader />
 
   if (!song) return 'No song data available'
 
