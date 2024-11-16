@@ -9,27 +9,40 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 export default function UsersList() {
-  const [users, setUsers] = useState<User[] | null>(null)
-  const { user, isAuth } = useUserStore()
+  const [users, setUsers] = useState<User[]>([])
+  const { checkAuth } = useUserStore()
   const [loading, setLoading] = useState(true)
+  const router = useRouter()
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      if (isAuth && user?.role === 'ADMIN') {
-        const usersData = await getAllUsers()
-        setUsers(usersData)
+    const authAetchUsers = async () => {
+      await checkAuth()
+
+      const { isAuth, user } = useUserStore.getState()
+
+      if (!isAuth || user?.role !== 'ADMIN') {
+        router.push('/auth/login')
+        return
       }
-      setLoading(false)
+
+      try {
+        const usersData = await getAllUsers()
+        setUsers(usersData || [])
+      } catch (error) {
+        console.error('Failed to fetch users:', error)
+      } finally {
+        setLoading(false)
+      }
     }
-    fetchUsers()
-  }, [isAuth, user?.role])
+    authAetchUsers()
+  }, [checkAuth, router])
 
   if (loading) return <Loader />
 
   return (
     <div className="mt-20 w-[80%]">
       <h1 className="mb-10 text-center">Users List</h1>
-      {users ? (
+      {users.length > 0 ? (
         <ul className="flex flex-col gap-4 justify-start">
           {users
             .filter((user) => user.role !== 'ADMIN')
