@@ -21,7 +21,7 @@ export async function checkAuth() {
       }
     } else {
       console.error('Authentication failed with status:', response.status)
-      const errorData = await response.json() // Optional: log the error message
+      const errorData = await response.json()
       console.error('Error details:', errorData)
       return { authenticated: false }
     }

@@ -20,8 +20,8 @@ export default function RegisterForm() {
       password: formData.get('password'),
     }
 
-    console.log('API URL:', process.env.NEXT_PUBLIC_API_URL) // undefined
-    console.log('API URL NODE_ENV:', process.env.NODE_ENV) // prod
+    console.log('API URL:', process.env.NEXT_PUBLIC_API_URL)
+    console.log('API URL NODE_ENV:', process.env.NODE_ENV)
 
     try {
       const response = await fetch(`${API_URL}/api/auth/register`, {
@@ -45,10 +45,8 @@ export default function RegisterForm() {
     } catch (e) {
       if (e instanceof Error) {
         toast.error(e.message)
-        // setError(e.message)
       } else {
         toast.error('Registration failed')
-        // setError('An unexpected error occurred')
       }
     }
   }
