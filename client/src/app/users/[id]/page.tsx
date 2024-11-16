@@ -15,15 +15,18 @@ export default function UserDetails({ params: { id } }: DetailsProps) {
   const [loading, setLoading] = useState(true)
   const [profile, setProfile] = useState<User | null>(null)
   const router = useRouter()
-  const { checkAuth, user } = useUserStore()
+  const { checkAuth, user, isAuth } = useUserStore()
 
   useEffect(() => {
     const authAndFetchProfile = async () => {
       await checkAuth()
 
-      const { isAuth } = useUserStore.getState()
+      if (!isAuth) {
+        router.push('/auth/login')
+        return
+      }
 
-      if (isAuth && (user?.id === id || user?.role === 'ADMIN')) {
+      if (user?.id === id || user?.role === 'ADMIN') {
         try {
           const userData = await getUser(id)
           setProfile(userData)
@@ -34,12 +37,13 @@ export default function UserDetails({ params: { id } }: DetailsProps) {
           setLoading(false)
         }
       } else {
-        router.push('/auth/login')
+        console.log('Not authorized. Redirecting to home page')
+        router.push('/')
       }
     }
 
     authAndFetchProfile()
-  }, [checkAuth, user, router, id])
+  }, [checkAuth, user, router, id, isAuth])
 
   if (loading) return <Loader />
 
