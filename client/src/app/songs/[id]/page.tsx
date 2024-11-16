@@ -28,7 +28,9 @@ export default function SongDetails({ params: { id } }: DetailsProps) {
 
   useEffect(() => {
     const authAndFetchSong = async () => {
-      await checkAuth()
+      if (!isAuth) {
+        await checkAuth()
+      }
 
       if (!isAuth) {
         router.push('/auth/login')

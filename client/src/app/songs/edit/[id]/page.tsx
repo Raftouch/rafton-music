@@ -21,7 +21,9 @@ export default function UpdateSong({ params: { id } }: UpdateSongProps) {
 
   useEffect(() => {
     const authAndUpdateSong = async () => {
-      await checkAuth()
+      if (!isAuth) {
+        await checkAuth()
+      }
 
       if (!isAuth) {
         router.push('/auth/login')

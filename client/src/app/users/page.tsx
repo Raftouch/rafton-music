@@ -16,7 +16,9 @@ export default function UsersList() {
 
   useEffect(() => {
     const authFetchUsers = async () => {
-      await checkAuth()
+      if (!isAuth) {
+        await checkAuth()
+      }
 
       if (!isAuth) {
         router.push('/auth/login')

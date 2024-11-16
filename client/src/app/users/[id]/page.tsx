@@ -19,7 +19,9 @@ export default function UserDetails({ params: { id } }: DetailsProps) {
 
   useEffect(() => {
     const authAndFetchProfile = async () => {
-      await checkAuth()
+      if (!isAuth) {
+        await checkAuth()
+      }
 
       if (!isAuth) {
         router.push('/auth/login')

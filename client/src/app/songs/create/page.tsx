@@ -14,7 +14,9 @@ export default function CreateSong() {
 
   useEffect(() => {
     const authAndCreateSong = async () => {
-      await checkAuth()
+      if (!isAuth) {
+        await checkAuth()
+      }
 
       if (!isAuth) {
         router.push('/auth/login')

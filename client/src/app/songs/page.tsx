@@ -25,8 +25,10 @@ export default function Playlists({
 
   useEffect(() => {
     const authAndFetchSongs = async () => {
-      await checkAuth()
-
+      if (!isAuth) {
+        await checkAuth()
+      }
+      
       if (!isAuth) {
         router.push('/auth/login')
         return
