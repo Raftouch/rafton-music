@@ -45,35 +45,34 @@ export default function SongDetails({ params: { id } }: DetailsProps) {
     authAndFetchSong()
   }, [checkAuth, id, router])
 
-  // useEffect(() => {
-  //   const fetchSong = async () => {
-  //     const songData = await getSong(id)
-  //     setSong(songData)
-  //   }
-  //   fetchSong()
-  // }, [id])
-
   if (loading) return <Loader />
+
+  if (!song) {
+    return (
+      <div className="mt-20 text-center">
+        <p>Song not found or could not be fetched</p>
+      </div>
+    )
+  }
 
   return (
     <div className="mt-20 text-center">
       <h1>Song details</h1>
-      {song !== null && (
-        <div
-          data-cy="song-details"
-          className="flex gap-10 flex-wrap justify-center items-center mt-10 mb-20"
-        >
-          <SongCard song={song} key={song.id} />
-          <div className="flex flex-col gap-5 text-left">
-            <p>Title: {song?.title}</p>
-            <p>Artist: {song?.artist.name}</p>
-            <p>Genre: {song?.genre.type}</p>
-            <p>Uploaded by: {formatName(song?.uploadedBy.username || '')}</p>
-            <p>Uploaded at: {formatDate(song?.uploadedAt)}</p>
-            <p>Playcount: {song?.playcount}</p>
-          </div>
+      <div
+        data-cy="song-details"
+        className="flex gap-10 flex-wrap justify-center items-center mt-10 mb-20"
+      >
+        <SongCard song={song} key={song.id} />
+        <div className="flex flex-col gap-5 text-left">
+          <p>Title: {song?.title}</p>
+          <p>Artist: {song?.artist.name}</p>
+          <p>Genre: {song?.genre.type}</p>
+          <p>Uploaded by: {formatName(song?.uploadedBy.username || '')}</p>
+          <p>Uploaded at: {formatDate(song?.uploadedAt)}</p>
+          <p>Playcount: {song?.playcount}</p>
         </div>
-      )}
+      </div>
+
       {/* <Link href="/songs">Back to playlist</Link> */}
     </div>
   )

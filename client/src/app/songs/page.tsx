@@ -17,50 +17,47 @@ export default function Playlists({
 }: {
   searchParams?: { query?: string; page?: string }
 }) {
-  const [songs, setSongs] = useState<Song[] | null>(null)
-  const [loadingAuth, setLoadingAuth] = useState(true)
+  const [songs, setSongs] = useState<Song[]>([])
+  const [loading, setLoading] = useState(true)
   const router = useRouter()
 
-  const { checkAuth, isAuth } = useUserStore()
+  const { checkAuth } = useUserStore()
 
   useEffect(() => {
-    const authenticateUser = async () => {
+    const authAndFetchSongs = async () => {
       await checkAuth()
-      setLoadingAuth(false)
 
       const { isAuth } = useUserStore.getState()
-      console.log('Updated isAuth after authentication:', isAuth)
 
       if (!isAuth) {
         router.push('/auth/login')
+        return
+      }
+
+      try {
+        const songsData = await getAllSongs()
+        setSongs(songsData || [])
+      } catch (error) {
+        console.error('Failed to fetch songs:', error)
+      } finally {
+        setLoading(false)
       }
     }
-    authenticateUser()
-  }, [checkAuth, isAuth, router])
 
-  useEffect(() => {
-    const fetchSongs = async () => {
-      const songsData = await getAllSongs()
-      setSongs(songsData)
-    }
-    fetchSongs()
-  }, [])
+    authAndFetchSongs()
+  }, [checkAuth, router])
 
-  if (loadingAuth) return <Loader />
+  if (loading) return <Loader />
 
   return (
     <div className="mt-20 mb-20 flex flex-col items-center gap-5">
-      {isAuth ? (
-        <>
-          <SearchSong placeholder="Search songs..." />
-          <Link href="/songs/create">Upload new</Link>
-          {songs !== null ? (
-            <SongList songs={songs} searchParams={searchParams} />
-          ) : (
-            <p>No song data available. Please try again later</p>
-          )}
-        </>
-      ) : null}
+      <SearchSong placeholder="Search songs..." />
+      <Link href="/songs/create">Upload new</Link>
+      {songs.length > 0 ? (
+        <SongList songs={songs} searchParams={searchParams} />
+      ) : (
+        <p>No songs data available. Please try again later</p>
+      )}
     </div>
   )
 }
