@@ -24,26 +24,29 @@ export default function SongDetails({ params: { id } }: DetailsProps) {
   const [loading, setLoading] = useState(true)
   const router = useRouter()
 
-  const { checkAuth } = useUserStore()
+  const { checkAuth, isAuth } = useUserStore()
 
   useEffect(() => {
     const authAndFetchSong = async () => {
       await checkAuth()
-
-      const { isAuth } = useUserStore.getState()
 
       if (!isAuth) {
         router.push('/auth/login')
         return
       }
 
-      const songData = await getSong(id)
-      setSong(songData)
-      setLoading(false)
+      try {
+        const songData = await getSong(id)
+        setSong(songData)
+      } catch (error) {
+        console.error('Failed to fetch song:', error)
+      } finally {
+        setLoading(false)
+      }
     }
 
     authAndFetchSong()
-  }, [checkAuth, id, router])
+  }, [checkAuth, id, router, isAuth])
 
   if (loading) return <Loader />
 
