@@ -55,9 +55,14 @@ export default function Navbar() {
           </>
         ) : (
           <>
-            <span className="text-rafton-orange">
+            <Link
+              href={`/users/${user?.id}`}
+              className={
+                pathname === `/users/${user?.id}` ? 'text-rafton-green' : ''
+              }
+            >
               {formatName(user?.username || '')}
-            </span>
+            </Link>
             {/* <span className="">{formatName(user?.username || '', 3)}</span> */}
             {user?.role === 'ADMIN' ? (
               <Link
