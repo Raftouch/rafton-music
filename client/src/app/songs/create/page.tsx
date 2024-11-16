@@ -7,26 +7,25 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 export default function CreateSong() {
-  const [loadingAuth, setLoadingAuth] = useState(true)
+  const [loading, setLoading] = useState(true)
   const router = useRouter()
 
   const { checkAuth, isAuth } = useUserStore()
 
   useEffect(() => {
-    const authenticateUser = async () => {
+    const authAndCreateSong = async () => {
       await checkAuth()
-      setLoadingAuth(false)
-
-      const { isAuth } = useUserStore.getState()
 
       if (!isAuth) {
         router.push('/auth/login')
+        return
       }
+      setLoading(false)
     }
-    authenticateUser()
+    authAndCreateSong()
   }, [checkAuth, isAuth, router])
 
-  if (loadingAuth) return <Loader />
+  if (loading) return <Loader />
 
   return <CreateSongForm />
 }
