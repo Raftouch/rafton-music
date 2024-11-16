@@ -27,6 +27,8 @@ const useUserStore = create<UserState>((set) => ({
     set(() => ({ isAuth }))
   },
   checkAuth: async () => {
+    const { isAuth } = useUserStore.getState()
+    if (isAuth) return // if already auth, don't check again
     console.log('Starting authentication check...')
     const res = await checkAuth()
     console.log('Auth check response:', res)
