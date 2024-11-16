@@ -30,7 +30,7 @@ export async function getUser(id: string): Promise<User | null> {
   }
 }
 
-export async function getAllUsers(): Promise<User[] | null> {
+export async function getAllUsers(): Promise<User[]> {
   try {
     console.log(`Fetching users from: ${API_URL}/api/users`)
     const response = await fetch(`${API_URL}/api/users`, {
@@ -45,8 +45,7 @@ export async function getAllUsers(): Promise<User[] | null> {
     if (response.status === 401) {
       throw new Error('Unathorized')
     } else if (response.status === 404) {
-      // return []
-      notFound()
+      return []
     } else if (!response.ok) {
       throw new Error(`An error has occurred: ${response.statusText}`)
     } else {
@@ -56,7 +55,6 @@ export async function getAllUsers(): Promise<User[] | null> {
     }
   } catch (error) {
     console.error('Error fetching users:', error)
-    // return []
-    return null
+    return []
   }
 }

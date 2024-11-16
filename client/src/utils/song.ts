@@ -29,9 +29,8 @@ export async function getSong(id: string): Promise<Song | null> {
   }
 }
 
-export async function getAllSongs(): Promise<Song[] | null> {
+export async function getAllSongs(): Promise<Song[]> {
   try {
-    console.log(`${API_URL}/api/songs`);
     const response = await fetch(`${API_URL}/api/songs`, {
       method: 'GET',
       headers: {
@@ -44,8 +43,7 @@ export async function getAllSongs(): Promise<Song[] | null> {
     if (response.status === 401) {
       throw new Error('Unathorized')
     } else if (response.status === 404) {
-      return [];
-      // notFound()
+      return []
     } else if (!response.ok) {
       throw new Error(`An error has occurred: ${response.statusText}`)
     } else {
@@ -54,7 +52,6 @@ export async function getAllSongs(): Promise<Song[] | null> {
     }
   } catch (error) {
     console.error('Error fetching songs:', error)
-    return [];
-    // return null
+    return []
   }
 }
