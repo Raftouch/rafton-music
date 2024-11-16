@@ -11,6 +11,7 @@
     "cypress": "cypress run --headless"
   },
   "dependencies": {
+    "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "next": "^14.2.4",
     "prettier": "^3.1.1",
