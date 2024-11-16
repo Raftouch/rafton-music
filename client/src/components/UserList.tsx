@@ -1,5 +1,5 @@
 import { User } from '@/models/user'
-import { formatName } from '@/utils/format'
+import UserCard from './UserCard'
 
 interface UserListProps {
   users: User[]
@@ -11,9 +11,7 @@ export default function UserList({ users }: UserListProps) {
       {users
         .filter((user) => user.role !== 'ADMIN')
         .map((user, index) => (
-          <li key={user.id}>
-            {index + 1}. {formatName(user.username)}
-          </li>
+          <UserCard user={user} index={index} key={user.id} />
         ))}
     </ul>
   )
