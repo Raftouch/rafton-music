@@ -56,7 +56,7 @@ export default function Playlists({
       {songs.length > 0 ? (
         <SongList songs={songs} searchParams={searchParams} />
       ) : (
-        <p>No songs data available. Please try again later</p>
+        <p>No songs found</p>
       )}
     </div>
   )
