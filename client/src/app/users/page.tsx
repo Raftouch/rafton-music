@@ -10,32 +10,35 @@ import { useEffect, useState } from 'react'
 
 export default function UsersList() {
   const [users, setUsers] = useState<User[]>([])
-  const { checkAuth } = useUserStore()
+  const { checkAuth, isAuth, user } = useUserStore()
   const [loading, setLoading] = useState(true)
   const router = useRouter()
 
   useEffect(() => {
-    const authAetchUsers = async () => {
+    const authFetchUsers = async () => {
       await checkAuth()
 
-      const { isAuth, user } = useUserStore.getState()
-
-      if (!isAuth || user?.role !== 'ADMIN') {
+      if (!isAuth) {
         router.push('/auth/login')
         return
       }
 
-      try {
-        const usersData = await getAllUsers()
-        setUsers(usersData || [])
-      } catch (error) {
-        console.error('Failed to fetch users:', error)
-      } finally {
-        setLoading(false)
+      if (user?.role === 'ADMIN') {
+        try {
+          const usersData = await getAllUsers()
+          setUsers(usersData || [])
+        } catch (error) {
+          console.error('Failed to fetch users:', error)
+        } finally {
+          setLoading(false)
+        }
+      } else {
+        console.log('Not authorized. Redirecting to home page')
+        router.push('/')
       }
     }
-    authAetchUsers()
-  }, [checkAuth, router])
+    authFetchUsers()
+  }, [checkAuth, router, isAuth, user])
 
   if (loading) return <Loader />
 

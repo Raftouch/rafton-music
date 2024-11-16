@@ -22,6 +22,8 @@ export default function Navbar() {
     checkUserAuth()
   }, [checkAuth])
 
+  if (loading) return null
+
   return (
     <div className="z-10 fixed w-full h-[80px] flex justify-between items-center bg-rafton-blue p-5">
       <Link href="/">
@@ -36,7 +38,7 @@ export default function Navbar() {
       </Link>
 
       <ul className="flex sm:space-x-10 space-x-5 items-center">
-        {loading ? null : !isAuth ? (
+        {!isAuth ? (
           <>
             <Link
               href="/auth/login"
