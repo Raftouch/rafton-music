@@ -1,9 +1,8 @@
 import { Song } from '@/models/song'
-import React from 'react'
 import SongCard from './SongCard'
 
 interface SongListProps {
-  songs: Song[] | null
+  songs: Song[]
   searchParams?: { query?: string; page?: string }
 }
 

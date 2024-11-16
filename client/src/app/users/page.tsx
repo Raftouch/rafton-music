@@ -1,9 +1,9 @@
 'use client'
 
 import Loader from '@/components/Loader'
+import UserList from '@/components/UserList'
 import { User } from '@/models/user'
 import useUserStore from '@/store/user'
-import { formatName } from '@/utils/format'
 import { getAllUsers } from '@/utils/user'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -42,19 +42,7 @@ export default function UsersList() {
   return (
     <div className="mt-20 w-[80%]">
       <h1 className="mb-10 text-center">Users List</h1>
-      {users.length > 0 ? (
-        <ul className="flex flex-col gap-4 justify-start">
-          {users
-            .filter((user) => user.role !== 'ADMIN')
-            .map((user, index) => (
-              <li key={user.id}>
-                {index + 1}. {formatName(user.username)}
-              </li>
-            ))}
-        </ul>
-      ) : (
-        <p>No users found</p>
-      )}
+      {users.length > 0 ? <UserList users={users} /> : <p>No users found</p>}
     </div>
   )
 }
