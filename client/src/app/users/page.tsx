@@ -45,7 +45,7 @@ export default function UsersList() {
   if (loading) return <Loader />
 
   return (
-    <div className="mt-20 w-[80%]">
+    <div className="mt-20 sm:w-[80%] w-full">
       <h1 className="mb-10 text-center">Users List</h1>
       {users.length > 0 ? <UserList users={users} /> : <p>No users found</p>}
     </div>
