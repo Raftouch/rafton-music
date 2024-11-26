@@ -110,13 +110,13 @@ jobs:
           browser: electron
           working-directory: client
 
-      # Build Docker image for server (NestJS)
-      - name: Build Docker image for server (NestJS)
-        run: docker build -t music-app-server:latest -f server/Dockerfile.prod .
+      # # Build Docker image for server (NestJS)
+      # - name: Build Docker image for server (NestJS)
+      #   run: docker build -t music-app-server:latest -f server/Dockerfile.prod .
 
-      # Build Docker image for client (Next.js)
-      - name: Build Docker image for client (Next.js)
-        run: docker build -t music-app-client:latest -f client/Dockerfile.prod .
+      # # Build Docker image for client (Next.js)
+      # - name: Build Docker image for client (Next.js)
+      #   run: docker build -t music-app-client:latest -f client/Dockerfile.prod .
 
       # Run Docker Compose to start services
       - name: Run Docker Compose
