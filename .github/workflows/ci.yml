@@ -10,6 +10,7 @@ jobs:
 
     env:
       DATABASE_URL: postgres://user-name:strong-password@localhost:5432/test-music-app
+      NEXT_PUBLIC_API_URL: http://localhost:5000
 
     services:
       db:
@@ -79,6 +80,7 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
+
       - name: Determine client package versions & dependencies (clean-install)
         run: npm ci
         working-directory: client
@@ -98,6 +100,10 @@ jobs:
           NEXT_PUBLIC_API_URL: http://localhost:5000
         working-directory: client
 
+      - name: Wait for Frontend to be Ready
+        run: |
+          npx wait-on http://localhost:3000
+
       # E2E Tests
       - name: Cypress run
         uses: cypress-io/github-action@v6
@@ -106,3 +112,18 @@ jobs:
           wait-on-timeout: 300
           browser: electron
           working-directory: client
+
+      # Build Docker image for server (NestJS)
+      - name: Build Docker image for server (NestJS)
+        run: |
+          docker build -t music-app-server:latest -f server/Dockerfile.prod .
+
+      # Build Docker image for client (Next.js)
+      - name: Build Docker image for client (Next.js)
+        run: |
+          docker build -t music-app-client:latest -f client/Dockerfile.prod .
+
+      # Run Docker Compose to start services
+      - name: Run Docker Compose
+        run: |
+          docker-compose -f docker-compose.prod.yml up -d
