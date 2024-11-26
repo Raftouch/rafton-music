@@ -15,7 +15,8 @@ FROM base AS builder
 WORKDIR /usr/src/app
 COPY package.json package-lock.json* ./
 # COPY --from=deps /usr/src/app/node_modules ./node_modules
-RUN npm ci
+# RUN npm ci
+RUN npm install
 COPY . .
 
 # Next.js collects completely anonymous telemetry data about general usage.
