@@ -1,15 +1,11 @@
-'use server'
-
-import { cookies } from 'next/headers'
-const API_URL = process.env.NEXT_PUBLIC_API_URL
+import { API_URL } from './const'
 
 export async function checkAuth() {
   try {
-    const response = await fetch(`${API_URL}/auth/check-auth`, {
+    const response = await fetch(`${API_URL}/api/auth/check-auth`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Cookie: cookies().toString(),
       },
       cache: 'no-store',
       credentials: 'include',
@@ -17,8 +13,16 @@ export async function checkAuth() {
 
     if (response.ok) {
       const data = await response.json()
-      return { authenticated: true, id: data.id, username: data.username }
+      return {
+        authenticated: true,
+        id: data.id,
+        username: data.username,
+        role: data.role,
+      }
     } else {
+      console.error('Authentication failed with status:', response.status)
+      const errorData = await response.json()
+      console.error('Error details:', errorData)
       return { authenticated: false }
     }
   } catch (error) {

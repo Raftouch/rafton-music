@@ -1,33 +1,52 @@
+'use client'
+
+import Loader from '@/components/Loader'
 import UpdateSongForm from '@/components/UpdateSongForm'
-// import useUserStore from '@/store/user'
+import { Song } from '@/models/song'
+import useUserStore from '@/store/user'
 import { getSong } from '@/utils/song'
-import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
+import { notFound, useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 interface UpdateSongProps {
   params: { id: string }
 }
 
-export default async function UpdateSong({ params: { id } }: UpdateSongProps) {
-  try {
-    const token = cookies().get('access_token')
-    if (!token) {
-      redirect('/auth/login')
-    }
-    // const { checkAuth, isAuth } = useUserStore.getState()
-    // await checkAuth()
-    // if (!isAuth) {
-    //   redirect('/auth/login')
-    // }
+export default function UpdateSong({ params: { id } }: UpdateSongProps) {
+  const [song, setSong] = useState<Song | null>(null)
+  const [loading, setLoading] = useState(true)
+  const router = useRouter()
 
-    const song = await getSong(id)
-    if (!song) {
-      throw new Error('No song data available')
+  const { checkAuth, isAuth } = useUserStore()
+
+  useEffect(() => {
+    const authAndUpdateSong = async () => {
+      if (!isAuth) {
+        await checkAuth()
+      }
+
+      if (!isAuth) {
+        router.push('/auth/login')
+        return
+      }
+
+      try {
+        const songData = await getSong(id)
+        setSong(songData)
+      } catch (error) {
+        console.error('Error fetching song data:', error)
+        notFound()
+      } finally {
+        setLoading(false)
+      }
     }
 
-    return <UpdateSongForm song={song} />
-  } catch (error) {
-    console.error(error)
-    return <div>Error: Failed to retrieve song data</div>
-  }
+    authAndUpdateSong()
+  }, [checkAuth, router, id, isAuth])
+
+  if (loading) return <Loader />
+
+  if (!song) return 'No song data available'
+
+  return <UpdateSongForm song={song} />
 }

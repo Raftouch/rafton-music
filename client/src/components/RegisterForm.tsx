@@ -1,5 +1,6 @@
 'use client'
 
+import { API_URL } from '@/utils/const'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
@@ -7,7 +8,6 @@ import { toast } from 'sonner'
 export default function RegisterForm() {
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
-  const API_URL = process.env.NEXT_PUBLIC_API_URL
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -20,8 +20,11 @@ export default function RegisterForm() {
       password: formData.get('password'),
     }
 
+    console.log('API URL:', process.env.NEXT_PUBLIC_API_URL)
+    console.log('API URL NODE_ENV:', process.env.NODE_ENV)
+
     try {
-      const response = await fetch(`${API_URL}/auth/register`, {
+      const response = await fetch(`${API_URL}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -42,10 +45,8 @@ export default function RegisterForm() {
     } catch (e) {
       if (e instanceof Error) {
         toast.error(e.message)
-        // setError(e.message)
       } else {
         toast.error('Registration failed')
-        // setError('An unexpected error occurred')
       }
     }
   }

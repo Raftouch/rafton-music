@@ -1,9 +1,17 @@
+'use client'
+
+import Loader from '@/components/Loader'
 import SongCard from '@/components/SongCard'
-// import useUserStore from '@/store/user'
+import { Song } from '@/models/song'
+import useUserStore from '@/store/user'
+import { formatDate, formatName } from '@/utils/format'
 import { getSong } from '@/utils/song'
-import { Metadata } from 'next'
-import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
+// import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+// import { Metadata } from 'next'
+// import { cookies } from 'next/headers'
+// import { redirect } from 'next/navigation'
+import { useEffect, useState } from 'react'
 // import Image from 'next/image'
 // import Link from 'next/link'
 
@@ -11,51 +19,66 @@ interface DetailsProps {
   params: { id: string }
 }
 
-export async function generateMetadata({
-  params: { id },
-}: DetailsProps): Promise<Metadata> {
-  const song = await getSong(id)
+export default function SongDetails({ params: { id } }: DetailsProps) {
+  const [song, setSong] = useState<Song | null>(null)
+  const [loading, setLoading] = useState(true)
+  const router = useRouter()
 
-  return {
-    title:
-      'Rafton - Music platform - ' + song?.title + ' - ' + song?.artist.name,
-  }
-}
+  const { checkAuth, isAuth } = useUserStore()
 
-export default async function SongDetails({ params: { id } }: DetailsProps) {
-  const token = cookies().get('access_token')
-  if (!token) {
-    redirect('/auth/login')
-  }
+  useEffect(() => {
+    const authAndFetchSong = async () => {
+      if (!isAuth) {
+        await checkAuth()
+      }
 
-  // const { checkAuth, isAuth } = useUserStore.getState()
-  // await checkAuth()
-  // if (!isAuth) {
-  //   redirect('/auth/login')
-  // }
+      if (!isAuth) {
+        router.push('/auth/login')
+        return
+      }
 
-  const song = await getSong(id)
+      try {
+        const songData = await getSong(id)
+        setSong(songData)
+      } catch (error) {
+        console.error('Failed to fetch song:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    authAndFetchSong()
+  }, [checkAuth, id, router, isAuth])
+
+  if (loading) return <Loader />
+
   if (!song) {
-    throw new Error('No song data available')
+    return (
+      <div className="mt-20 text-center">
+        <p>Song not found or could not be fetched</p>
+      </div>
+    )
   }
 
   return (
-    <div
-      data-cy="song-details"
-      className="flex gap-10 flex-wrap justify-center mt-20 mb-10"
-    >
-      <SongCard song={song} key={song.id} />
-      {/* <div className="flex flex-col"> */}
-      <div className="flex flex-col gap-5">
-        <p>Title: {song?.title}</p>
-        <p>Artist: {song?.artist.name}</p>
-        <p>Genre: {song?.genre.type}</p>
-        <p>Playcount: {song?.playcount}</p>
+    <div className="mt-20 text-center">
+      <h1>Song details</h1>
+      <div
+        data-cy="song-details"
+        className="flex gap-10 flex-wrap justify-center items-center mt-10 mb-20"
+      >
+        <SongCard song={song} key={song.id} />
+        <div className="flex flex-col gap-5 text-left">
+          <p>Title: {song?.title}</p>
+          <p>Artist: {song?.artist.name}</p>
+          <p>Genre: {song?.genre.type}</p>
+          <p>Uploaded by: {formatName(song?.uploadedBy.username || '')}</p>
+          <p>Uploaded at: {formatDate(song?.uploadedAt)}</p>
+          <p>Playcount: {song?.playcount}</p>
+        </div>
       </div>
-      {/* <Link className="mt-auto" href="/songs">
-          Back to playlist
-        </Link> */}
-      {/* </div> */}
+
+      {/* <Link href="/songs">Back to playlist</Link> */}
     </div>
   )
 }

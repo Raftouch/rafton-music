@@ -1,17 +1,13 @@
-'use server'
-
-import { Song } from '@/models/song'
-import { notFound } from 'next/navigation'
+import { User } from '@/models/user'
 import { API_URL } from './const'
-import { cookies } from 'next/headers'
+import { notFound } from 'next/navigation'
 
-export async function getSong(id: string): Promise<Song | null> {
+export async function getUser(id: string): Promise<User | null> {
   try {
-    const response = await fetch(`${API_URL}/api/songs/${id}`, {
+    const response = await fetch(`${API_URL}/api/users/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${cookies().get('access_token')?.value}`,
       },
       cache: 'no-store',
       credentials: 'include',
@@ -22,25 +18,25 @@ export async function getSong(id: string): Promise<Song | null> {
     } else if (response.status === 404) {
       notFound()
     } else if (!response.ok) {
-      throw new Error('Failed to fetch song data')
+      throw new Error('Failed to fetch user data')
     } else {
-      const song: Song = await response.json()
-      return song
+      const user: User = await response.json()
+      console.log('Fetched user:', user)
+      return user
     }
   } catch (error) {
-    console.error('Error fetching song:', error)
+    console.error('Error fetching user:', error)
     return null
   }
 }
 
-export async function getAllSongs(): Promise<Song[]> {
+export async function getAllUsers(): Promise<User[]> {
   try {
-    const response = await fetch(`${API_URL}/api/songs`, {
+    console.log(`Fetching users from: ${API_URL}/api/users`)
+    const response = await fetch(`${API_URL}/api/users`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${cookies().get('access_token')?.value}`,
-        // Cookie: cookies().toString(),
       },
       cache: 'no-store',
       credentials: 'include',
@@ -53,11 +49,12 @@ export async function getAllSongs(): Promise<Song[]> {
     } else if (!response.ok) {
       throw new Error(`An error has occurred: ${response.statusText}`)
     } else {
-      const songs: Song[] = await response.json()
-      return songs
+      const users: User[] = await response.json()
+      console.log('Fetched users:', users)
+      return users
     }
   } catch (error) {
-    console.error('Error fetching songs:', error)
+    console.error('Error fetching users:', error)
     return []
   }
 }

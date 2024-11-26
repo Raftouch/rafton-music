@@ -13,6 +13,7 @@ import { UsersModule } from './users/users.module';
 import * as path from 'path';
 import * as cookieParser from 'cookie-parser';
 import { AccessTokenStrategy } from './auth/strategies/access-token.strategy';
+import { HealthController } from './health/health.controller';
 
 @Module({
   imports: [
@@ -23,16 +24,17 @@ import { AccessTokenStrategy } from './auth/strategies/access-token.strategy';
     GenresModule,
     FilesModule,
     ServeStaticModule.forRoot({
-      rootPath: path.resolve(__dirname, 'static'),
+      rootPath: path.resolve(process.cwd(), 'static'),
+      // rootPath: path.resolve(__dirname, 'static'),
     }),
     AuthModule,
     UsersModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, HealthController],
   providers: [AppService, AccessTokenStrategy],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(cookieParser()).forRoutes('*'); // Apply cookie-parser to all routes
+    consumer.apply(cookieParser()).forRoutes('*');
   }
 }

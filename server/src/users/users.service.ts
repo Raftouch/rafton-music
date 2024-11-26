@@ -12,11 +12,21 @@ export class UsersService {
   }
 
   async findAll() {
-    return this.prisma.user.findMany();
+    return this.prisma.user.findMany({
+      where: {},
+      include: {
+        uploadedSongs: true,
+      },
+    });
   }
 
   async findOne(id: string) {
-    return this.prisma.user.findUnique({ where: { id } });
+    return this.prisma.user.findUnique({
+      where: { id },
+      include: {
+        uploadedSongs: true,
+      },
+    });
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
@@ -24,6 +34,11 @@ export class UsersService {
   }
 
   async remove(id: string) {
-    return this.prisma.user.delete({ where: { id } });
+    return this.prisma.user.delete({
+      where: { id },
+      include: {
+        uploadedSongs: true,
+      },
+    });
   }
 }

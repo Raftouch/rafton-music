@@ -19,7 +19,7 @@ import { JwtRefreshAuthGuard } from './guards/refresh-token.guard';
 import { JwtAuthGuard } from './guards/access-token.guard';
 import { User } from '@prisma/client';
 
-@Controller('auth')
+@Controller('api/auth')
 @ApiTags('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -54,9 +54,18 @@ export class AuthController {
   @Get('check-auth')
   checkAuth(@Req() req: Request, @Res() res: Response) {
     const user = req.user as User;
-    return res
-      .status(200)
-      .json({ authenticated: true, username: user.username });
+    if (!user) {
+      return res.status(401).json({ authenticated: false });
+    }
+    return res.status(200).json({
+      authenticated: true,
+      id: user.id,
+      username: user.username,
+      role: user.role,
+    });
+    // return res
+    //   .status(200)
+    //   .json({ authenticated: true, username: user.username });
   }
 
   // private route

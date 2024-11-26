@@ -18,7 +18,8 @@ export class FilesService {
       }
       const fileExtension = file.originalname.split('.').pop();
       const fileName = uuid.v4() + '.' + fileExtension;
-      const filePath = path.resolve(__dirname, '..', 'static', type);
+      const filePath = path.resolve(process.cwd(), 'static', type);
+      // const filePath = path.resolve(__dirname, '..', 'static', type);
       if (!fs.existsSync(filePath)) {
         fs.mkdirSync(filePath, { recursive: true });
       }
@@ -29,5 +30,21 @@ export class FilesService {
     }
   }
 
-  //   removeFile(fileName: string) {}
+  removeFile(type: FileType, fileName: string): void {
+    try {
+      // Construct the correct file path
+      const filePath = path.resolve(process.cwd(), 'static', type, fileName);
+      console.log(`Attempting to delete file at: ${filePath}`);
+
+      if (!fs.existsSync(filePath)) {
+        throw new HttpException('File not found', HttpStatus.NOT_FOUND);
+      }
+
+      fs.unlinkSync(filePath);
+      console.log(`Successfully deleted file: ${filePath}`);
+    } catch (error) {
+      console.error(`Failed to delete ${type} file: ${fileName}`, error);
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
 }

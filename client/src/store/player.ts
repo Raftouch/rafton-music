@@ -1,4 +1,5 @@
 import { Song } from '@/models/song'
+import { API_URL } from '@/utils/const'
 import { create } from 'zustand'
 
 interface PlayerState {
@@ -15,8 +16,6 @@ interface PlayerState {
 }
 
 let audio: HTMLAudioElement | null = null
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 const usePlayerStore = create<PlayerState>((set, get) => ({
   pause: true,
@@ -37,12 +36,24 @@ const usePlayerStore = create<PlayerState>((set, get) => ({
       audio.volume = state.volume / 100
       audio.play()
 
+      // Set duration and currentTime as before
       audio.onloadedmetadata = () => {
         set({ duration: Math.ceil(audio!.duration) })
       }
 
       audio.ontimeupdate = () => {
-        set({ currentTime: Math.ceil(audio!.currentTime) })
+        const clampedTime = Math.min(
+          Math.ceil(audio!.currentTime),
+          get().duration
+        )
+        set({ currentTime: clampedTime })
+        // set({ currentTime: Math.ceil(audio!.currentTime) })
+      }
+
+      // Add an event listener for when the song ends
+      audio.onended = () => {
+        set({ pause: true, currentTime: 0 }) // Reset to 0 when song ends
+        // set({ pause: true }) // Update pause state to show the play button
       }
 
       set({

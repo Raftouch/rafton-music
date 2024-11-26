@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { validate } from '../validations/song'
 import { FormValues } from '@/models/formvalues'
 import { toast } from 'sonner'
+import { API_URL } from '@/utils/const'
 
 export default function CreateSongForm() {
   const [image, setImage] = useState<File | undefined>(undefined)
@@ -25,8 +26,6 @@ export default function CreateSongForm() {
     setValues({ ...values, [name]: value })
   }
 
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/songs`
-
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
@@ -40,7 +39,7 @@ export default function CreateSongForm() {
       formData.append('genre[type]', values.genre)
       if (image) formData.append('image', image)
       if (audio) formData.append('audio', audio)
-      fetch(url, {
+      fetch(`${API_URL}/api/songs`, {
         method: 'POST',
         body: formData,
         credentials: 'include',

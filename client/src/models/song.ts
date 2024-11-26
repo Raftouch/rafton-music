@@ -3,13 +3,13 @@ import { User } from './user'
 export interface Song {
   id: string
   title: string
-  image?: string
+  image: string
   audio: string
   playcount: number
-  uploadedat: Date
+  uploadedAt: string
+  uploadedBy: User
   artist: Artist
   genre: Genre
-  users?: User[]
 }
 
 interface Artist {

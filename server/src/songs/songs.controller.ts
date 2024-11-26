@@ -9,12 +9,13 @@ import {
   UseInterceptors,
   UploadedFiles,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { SongsService } from './songs.service';
 import { CreateSongDto } from './dto/create-song.dto';
 import { UpdateSongDto } from './dto/update-song.dto';
 import {
-  ApiBearerAuth,
+  // ApiBearerAuth,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiTags,
@@ -23,6 +24,7 @@ import { SongEntity } from './entities/song.entity';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '../auth/guards/access-token.guard';
 import { JwtService } from '@nestjs/jwt';
+import { Request } from 'express';
 
 @Controller('api/songs')
 @ApiTags('songs')
@@ -34,7 +36,7 @@ export class SongsController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  // @ApiBearerAuth()
   @ApiCreatedResponse({ type: SongEntity })
   @UseInterceptors(
     FileFieldsInterceptor([
@@ -42,14 +44,20 @@ export class SongsController {
       { name: 'audio', maxCount: 1 },
     ]),
   )
-  create(@UploadedFiles() files, @Body() createSongDto: CreateSongDto) {
+  create(
+    @UploadedFiles() files,
+    @Body() createSongDto: CreateSongDto,
+    @Req() req: Request,
+  ) {
     const { image, audio } = files;
-    return this.songsService.create(createSongDto, image[0], audio[0]);
+    const userId = req.user['id'];
+
+    return this.songsService.create(createSongDto, image[0], audio[0], userId);
   }
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  // @ApiBearerAuth()
   @ApiOkResponse({ type: SongEntity, isArray: true })
   async findAll() {
     return this.songsService.findAll();
@@ -57,7 +65,7 @@ export class SongsController {
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  // @ApiBearerAuth()
   @ApiOkResponse({ type: SongEntity })
   findOne(@Param('id') id: string) {
     return this.songsService.findOne(id);
@@ -65,7 +73,7 @@ export class SongsController {
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  // @ApiBearerAuth()
   @ApiOkResponse({ type: SongEntity })
   @UseInterceptors(
     FileFieldsInterceptor([
@@ -77,7 +85,9 @@ export class SongsController {
     @Param('id') id: string,
     @UploadedFiles() files,
     @Body() updateSongDto: UpdateSongDto,
+    @Req() req: Request,
   ) {
+    const userId = req.user['id'];
     const { image, audio } = files;
 
     return this.songsService.update(
@@ -85,14 +95,17 @@ export class SongsController {
       updateSongDto,
       image ? image[0] : null,
       audio ? audio[0] : null,
+      userId,
     );
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  // @ApiBearerAuth()
   @ApiOkResponse({ type: SongEntity })
-  remove(@Param('id') id: string) {
-    return this.songsService.remove(id);
+  remove(@Param('id') id: string, @Req() req: Request) {
+    const userId = req.user['id'];
+
+    return this.songsService.remove(id, userId);
   }
 }

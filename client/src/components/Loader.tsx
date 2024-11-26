@@ -1,3 +1,3 @@
 export default function Loader() {
-  return <p className="text-center">Please wait ... ⏱️</p>;
+  return <p className="text-center mt-20">Please wait ... ⏱️</p>
 }

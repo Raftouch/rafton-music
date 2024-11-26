@@ -1,0 +1,27 @@
+export function formatTime(seconds: number): string {
+  const minutes = Math.floor(seconds / 60)
+  const remainingSeconds = seconds % 60
+  return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`
+}
+
+export function formatDate(date: string): string {
+  const d = new Date(date)
+
+  if (isNaN(d.getTime())) {
+    throw new Error('Invalid date')
+  }
+
+  return d.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  })
+}
+
+export function formatName(text: string, maxLength?: number): string {
+  if (!text) return ''
+  const trimmedText = maxLength ? text.slice(0, maxLength) : text
+  return (
+    trimmedText.charAt(0).toUpperCase() + trimmedText.slice(1).toLowerCase()
+  )
+}
