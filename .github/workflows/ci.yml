@@ -65,10 +65,8 @@ jobs:
         working-directory: server
         timeout-minutes: 5 # Gives server 5 minutes to start
 
-      # Wait for server to be fully ready before proceeding to the client setup
-      - name: Wait for Backend to be Ready
-        run: |
-          npx wait-on http://localhost:5000
+      # - name: Wait for Backend to be Ready
+      #   run: npx wait-on http://localhost:5000
 
       - name: Launch integration tests
         run: npm run test
@@ -100,9 +98,8 @@ jobs:
           NEXT_PUBLIC_API_URL: http://localhost:5000
         working-directory: client
 
-      - name: Wait for Frontend to be Ready
-        run: |
-          npx wait-on http://localhost:3000
+      # - name: Wait for client to be Ready
+      #   run: npx wait-on http://localhost:3000
 
       # E2E Tests
       - name: Cypress run
@@ -115,15 +112,12 @@ jobs:
 
       # Build Docker image for server (NestJS)
       - name: Build Docker image for server (NestJS)
-        run: |
-          docker build -t music-app-server:latest -f server/Dockerfile.prod .
+        run: docker build -t music-app-server:latest -f server/Dockerfile.prod .
 
       # Build Docker image for client (Next.js)
       - name: Build Docker image for client (Next.js)
-        run: |
-          docker build -t music-app-client:latest -f client/Dockerfile.prod .
+        run: docker build -t music-app-client:latest -f client/Dockerfile.prod .
 
       # Run Docker Compose to start services
       - name: Run Docker Compose
-        run: |
-          docker-compose -f docker-compose.prod.yml up -d
+        run: docker-compose -f docker-compose.prod.yml up -d
