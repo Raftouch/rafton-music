@@ -1,3 +1,5 @@
+'use server'
+
 import { Song } from '@/models/song'
 import { notFound } from 'next/navigation'
 import { API_URL } from './const'
@@ -9,6 +11,7 @@ export async function getSong(id: string): Promise<Song | null> {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${cookies().get('access_token')?.value}`,
       },
       cache: 'no-store',
       credentials: 'include',
