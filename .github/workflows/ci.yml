@@ -10,7 +10,6 @@ jobs:
 
     env:
       DATABASE_URL: postgres://user-name:strong-password@localhost:5432/test-music-app
-      NEXT_PUBLIC_API_URL: http://localhost:5000
 
     services:
       db:
@@ -119,5 +118,5 @@ jobs:
       #   run: docker build -t music-app-client:latest -f client/Dockerfile.prod .
 
       # Run Docker Compose to start services
-      - name: Run Docker Compose
-        run: docker-compose -f docker-compose.prod.yml up -d
+      # - name: Run Docker Compose
+      #   run: docker-compose -f docker-compose.prod.yml up -d
