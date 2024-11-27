@@ -36,6 +36,7 @@ export default function Playlists({
 
       try {
         const songsData = await getAllSongs()
+        console.log('songs data : ', songsData)
         setSongs(songsData || [])
       } catch (error) {
         console.error('Failed to fetch songs:', error)
