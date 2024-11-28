@@ -7,6 +7,9 @@ on:
 jobs:
   server-and-client-with-tests:
     runs-on: ubuntu-latest
+    stragtegy:
+      matrix:
+        node-version: [20.x]
 
     env:
       DATABASE_URL: postgres://user-name:strong-password@localhost:5432/test-music-app
@@ -31,7 +34,7 @@ jobs:
       - name: Setup Node.js for Backend
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: ${{ matrix.node-version}}
           cache: 'npm'
 
       - name: Determine server package versions & dependencies
@@ -75,7 +78,7 @@ jobs:
       - name: Setup Node.js for Frontend
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: ${{ matrix.node-version}}
           cache: 'npm'
 
       - name: Determine client package versions & dependencies (clean-install)
