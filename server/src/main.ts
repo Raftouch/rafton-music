@@ -16,13 +16,25 @@ async function start() {
 
   app.use(cookieParser());
   app.enableCors({
-    origin: allowedOrigins,
-    // origin: true,
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, origin); // Renvoie l'origine spécifique
+      } else {
+        callback(new Error('Not allowed by CORS')); // Rejette l'origine non autorisée
+      }
+    },
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type, Accept, Authorization, Cookie, Origin',
-    preflightContinue: false,
   });
+  // app.enableCors({
+  //   origin: allowedOrigins,
+  //   // origin: true,
+  //   credentials: true,
+  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  //   allowedHeaders: 'Content-Type, Accept, Authorization, Cookie, Origin',
+  //   preflightContinue: false,
+  // });
   // app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
