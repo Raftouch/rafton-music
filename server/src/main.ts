@@ -29,17 +29,6 @@ async function start() {
   //   res.header('Access-Control-Allow-Headers', 'Content-Type, Accept');
   //   next();
   // });
-
-  app.use((req, res, next) => {
-    if (req.method === 'OPTIONS') {
-      res.header('Access-Control-Allow-Origin', 'http://portainer-cda3b.dev-formation.com:3024'); // You can specify exact origin here
-      res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
-      res.header('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization, Cookie, Origin');
-      res.header('Access-Control-Allow-Credentials', 'true'); // Include credentials support
-      return res.status(200).end();
-    }
-    next();
-  });
   
   
   // app.enableCors({
@@ -56,13 +45,27 @@ async function start() {
   // });
 
   app.enableCors({
-    origin: allowedOrigins,
-    // origin: 'http://portainer-cda3b.dev-formation.com:3024',
-    credentials: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    allowedHeaders: 'Content-Type, Accept, Authorization, Cookie, Origin',
-    preflightContinue: false,
+    origin: (origin, callback) => {
+      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+        callback(null, origin);  // Accept the request if the origin matches
+      } else {
+        callback(new Error('Not allowed by CORS'));  // Reject the request if the origin is not allowed
+      }
+    },
+    credentials: true, // Allow cookies and credentials
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS', // Allowed methods
+    allowedHeaders: 'Content-Type, Accept, Authorization, Cookie, Origin', // Allowed headers
+    preflightContinue: false, // Let NestJS handle preflight responses
   });
+
+  // app.enableCors({
+  //   origin: allowedOrigins,
+  //   // origin: 'http://portainer-cda3b.dev-formation.com:3024',
+  //   credentials: true,
+  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  //   allowedHeaders: 'Content-Type, Accept, Authorization, Cookie, Origin',
+  //   preflightContinue: false,
+  // });
   // app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
