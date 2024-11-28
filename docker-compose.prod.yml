@@ -9,6 +9,7 @@ services:
     environment:
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
       NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL}
+      NODE_ENV: ${NODE_ENV}
     ports:
       - '3024:3000'
     # env_file:
@@ -33,6 +34,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       ACCESS_JWT_SECRET: ${ACCESS_JWT_SECRET}
       REFRESH_JWT_SECRET: ${REFRESH_JWT_SECRET}
+      NODE_ENV: ${NODE_ENV}
     ports:
       - '5000:5000'
     # env_file:
