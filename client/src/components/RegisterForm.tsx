@@ -31,6 +31,7 @@ export default function RegisterForm() {
         },
         body: JSON.stringify(payload),
         credentials: 'include',
+        mode: 'no-cors',
       })
 
       if (!response.ok) {

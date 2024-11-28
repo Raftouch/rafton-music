@@ -32,6 +32,7 @@ export default function LoginForm() {
         },
         body: JSON.stringify(payload),
         credentials: 'include',
+        mode: 'no-cors',
       })
 
       if (!response.ok) {
