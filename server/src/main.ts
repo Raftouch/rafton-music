@@ -30,14 +30,14 @@ async function start() {
   //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   //   allowedHeaders: 'Content-Type, Accept, Authorization, Cookie, Origin',
   // });
-  app.enableCors({
-    // origin: allowedOrigins,
-    origin: 'http://portainer-cda3b.dev-formation.com:3024',
-    credentials: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    allowedHeaders: 'Content-Type, Accept, Authorization, Cookie, Origin',
-    preflightContinue: false,
-  });
+  // app.enableCors({
+  //   // origin: allowedOrigins,
+  //   origin: 'http://portainer-cda3b.dev-formation.com:3024',
+  //   credentials: true,
+  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  //   allowedHeaders: 'Content-Type, Accept, Authorization, Cookie, Origin',
+  //   preflightContinue: false,
+  // });
   // app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
