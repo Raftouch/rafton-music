@@ -5,10 +5,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
 
 async function start() {
-  const app = await NestFactory.create(AppModule, {
-    cors: true,
-});
-  // const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule);
   const port = process.env.PORT || 5000;
 
   const allowedOrigins = [
@@ -18,6 +15,13 @@ async function start() {
   ];
 
   app.use(cookieParser());
+  app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Accept');
+    next();
+  });
+
   // app.enableCors({
   //   origin: (origin, callback) => {
   //     if (!origin || allowedOrigins.includes(origin)) {
@@ -30,14 +34,15 @@ async function start() {
   //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   //   allowedHeaders: 'Content-Type, Accept, Authorization, Cookie, Origin',
   // });
-  // app.enableCors({
-  //   // origin: allowedOrigins,
-  //   origin: 'http://portainer-cda3b.dev-formation.com:3024',
-  //   credentials: true,
-  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-  //   allowedHeaders: 'Content-Type, Accept, Authorization, Cookie, Origin',
-  //   preflightContinue: false,
-  // });
+  
+  app.enableCors({
+    // origin: allowedOrigins,
+    origin: 'http://portainer-cda3b.dev-formation.com:3024',
+    credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type, Accept, Authorization, Cookie, Origin',
+    preflightContinue: false,
+  });
   // app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
