@@ -16,19 +16,20 @@ async function start() {
 
   app.use(cookieParser());
 
-  app.use((req, res, next) => {
-    console.log(`Requête reçue : ${req.method} ${req.url}`);
-    console.log(`Origine : ${req.headers.origin}`);
-    console.log(`Headers :`, req.headers);
-    next();
-  });
+  // app.use((req, res, next) => {
+  //   console.log(`Requête reçue : ${req.method} ${req.url}`);
+  //   console.log(`Origine : ${req.headers.origin}`);
+  //   console.log(`Headers :`, req.headers);
+  //   next();
+  // });
   
-  app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Accept');
-    next();
-  });
+  // app.use((req, res, next) => {
+  //   res.header('Access-Control-Allow-Origin', '*');
+  //   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  //   res.header('Access-Control-Allow-Headers', 'Content-Type, Accept');
+  //   next();
+  // });
+  
   
 
   // app.enableCors({
@@ -45,8 +46,8 @@ async function start() {
   // });
 
   app.enableCors({
-    // origin: allowedOrigins,
-    origin: 'http://portainer-cda3b.dev-formation.com:3024',
+    origin: allowedOrigins,
+    // origin: 'http://portainer-cda3b.dev-formation.com:3024',
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type, Accept, Authorization, Cookie, Origin',
