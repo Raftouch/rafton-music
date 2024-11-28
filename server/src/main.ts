@@ -29,9 +29,19 @@ async function start() {
   //   res.header('Access-Control-Allow-Headers', 'Content-Type, Accept');
   //   next();
   // });
-  
-  
 
+  app.use((req, res, next) => {
+    if (req.method === 'OPTIONS') {
+      res.header('Access-Control-Allow-Origin', 'http://portainer-cda3b.dev-formation.com:3024'); // You can specify exact origin here
+      res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
+      res.header('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization, Cookie, Origin');
+      res.header('Access-Control-Allow-Credentials', 'true'); // Include credentials support
+      return res.status(200).end();
+    }
+    next();
+  });
+  
+  
   // app.enableCors({
   //   origin: (origin, callback) => {
   //     if (!origin || allowedOrigins.includes(origin)) {
