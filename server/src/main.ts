@@ -7,17 +7,15 @@ import * as cookieParser from 'cookie-parser';
 async function start() {
   const app = await NestFactory.create(AppModule);
   const port = process.env.PORT || 5000;
-
-  const allowedOrigins = [
-    'http://localhost:3000',
-    'http://localhost:3024',
-    'http://portainer-cda3b.dev-formation.com:3024',
-  ];
+  const origins = [
+    process.env.NEXT_PUBLIC_API_URL,
+    process.env.NEXT_PUBLIC_BASE_URL,
+  ]
 
   app.use(cookieParser());
 
   app.enableCors({
-    origin: allowedOrigins,
+    origin: origins,
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type, Accept, Authorization, Cookie, Origin',
@@ -34,6 +32,6 @@ async function start() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  await app.listen(port, () => console.log(`Server running on port ${port}`));
+  await app.listen(port, () => console.log(`MY Server running on port ${port}`));
 }
 start();
