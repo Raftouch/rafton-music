@@ -9,6 +9,8 @@ export default function Home() {
         Upload your songs, connect with fans, and discover new music. A platform
         for creators, by creators
       </h3>
+
+      <p>WHAT A GREAT WEBSITE ❤️</p>
     </div>
   );
 }
