@@ -12,7 +12,6 @@ async function start() {
     process.env.NEXT_PUBLIC_BASE_URL,
   ]
 
-
   app.use(cookieParser());
 
   app.enableCors({
