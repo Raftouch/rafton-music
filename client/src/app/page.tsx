@@ -9,8 +9,6 @@ export default function Home() {
         Upload your songs, connect with fans, and discover new music. A platform
         for creators, by creators
       </h3>
-
-      <Vinyl />
     </div>
   );
 }
