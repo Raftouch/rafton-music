@@ -7,14 +7,16 @@ import * as cookieParser from 'cookie-parser';
 async function start() {
   const app = await NestFactory.create(AppModule);
   const port = process.env.PORT || 5000;
-  const nextPublicApiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
-
+  const origins = [
+    process.env.NEXT_PUBLIC_API_URL,
+    process.env.NEXT_PUBLIC_BASE_URL,
+  ]
 
 
   app.use(cookieParser());
 
   app.enableCors({
-    origin: nextPublicApiUrl,
+    origin: origins,
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type, Accept, Authorization, Cookie, Origin',
