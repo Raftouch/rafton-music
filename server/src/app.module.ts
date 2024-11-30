@@ -14,6 +14,7 @@ import * as path from 'path';
 import * as cookieParser from 'cookie-parser';
 import { AccessTokenStrategy } from './auth/strategies/access-token.strategy';
 import { HealthController } from './health/health.controller';
+import { LoggerService } from './logger/logger.service';
 
 @Module({
   imports: [
@@ -31,7 +32,7 @@ import { HealthController } from './health/health.controller';
     UsersModule,
   ],
   controllers: [AppController, HealthController],
-  providers: [AppService, AccessTokenStrategy],
+  providers: [AppService, AccessTokenStrategy, LoggerService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
