@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import mongoose from "mongoose";
+import loggerEvents from "./routes/logger";
 
 dotenv.config();
 
@@ -10,6 +11,8 @@ const port: string | number = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
+
+app.use("/api", loggerEvents);
 
 const start = async (): Promise<void> => {
   try {
