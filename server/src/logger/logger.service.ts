@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class LoggerService {
-  private readonly loggerUrl = 'http: //localhost:3001/log';
+  private readonly loggerUrl = process.env.LOGGER_URL;
 
   async logEvent(eventType: string, message: string): Promise<void> {
     try {

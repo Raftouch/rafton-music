@@ -5,12 +5,14 @@ import { Prisma, Song } from '@prisma/client';
 import { FileType, FilesService } from '../files/files.service';
 import { PrismaService } from '../prisma/prisma.service';
 import * as path from 'path';
+import { LoggerService } from 'src/logger/logger.service';
 
 @Injectable()
 export class SongsService {
   constructor(
-    private prisma: PrismaService,
-    private file: FilesService,
+    private readonly prisma: PrismaService,
+    private readonly file: FilesService,
+    private readonly loggerService: LoggerService,
   ) {}
 
   async create(
@@ -50,6 +52,15 @@ export class SongsService {
         uploadedBy: { connect: { id: userId } },
       },
     });
+
+    const songTitle =
+      typeof createSongDto.title === 'object'
+        ? JSON.stringify(createSongDto.title)
+        : createSongDto.title;
+    await this.loggerService.logEvent(
+      'CREATE_SONG',
+      `Song created: ${songTitle}`,
+    );
 
     return song;
   }
