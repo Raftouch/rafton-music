@@ -68,6 +68,28 @@ services:
     depends_on:
       - server
 
+  event-logger-service:
+    container_name: logger-service
+    build:
+      context: ./service
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=${PORT}
+      - MONGODB_URI=${MONGODB_URI}
+    depends_on:
+      - event-logger-db
+
+  event-logger-db:
+    image: mongo:latest
+    container_name: logger-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
 volumes:
   db-data:
   pgadmin-data:
+  mongodb_data:
