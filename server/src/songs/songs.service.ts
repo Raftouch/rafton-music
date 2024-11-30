@@ -53,13 +53,14 @@ export class SongsService {
       },
     });
 
-    const songTitle =
-      typeof createSongDto.title === 'object'
-        ? JSON.stringify(createSongDto.title)
-        : createSongDto.title;
+    const songLog =
+      typeof createSongDto === 'object'
+        ? JSON.stringify(createSongDto)
+        : createSongDto;
+
     await this.loggerService.logEvent(
       'CREATE_SONG',
-      `Song created: ${songTitle}`,
+      `Song created: ${songLog}`,
     );
 
     return song;

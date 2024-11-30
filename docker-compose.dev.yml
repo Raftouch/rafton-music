@@ -43,6 +43,7 @@ services:
       REFRESH_JWT_SECRET: ${REFRESH_JWT_SECRET}
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
       NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL}
+      LOGGER_URL: ${LOGGER_URL}
     ports:
       - "5000:5000"
     volumes:
@@ -68,7 +69,7 @@ services:
     depends_on:
       - server
 
-  event-logger-service:
+  logger-service:
     container_name: logger-service
     build:
       context: ./service
@@ -79,9 +80,9 @@ services:
       - PORT=${PORT}
       - MONGODB_URI=${MONGODB_URI}
     depends_on:
-      - event-logger-db
+      - logger-db
 
-  event-logger-db:
+  logger-db:
     image: mongo:latest
     container_name: logger-db
     ports:

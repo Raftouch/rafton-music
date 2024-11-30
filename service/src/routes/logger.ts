@@ -3,6 +3,6 @@ import createLog from "../controllers/logger";
 
 const router = Router();
 
-router.post("/log", createLog);
+router.post("/logs", createLog);
 
 export default router;
