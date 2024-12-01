@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import { LogDto } from './dto/log.dto';
 
 @Injectable()
 export class LoggerService {
   private readonly loggerUrl = process.env.LOGGER_URL;
 
-  async createLog(eventType: string, message: string): Promise<void> {
+  async createLog(eventType: string, message: string): Promise<LogDto> {
     try {
       const response = await fetch(this.loggerUrl, {
         method: 'POST',
@@ -18,7 +19,8 @@ export class LoggerService {
         throw new Error(`Error creating log: ${response.statusText}`);
       }
 
-      console.log(`Log: ${eventType}`);
+      const data = (await response.json()) as LogDto;
+      return data;
     } catch (error) {
       console.error('Error creating log', error);
     }
