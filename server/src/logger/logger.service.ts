@@ -26,6 +26,20 @@ export class LoggerService {
     }
   }
 
+  async getLogs(): Promise<LogDto[]> {
+    try {
+      const response = await fetch(this.loggerUrl, { method: 'GET' });
+      if (!response.ok) {
+        throw new Error(`Error fetching logs: ${response.statusText}`);
+      }
+
+      const data = (await response.json()) as LogDto[];
+      return data;
+    } catch (error) {
+      console.error('Error fetching log', error);
+    }
+  }
+
   async getLog(id: string): Promise<LogDto> {
     try {
       const response = await fetch(`${this.loggerUrl}/${id}`, {
