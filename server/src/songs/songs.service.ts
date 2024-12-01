@@ -58,7 +58,7 @@ export class SongsService {
         ? JSON.stringify(createSongDto)
         : createSongDto;
 
-    await this.loggerService.logEvent(
+    await this.loggerService.createLog(
       'CREATE_SONG',
       `Song created: ${songLog}`,
     );

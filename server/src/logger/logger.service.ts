@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 export class LoggerService {
   private readonly loggerUrl = process.env.LOGGER_URL;
 
-  async logEvent(eventType: string, message: string): Promise<void> {
+  async createLog(eventType: string, message: string): Promise<void> {
     try {
       const response = await fetch(this.loggerUrl, {
         method: 'POST',
