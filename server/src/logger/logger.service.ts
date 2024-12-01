@@ -15,12 +15,27 @@ export class LoggerService {
       });
 
       if (!response.ok) {
-        throw new Error(`Error logging event: ${response.statusText}`);
+        throw new Error(`Error creating log: ${response.statusText}`);
       }
 
-      console.log(`Logged event: ${eventType}`);
+      console.log(`Log: ${eventType}`);
     } catch (error) {
-      console.error('Error logging event', error);
+      console.error('Error creating log', error);
+    }
+  }
+
+  async getLog(id: string): Promise<void> {
+    try {
+      const response = await fetch(`${this.loggerUrl}/${id}`, {
+        method: 'GET',
+      });
+      if (!response.ok) {
+        throw new Error(`Error fetching log: ${response.statusText}`);
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching log', error);
     }
   }
 }
