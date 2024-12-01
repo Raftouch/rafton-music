@@ -26,7 +26,7 @@ export class LoggerService {
     }
   }
 
-  async getLog(id: string): Promise<void> {
+  async getLog(id: string): Promise<LogDto> {
     try {
       const response = await fetch(`${this.loggerUrl}/${id}`, {
         method: 'GET',
@@ -34,7 +34,7 @@ export class LoggerService {
       if (!response.ok) {
         throw new Error(`Error fetching log: ${response.statusText}`);
       }
-      const data = await response.json();
+      const data = (await response.json()) as LogDto;
       return data;
     } catch (error) {
       console.error('Error fetching log', error);
