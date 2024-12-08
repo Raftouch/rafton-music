@@ -7,7 +7,9 @@ import { firstValueFrom } from 'rxjs';
 export class LoggerService {
   private readonly loggerUrl = process.env.LOGGER_URL;
 
-  constructor(private readonly httpService: HttpService) {}
+  constructor(private readonly httpService: HttpService) {
+    // console.log('HttpService:', this.httpService);
+  }
 
   async createLog(eventType: string, message: string): Promise<LogDto> {
     try {

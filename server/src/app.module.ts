@@ -15,6 +15,7 @@ import * as cookieParser from 'cookie-parser';
 import { AccessTokenStrategy } from './auth/strategies/access-token.strategy';
 import { HealthController } from './health/health.controller';
 import { LoggerService } from './logger/logger.service';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { LoggerService } from './logger/logger.service';
     }),
     AuthModule,
     UsersModule,
+    HttpModule,
   ],
   controllers: [AppController, HealthController],
   providers: [AppService, AccessTokenStrategy, LoggerService],
