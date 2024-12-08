@@ -23,6 +23,29 @@ export default class LoggerController {
   }
 
   public static async getAllLogs(req: Request, res: Response): Promise<void> {
+    // const limit = parseInt(req.query.limit as string) || 10; // Default limit: 10
+    // const page = parseInt(req.query.page as string) || 1; // Default page: 1
+
+    // try {
+    //   const logs = await Log.find()
+    //     .skip((page - 1) * limit)
+    //     .limit(limit);
+    //   const total = await Log.countDocuments();
+
+    //   res.status(200).json({
+    //     data: logs,
+    //     meta: {
+    //       total,
+    //       page,
+    //       pages: Math.ceil(total / limit),
+    //     },
+    //   });
+    // } catch (error) {
+    //   res.status(500).json({
+    //     message: "Error getting all logs",
+    //   });
+    // }
+
     try {
       const logs = await Log.find();
       res
