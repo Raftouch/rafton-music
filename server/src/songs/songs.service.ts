@@ -53,15 +53,19 @@ export class SongsService {
       },
     });
 
-    const songLog =
-      typeof createSongDto === 'object'
-        ? JSON.stringify(createSongDto)
-        : createSongDto;
+    // const songLog =
+    //   typeof createSongDto === 'object'
+    //     ? JSON.stringify(createSongDto)
+    //     : createSongDto;
 
-    await this.loggerService.createLog(
-      'CREATE_SONG',
-      `Song created: ${songLog}`,
-    );
+    // logger
+    const songLog = `Title: ${createSongDto.title}, Artist: ${createSongDto.artist.name}, Genre: ${createSongDto.genre.type}`;
+
+    await this.loggerService
+      .createLog('CREATE_SONG', `Success! Song created: ${songLog}`)
+      .catch((error) =>
+        console.error('Failed to log song creation:', error.message),
+      );
 
     return song;
   }
@@ -78,6 +82,15 @@ export class SongsService {
         uploadedBy: true,
       },
     });
+
+    // logger
+    await this.loggerService
+      .createLog(
+        'GET_ALL_SONGS',
+        `Success! Song count: ${songs.length} song(s)`,
+      )
+      .catch((error) => console.error('Failed to log:', error.message));
+
     return songs;
   }
 
@@ -90,6 +103,16 @@ export class SongsService {
         uploadedBy: true,
       },
     });
+
+    // logger
+    const logMessage = song
+      ? `Success! Song with id: ${id}, Title: ${song.title}`
+      : `Failed to retrieve song with id: ${id}`;
+
+    await this.loggerService
+      .createLog('GET_SONG_BY_ID', logMessage)
+      .catch((error) => console.error('Failed to log:', error.message));
+
     return song;
   }
 
@@ -156,6 +179,15 @@ export class SongsService {
       data: updateData,
     });
 
+    // logger
+    const logMessage = updatedSong
+      ? `Success! Updated song with id: ${id}, Fields: ${JSON.stringify(updateSongDto)}`
+      : `Failed to update song with id: ${id}`;
+
+    await this.loggerService
+      .createLog('UPDATE_SONG', logMessage)
+      .catch((error) => console.error('Failed to log:', error.message));
+
     return updatedSong;
   }
 
@@ -199,6 +231,17 @@ export class SongsService {
       }
     }
 
-    return await this.prisma.song.delete({ where: { id } });
+    const deletedSong = await this.prisma.song.delete({ where: { id } });
+
+    // logger
+    const logMessage = deletedSong
+      ? `Sucess! Deleted song with id: ${id}, Title: ${deletedSong.title}`
+      : `Failed to delete song with id: ${id}`;
+
+    await this.loggerService
+      .createLog('DELETE_SONG', logMessage)
+      .catch((error) => console.error('Failed to log:', error.message));
+
+    return deletedSong;
   }
 }
