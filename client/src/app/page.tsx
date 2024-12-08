@@ -10,7 +10,7 @@ export default function Home() {
         for creators, by creators
       </h3>
 
-      <Vinyl />
+      <p>WHAT A GREAT WEBSITE ❤️</p>
     </div>
   );
 }
