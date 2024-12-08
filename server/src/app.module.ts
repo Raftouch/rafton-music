@@ -16,6 +16,7 @@ import { AccessTokenStrategy } from './auth/strategies/access-token.strategy';
 import { HealthController } from './health/health.controller';
 import { LoggerService } from './logger/logger.service';
 import { HttpModule } from '@nestjs/axios';
+import { LoggerController } from './logger/logger.controller';
 
 @Module({
   imports: [
@@ -33,7 +34,7 @@ import { HttpModule } from '@nestjs/axios';
     UsersModule,
     HttpModule,
   ],
-  controllers: [AppController, HealthController],
+  controllers: [AppController, HealthController, LoggerController],
   providers: [AppService, AccessTokenStrategy, LoggerService],
 })
 export class AppModule implements NestModule {
