@@ -65,7 +65,7 @@ export class AuthService {
 
     res.cookie('access_token', tokens.access_token, {
       httpOnly: true,
-      // secure: false,
+      // secure: process.env.NODE_ENV === 'production',
       secure: false,
       sameSite: 'lax',
       maxAge: 1000 * 60 * 15, // 15 minutes
@@ -74,7 +74,7 @@ export class AuthService {
 
     res.cookie('refresh_token', tokens.refresh_token, {
       httpOnly: true,
-      // secure: false,
+      // secure: process.env.NODE_ENV === 'production',
       secure: false,
       sameSite: 'lax',
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
@@ -122,7 +122,7 @@ export class AuthService {
 
     res.cookie('access_token', tokens.access_token, {
       httpOnly: true, // Only accessible by the server
-      // secure: false,
+      // secure: process.env.NODE_ENV === 'production',
       secure: false,
       sameSite: 'lax',
       maxAge: 1000 * 60 * 15, // 15 minutes
@@ -131,7 +131,7 @@ export class AuthService {
 
     res.cookie('refresh_token', tokens.refresh_token, {
       httpOnly: true,
-      // secure: false,
+      // secure: process.env.NODE_ENV === 'production',
       secure: false,
       sameSite: 'lax',
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
@@ -158,11 +158,13 @@ export class AuthService {
 
     res.clearCookie('access_token', {
       httpOnly: true,
+      // secure: process.env.NODE_ENV === 'production',
       secure: false,
     });
 
     res.clearCookie('refresh_token', {
       httpOnly: true,
+      // secure: process.env.NODE_ENV === 'production',
       secure: false,
     });
 
@@ -244,6 +246,7 @@ export class AuthService {
 
     res.cookie('access_token', tokens.access_token, {
       httpOnly: true,
+      // secure: process.env.NODE_ENV === 'production',
       secure: false,
       sameSite: 'lax',
       maxAge: 1000 * 60 * 15,
@@ -251,6 +254,7 @@ export class AuthService {
 
     res.cookie('refresh_token', tokens.refresh_token, {
       httpOnly: true,
+      // secure: process.env.NODE_ENV === 'production',
       secure: false,
       sameSite: 'lax',
       maxAge: 1000 * 60 * 60 * 24 * 7,
