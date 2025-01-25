@@ -27,7 +27,7 @@ model Song {
   title        String   @db.VarChar(50)
   image        String?  @db.VarChar(255)
   audio        String   @db.VarChar(255)
-  playcount    Int?
+  playcount    Int?     @default(0)
   uploadedAt   DateTime @default(dbgenerated("CURRENT_DATE")) @db.Date
   artist       Artist   @relation("ArtistSongs", fields: [artistId], references: [id])
   artistId     String   @db.Uuid
@@ -35,6 +35,8 @@ model Song {
   genreId      String   @db.Uuid
   uploadedBy   User?    @relation("UploadedSongs", fields: [uploadedById], references: [id])
   uploadedById String?  @db.Uuid
+
+  playHistory SongPlayHistory[] @relation("SongPlayHistory")
 }
 
 model User {
@@ -47,6 +49,20 @@ model User {
   registeredAt  DateTime @default(dbgenerated("CURRENT_DATE")) @db.Date
   updatedAt     DateTime @default(dbgenerated("CURRENT_DATE")) @db.Date
   uploadedSongs Song[]   @relation("UploadedSongs")
+
+  playHistory SongPlayHistory[] @relation("UserSongPlayHistory")
+}
+
+model SongPlayHistory {
+  id       String   @id @default(uuid()) @db.Uuid
+  userId   String   @db.Uuid
+  songId   String   @db.Uuid
+  playedAt DateTime @default(now())
+
+  user User @relation("UserSongPlayHistory", fields: [userId], references: [id])
+  song Song @relation("SongPlayHistory", fields: [songId], references: [id])
+
+  @@unique([userId, songId]) // only one play per user recorded
 }
 
 enum Role {

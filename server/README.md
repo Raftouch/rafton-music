@@ -71,3 +71,8 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+## Prisma migrate
+
+npx prisma generate (Generate the Prisma client)
+npx prisma migrate dev --name add_song_play_history (Create and apply the migration)
