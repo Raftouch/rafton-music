@@ -179,6 +179,31 @@ export class SongsService {
       data: updateData,
     });
 
+    // track play count
+    const userHasPlayedSong = await this.prisma.songPlayHistory.findFirst({
+      where: {
+        userId,
+        songId: id,
+      },
+    });
+
+    if (!userHasPlayedSong) {
+      // If the user hasn't played this song before
+      await this.prisma.song.update({
+        where: { id },
+        data: {
+          playcount: { increment: 1 },
+        },
+      });
+    }
+
+    await this.prisma.songPlayHistory.create({
+      data: {
+        userId,
+        songId: id,
+      },
+    });
+
     // logger
     const logMessage = updatedSong
       ? `Success! Updated song with id: ${id}, Fields: ${JSON.stringify(updateSongDto)}`
