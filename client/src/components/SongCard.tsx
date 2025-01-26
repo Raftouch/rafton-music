@@ -10,6 +10,7 @@ import { FaEdit, FaPlay, FaPause } from "react-icons/fa";
 import usePlayerStore from "@/store/player";
 import { API_URL } from "@/utils/const";
 import useUserStore from "@/store/user";
+import { incrementPlaycount } from "@/utils/playcount";
 
 interface SongProps {
   song: Song;
@@ -26,11 +27,15 @@ export default function SongCard({ song }: SongProps) {
   console.log("user songs : ", user?.uploadedSongs);
   console.log("user : ", user);
 
-  const handlePlay = () => {
+  const handlePlay = async () => {
     if (isPlaying) {
       pauseSong();
     } else {
       playSong(song);
+
+      if (user?.id && song.id) {
+        await incrementPlaycount(song.id, user.id);
+      }
     }
   };
 
