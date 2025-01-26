@@ -6,6 +6,8 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class FavoritesService {
   constructor(private readonly prisma: PrismaService) {}
 
+  async getUserFavs(userId: string) {}
+
   async addToFavs(userId: string, songId: string): Promise<User> {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
 

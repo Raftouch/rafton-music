@@ -19,8 +19,8 @@ import { HttpModule } from '@nestjs/axios';
 import { LoggerController } from './logger/logger.controller';
 import { PlaycountService } from './playcount/playcount.service';
 import { PlaycountController } from './playcount/playcount.controller';
-import { FavouritesController } from './favourites/favourites.controller';
-import { FavouritesService } from './favourites/favourites.service';
+import { FavoritesController } from './favorites/favorites.controller';
+import { FavoritesService } from './favorites/favorites.service';
 
 @Module({
   imports: [
@@ -38,8 +38,20 @@ import { FavouritesService } from './favourites/favourites.service';
     UsersModule,
     HttpModule,
   ],
-  controllers: [AppController, HealthController, LoggerController, PlaycountController, FavouritesController],
-  providers: [AppService, AccessTokenStrategy, LoggerService, PlaycountService, FavouritesService],
+  controllers: [
+    AppController,
+    HealthController,
+    LoggerController,
+    PlaycountController,
+    FavoritesController,
+  ],
+  providers: [
+    AppService,
+    AccessTokenStrategy,
+    LoggerService,
+    PlaycountService,
+    FavoritesService,
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
