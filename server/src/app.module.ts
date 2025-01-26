@@ -18,6 +18,7 @@ import { LoggerService } from './logger/logger.service';
 import { HttpModule } from '@nestjs/axios';
 import { LoggerController } from './logger/logger.controller';
 import { PlaycountService } from './playcount/playcount.service';
+import { PlaycountController } from './playcount/playcount.controller';
 
 @Module({
   imports: [
@@ -35,7 +36,7 @@ import { PlaycountService } from './playcount/playcount.service';
     UsersModule,
     HttpModule,
   ],
-  controllers: [AppController, HealthController, LoggerController],
+  controllers: [AppController, HealthController, LoggerController, PlaycountController],
   providers: [AppService, AccessTokenStrategy, LoggerService, PlaycountService],
 })
 export class AppModule implements NestModule {

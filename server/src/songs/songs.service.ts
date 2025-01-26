@@ -103,8 +103,14 @@ export class SongsService {
         artist: true,
         genre: true,
         uploadedBy: true,
+        playHistory: true,
       },
     });
+
+    const playcount = song?.playHistory.length ?? 0;
+
+    console.log('playcount : ', song.playcount);
+    console.log('play history : ', song.playHistory);
 
     // logger
     const logMessage = song
@@ -115,7 +121,7 @@ export class SongsService {
       .createLog('GET_SONG_BY_ID', logMessage)
       .catch((error) => console.error('Failed to log:', error.message));
 
-    return song;
+    return { ...song, playcount };
   }
 
   async update(

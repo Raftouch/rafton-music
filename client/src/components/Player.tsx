@@ -1,10 +1,11 @@
-'use client'
+"use client";
 
-import PlayProgress from './PlayProgress'
-import { FaPause, FaPlay, FaVolumeUp } from 'react-icons/fa'
-import usePlayerStore from '@/store/player'
-import useUserStore from '@/store/user'
-import { useEffect } from 'react'
+import PlayProgress from "./PlayProgress";
+import { FaPause, FaPlay, FaVolumeUp } from "react-icons/fa";
+import usePlayerStore from "@/store/player";
+import useUserStore from "@/store/user";
+import { useEffect } from "react";
+import { incrementPlaycount } from "@/utils/playcount";
 
 export default function Player() {
   const {
@@ -17,35 +18,39 @@ export default function Player() {
     pauseSong,
     setVolume,
     setCurrentTime,
-  } = usePlayerStore()
+  } = usePlayerStore();
 
-  const { isAuth, checkAuth } = useUserStore()
+  const { isAuth, checkAuth, user } = useUserStore();
 
   useEffect(() => {
     const checkUserAuth = async () => {
-      await checkAuth()
-    }
-    checkUserAuth()
-  }, [checkAuth])
+      await checkAuth();
+    };
+    checkUserAuth();
+  }, [checkAuth]);
 
-  const play = () => {
+  const play = async () => {
     if (pause) {
-      playSong()
+      playSong();
+
+      if (isAuth && active && user && user.id) {
+        await incrementPlaycount(active.id, user.id);
+      }
     } else {
-      pauseSong()
+      pauseSong();
     }
-  }
+  };
 
   const changeVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setVolume(Number(e.target.value))
-  }
+    setVolume(Number(e.target.value));
+  };
 
   const changeCurrentTime = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCurrentTime(Number(e.target.value))
-  }
+    setCurrentTime(Number(e.target.value));
+  };
 
   if (!isAuth || !active) {
-    return null
+    return null;
   }
 
   return (
@@ -79,5 +84,5 @@ export default function Player() {
         />
       </div>
     </div>
-  )
+  );
 }

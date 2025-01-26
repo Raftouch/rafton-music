@@ -54,10 +54,10 @@ model User {
 }
 
 model SongPlayHistory {
-  id       String   @id @default(uuid()) @db.Uuid
-  userId   String   @db.Uuid
-  songId   String   @db.Uuid
-  playedAt DateTime @default(now())
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  songId    String   @db.Uuid
+  createdAt DateTime @default(now()) @db.Date
 
   user User @relation("UserSongPlayHistory", fields: [userId], references: [id])
   song Song @relation("SongPlayHistory", fields: [songId], references: [id])
