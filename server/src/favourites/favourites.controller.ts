@@ -1,17 +1,17 @@
 import { Body, Controller, Delete, Post } from '@nestjs/common';
-import { FavouritesService } from './favourites.service';
+import { FavoritesService } from './favourites.service';
 
-@Controller('api/favourites')
+@Controller('api/favorites')
 export class FavouritesController {
-  constructor(private readonly favourites: FavouritesService) {}
+  constructor(private readonly favorites: FavoritesService) {}
 
   @Post()
-  addFavourite(@Body() body: { userId: string; songId: string }) {
-    return this.favourites.addToFavs(body.userId, body.songId);
+  addFavorite(@Body() body: { userId: string; songId: string }) {
+    return this.favorites.addToFavs(body.userId, body.songId);
   }
 
   @Delete()
-  removeFavourite(@Body() body: { userId: string; songId: string }) {
-    return this.favourites.removeFromFavs(body.userId, body.songId);
+  removeFavorite(@Body() body: { userId: string; songId: string }) {
+    return this.favorites.removeFromFavs(body.userId, body.songId);
   }
 }
