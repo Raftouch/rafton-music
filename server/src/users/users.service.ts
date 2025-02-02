@@ -23,10 +23,20 @@ export class UsersService {
   async findOne(id: string) {
     return this.prisma.user.findUnique({
       where: { id },
-      include: {
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        role: true,
+        registeredAt: true,
+        updatedAt: true,
         uploadedSongs: true,
         favorites: true,
       },
+      // include: {
+      //   uploadedSongs: true,
+      //   favorites: true,
+      // },
     });
   }
 
