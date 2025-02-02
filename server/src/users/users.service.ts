@@ -25,6 +25,7 @@ export class UsersService {
       where: { id },
       include: {
         uploadedSongs: true,
+        favorites: true,
       },
     });
   }

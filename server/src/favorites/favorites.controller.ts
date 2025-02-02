@@ -5,11 +5,11 @@ import { FavoritesService } from './favorites.service';
 export class FavoritesController {
   constructor(private readonly favorites: FavoritesService) {}
 
-  @Get(':userId/favorites')
-  getUserFavorites(@Param('userId') userId: string) {
-    console.log('hello from user favs');
-    return this.favorites.getUserFavs(userId);
-  }
+  // @Get(':userId/favorites')
+  // getUserFavorites(@Param('userId') userId: string) {
+  //   console.log('hello from user favs');
+  //   return this.favorites.getUserFavs(userId);
+  // }
 
   @Post(':userId/favorites')
   addFavorite(@Param('userId') userId: string, @Body('songId') songId: string) {
