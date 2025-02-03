@@ -11,12 +11,15 @@ import { JwtService } from '@nestjs/jwt';
 import { Request, Response } from 'express';
 import { RegisterEntity } from './entities/auth-register.entity';
 import { LoginEntity } from './entities/auth-login.entity';
+import { User } from '@prisma/client';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private prisma: PrismaService,
     private jwt: JwtService,
+    private usersServive: UsersService,
   ) {}
 
   async register(
@@ -214,6 +217,13 @@ export class AuthService {
       refresh_token: refreshToken,
     };
   }
+
+  // async checkAuth(req: Request, res: Response): Promise<User> {
+  //   const userId = req.user?.id;
+
+  //   const user = await this.usersServive.findOne(userId);
+  //   return user;
+  // }
 
   async updateRefreshToken(id: string, refreshToken: string) {
     const hashedRefreshToken = await this.hashData(refreshToken);

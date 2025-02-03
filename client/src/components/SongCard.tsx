@@ -11,7 +11,7 @@ import usePlayerStore from "@/store/player";
 import { API_URL } from "@/utils/const";
 import useUserStore from "@/store/user";
 import { incrementPlaycount } from "@/utils/playcount";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface SongProps {
   song: Song;
@@ -29,6 +29,17 @@ export default function SongCard({ song }: SongProps) {
   console.log("user songs : ", user?.uploadedSongs);
   console.log("user : ", user);
 
+  useEffect(() => {
+    if (
+      user?.favoriteSongs &&
+      user.favoriteSongs.some((fav) => fav.id === song.id)
+    ) {
+      setIsFavorite(true);
+    } else {
+      setIsFavorite(false);
+    }
+  }, [user, song.id]);
+
   const handlePlay = async () => {
     if (isPlaying) {
       pauseSong();
@@ -38,6 +49,29 @@ export default function SongCard({ song }: SongProps) {
       if (user?.id && song.id) {
         await incrementPlaycount(song.id, user.id);
       }
+    }
+  };
+
+  const handleFavorite = async () => {
+    try {
+      const response = await fetch(
+        `${API_URL}/api/users/${user?.id}/favorites`,
+        {
+          method: isFavorite ? "DELETE" : "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ songId: song.id }),
+        }
+      );
+
+      if (response.ok) {
+        setIsFavorite(!isFavorite);
+      } else {
+        console.error("Error setting favorite song");
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
     }
   };
 
@@ -66,9 +100,9 @@ export default function SongCard({ song }: SongProps) {
           {isPlaying ? <FaPause /> : <FaPlay />}
         </Button>
 
-        {/* <button className="absolute top-2 right-2" onClick={handleFavorite}>
+        <button className="absolute top-2 right-2" onClick={handleFavorite}>
           {isFavorite ? <FaHeart color="red" /> : <FaRegHeart />}
-        </button> */}
+        </button>
 
         {isSongOwner || user?.role === "ADMIN" ? (
           <>
