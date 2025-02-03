@@ -218,12 +218,27 @@ export class AuthService {
     };
   }
 
-  // async checkAuth(req: Request, res: Response): Promise<User> {
-  //   const userId = req.user?.id;
+  async checkAuth(
+    req: Request,
+    res: Response,
+  ): Promise<Response<any, Record<string, any>>> {
+    const userFromRequest = req.user as User;
 
-  //   const user = await this.usersServive.findOne(userId);
-  //   return user;
-  // }
+    if (!userFromRequest) {
+      return res.status(401).json({ authenticated: false });
+    }
+
+    const userFromDB = await this.usersServive.findOne(userFromRequest.id);
+
+    return res.status(200).json({
+      authenticated: true,
+      id: userFromDB.id,
+      username: userFromDB.username,
+      role: userFromDB.role,
+      uploadedSongs: userFromDB.uploadedSongs,
+      favoriteSongs: userFromDB.favoriteSongs,
+    });
+  }
 
   async updateRefreshToken(id: string, refreshToken: string) {
     const hashedRefreshToken = await this.hashData(refreshToken);

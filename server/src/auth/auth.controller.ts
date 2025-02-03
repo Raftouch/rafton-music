@@ -51,24 +51,11 @@ export class AuthController {
     return this.authService.logout(req, res, user['id']);
   }
 
-  // @UseGuards(JwtAuthGuard)
-  // @Get('check-auth')
-  // checkAuth(@Req() req: Request, @Res() res: Response) {
-  //   return this.authService.checkAuth(req, res);
-  //   // const user = req.user as User;
-  //   // if (!user) {
-  //   //   return res.status(401).json({ authenticated: false });
-  //   // }
-  //   // return res.status(200).json({
-  //   //   authenticated: true,
-  //   //   id: user.id,
-  //   //   username: user.username,
-  //   //   role: user.role,
-  //   // });
-  //   // return res
-  //   //   .status(200)
-  //   //   .json({ authenticated: true, username: user.username });
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Get('check-auth')
+  checkAuth(@Req() req: Request, @Res() res: Response) {
+    return this.authService.checkAuth(req, res);
+  }
 
   // private route
   @UseGuards(JwtRefreshAuthGuard)
