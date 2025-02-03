@@ -37,12 +37,12 @@ export class FavoritesService {
     return await this.prisma.user.update({
       where: { id: userId },
       data: {
-        favorites: {
+        favoriteSongs: {
           connect: { id: songId },
         },
       },
       include: {
-        favorites: true,
+        favoriteSongs: true,
       },
     });
   }
@@ -63,12 +63,12 @@ export class FavoritesService {
     return await this.prisma.user.update({
       where: { id: userId },
       data: {
-        favorites: {
+        favoriteSongs: {
           disconnect: { id: songId },
         },
       },
       include: {
-        favorites: true,
+        favoriteSongs: true,
       },
     });
   }

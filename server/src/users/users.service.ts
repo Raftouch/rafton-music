@@ -35,7 +35,7 @@ export class UsersService {
       // },
       include: {
         uploadedSongs: true,
-        favorites: true,
+        favoriteSongs: true,
       },
     });
 

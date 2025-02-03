@@ -36,7 +36,7 @@ model Song {
   uploadedBy   User?             @relation("UploadedSongs", fields: [uploadedById], references: [id])
   uploadedById String?           @db.Uuid
   playHistory  SongPlayHistory[] @relation("SongPlayHistory")
-  favorites    User[]            @relation("FavouriteSongs")
+  favoritedBy  User[]            @relation("FavouriteSongs")
 }
 
 model User {
@@ -50,7 +50,7 @@ model User {
   updatedAt     DateTime          @default(dbgenerated("CURRENT_DATE")) @db.Date
   uploadedSongs Song[]            @relation("UploadedSongs")
   playHistory   SongPlayHistory[] @relation("UserSongPlayHistory")
-  favorites     Song[]            @relation("FavouriteSongs")
+  favoriteSongs Song[]            @relation("FavouriteSongs")
 }
 
 model SongPlayHistory {
