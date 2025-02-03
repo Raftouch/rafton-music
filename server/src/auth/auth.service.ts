@@ -9,8 +9,8 @@ import * as bcrypt from 'bcryptjs';
 import { LoginDto } from './dto/auth-login.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Request, Response } from 'express';
-import { RegisterEntity } from './entities/register.entity';
-import { LoginEntity } from './entities/login.entity';
+import { RegisterEntity } from './entities/auth-register.entity';
+import { LoginEntity } from './entities/auth-login.entity';
 
 @Injectable()
 export class AuthService {

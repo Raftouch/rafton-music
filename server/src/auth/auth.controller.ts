@@ -14,10 +14,11 @@ import { RegisterDto } from './dto/auth-register.dto';
 import { LoginDto } from './dto/auth-login.dto';
 import { Request, Response } from 'express';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
-import { AuthEntity } from './entities/auth.entity';
 import { JwtRefreshAuthGuard } from './guards/refresh-token.guard';
 import { JwtAuthGuard } from './guards/access-token.guard';
 import { User } from '@prisma/client';
+import { LoginEntity } from './entities/auth-login.entity';
+import { RegisterEntity } from './entities/auth-register.entity';
 
 @Controller('api/auth')
 @ApiTags('auth')
@@ -26,7 +27,7 @@ export class AuthController {
 
   // public route
   @Post('register')
-  @ApiCreatedResponse({ type: AuthEntity })
+  @ApiCreatedResponse({ type: RegisterEntity })
   register(
     @Body() authDto: RegisterDto,
     @Req() req: Request,
@@ -37,7 +38,7 @@ export class AuthController {
 
   // public route
   @Post('login')
-  @ApiCreatedResponse({ type: AuthEntity })
+  @ApiCreatedResponse({ type: LoginEntity })
   login(@Body() authDto: LoginDto, @Req() req: Request, @Res() res: Response) {
     return this.authService.login(authDto, req, res);
   }
