@@ -1,6 +1,5 @@
 "use client";
 
-import Loader from "@/components/Loader";
 import UserList from "@/components/UserList";
 import { User } from "@/models/user";
 import useUserStore from "@/store/user";
@@ -10,39 +9,26 @@ import { useEffect, useState } from "react";
 
 export default function UsersList() {
   const [users, setUsers] = useState<User[]>([]);
-  const { checkAuth, isAuth, user } = useUserStore();
-  const [loading, setLoading] = useState(true);
+  const { user } = useUserStore();
   const router = useRouter();
 
   useEffect(() => {
-    const authFetchUsers = async () => {
-      if (!isAuth) {
-        await checkAuth();
-      }
-
-      if (!isAuth) {
-        router.push("/auth/login");
-        return;
-      }
-
+    const fetchUsers = async () => {
       if (user?.role === "ADMIN") {
         try {
           const usersData = await getAllUsers();
           setUsers(usersData || []);
         } catch (error) {
           console.error("Failed to fetch users:", error);
-        } finally {
-          setLoading(false);
         }
       } else {
         console.log("Not authorized. Redirecting to home page");
         router.push("/");
       }
     };
-    authFetchUsers();
-  }, [checkAuth, router, isAuth, user]);
 
-  if (loading) return <Loader />;
+    fetchUsers();
+  }, [user]);
 
   return (
     <div className="mt-20 sm:w-[80%] w-full">
