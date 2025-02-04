@@ -1,52 +1,33 @@
-'use client'
+"use client";
 
-import Loader from '@/components/Loader'
-import UpdateSongForm from '@/components/UpdateSongForm'
-import { Song } from '@/models/song'
-import useUserStore from '@/store/user'
-import { getSong } from '@/utils/song'
-import { notFound, useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import UpdateSongForm from "@/components/UpdateSongForm";
+import { Song } from "@/models/song";
+import { getSong } from "@/utils/song";
+import { notFound } from "next/navigation";
+import { useEffect, useState } from "react";
 
 interface UpdateSongProps {
-  params: { id: string }
+  params: { id: string };
 }
 
 export default function UpdateSong({ params: { id } }: UpdateSongProps) {
-  const [song, setSong] = useState<Song | null>(null)
-  const [loading, setLoading] = useState(true)
-  const router = useRouter()
-
-  const { checkAuth, isAuth } = useUserStore()
+  const [song, setSong] = useState<Song | null>(null);
 
   useEffect(() => {
-    const authAndUpdateSong = async () => {
-      if (!isAuth) {
-        await checkAuth()
-      }
-
-      if (!isAuth) {
-        router.push('/auth/login')
-        return
-      }
-
+    const fetchSong = async () => {
       try {
-        const songData = await getSong(id)
-        setSong(songData)
+        const songData = await getSong(id);
+        setSong(songData);
       } catch (error) {
-        console.error('Error fetching song data:', error)
-        notFound()
-      } finally {
-        setLoading(false)
+        console.error("Error fetching song data:", error);
+        notFound();
       }
-    }
+    };
 
-    authAndUpdateSong()
-  }, [checkAuth, router, id, isAuth])
+    fetchSong();
+  }, [id]);
 
-  if (loading) return <Loader />
+  if (!song) return "No song data available";
 
-  if (!song) return 'No song data available'
-
-  return <UpdateSongForm song={song} />
+  return <UpdateSongForm song={song} />;
 }
