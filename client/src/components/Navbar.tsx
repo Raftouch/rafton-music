@@ -26,7 +26,7 @@ export default function Navbar() {
       </Link>
 
       <ul className="flex sm:space-x-10 space-x-5 items-center">
-        {!isAuth ? (
+        {!isAuth || pathname === "/auth/login" ? (
           <>
             <Link
               href="/auth/login"
