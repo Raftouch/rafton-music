@@ -108,6 +108,9 @@ export class AuthService {
 
     const userFound = await this.prisma.user.findUnique({
       where: { username },
+      include: {
+        favoriteSongs: true,
+      },
     });
 
     if (!userFound) {
@@ -155,6 +158,7 @@ export class AuthService {
     const responsePayload: LoginEntity = {
       id: userFound.id,
       username: userFound.username,
+      favoriteSongs: userFound.favoriteSongs,
       access_token: tokens.access_token,
       refresh_token: tokens.refresh_token,
     };

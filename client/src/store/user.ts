@@ -1,11 +1,7 @@
 import { User } from "@/models/user";
 import { checkAuth } from "@/utils/auth";
+import { getUser } from "@/utils/user";
 import { create } from "zustand";
-
-// interface MinimalUser {
-//   id: string;
-//   username: string;
-// }
 
 interface UserState {
   user: Partial<User> | undefined;
@@ -27,27 +23,29 @@ const useUserStore = create<UserState>((set) => ({
     set(() => ({ isAuth }));
   },
   checkAuth: async () => {
-    // const { isAuth } = useUserStore.getState()
-    // if (isAuth) return // if already auth, don't check again
     console.log("Starting authentication check...");
     const res = await checkAuth();
     console.log("Auth check response:", res);
     if (res.authenticated) {
-      console.log("User authenticated:", {
-        id: res.id,
-        username: res.username,
-        role: res.role,
-      });
-      set({
-        user: {
-          id: res.id,
-          username: res.username,
-          role: res.role,
-          uploadedSongs: res.uploadedSongs,
-          favoriteSongs: res.favoriteSongs,
-        },
-        isAuth: true,
-      });
+      // console.log("User authenticated:", {
+      //   id: res.id,
+      //   username: res.username,
+      //   role: res.role,
+      // });
+      const userData = await getUser(res.id);
+      // console.log("Fetched user data ZUSTAND:", userData);
+      if (userData) {
+        set({
+          user: userData,
+          // id: res.id,
+          // username: res.username,
+          // role: res.role,
+          // uploadedSongs: res.uploadedSongs,
+          // favoriteSongs: res.favoriteSongs,
+
+          isAuth: true,
+        });
+      }
     } else {
       console.log("User not authenticated");
       set({ user: undefined, isAuth: false });

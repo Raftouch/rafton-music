@@ -1,57 +1,61 @@
-'use client'
+"use client";
 
-import useUserStore from '@/store/user'
-import { API_URL } from '@/utils/const'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import { toast } from 'sonner'
+import useUserStore from "@/store/user";
+import { API_URL } from "@/utils/const";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export default function LoginForm() {
-  const [error, setError] = useState<string | null>(null)
-  const { setUser, setIsAuth } = useUserStore()
-  const router = useRouter()
+  const [error, setError] = useState<string | null>(null);
+  const { setUser, setIsAuth } = useUserStore();
+  const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setError(null)
+    event.preventDefault();
+    setError(null);
 
-    const formData = new FormData(event.currentTarget)
+    const formData = new FormData(event.currentTarget);
     const payload = {
-      username: formData.get('username'),
-      password: formData.get('password'),
-    }
+      username: formData.get("username"),
+      password: formData.get("password"),
+    };
 
-    console.log('API URL:', process.env.NEXT_PUBLIC_API_URL)
-    console.log('API URL NODE_ENV:', process.env.NODE_ENV)
+    console.log("API URL:", process.env.NEXT_PUBLIC_API_URL);
+    console.log("API URL NODE_ENV:", process.env.NODE_ENV);
 
     try {
       const response = await fetch(`${API_URL}/api/auth/login`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
-        credentials: 'include',
-      })
+        credentials: "include",
+      });
 
       if (!response.ok) {
-        throw new Error(`Login failed, status: ${response.status}`)
+        throw new Error(`Login failed, status: ${response.status}`);
       }
 
-      const userData = await response.json()
-      setUser({ id: userData.id, username: userData.username })
-      setIsAuth(true)
+      const userData = await response.json();
+      setUser({
+        id: userData.id,
+        username: userData.username,
+        favoriteSongs: userData.favoriteSongs,
+      });
+      setIsAuth(true);
 
-      toast.success('Login successful')
-      router.push('/songs')
+      toast.success("Login successful");
+      router.push("/songs");
     } catch (e) {
       if (e instanceof Error) {
-        toast.error(e.message)
+        toast.error(e.message);
       } else {
-        toast.error('Login failed')
+        toast.error("Login failed");
       }
     }
-  }
+  };
 
   return (
     <form
@@ -81,5 +85,5 @@ export default function LoginForm() {
       <button type="submit">Login</button>
       {error && <p className="text-red-500">{error}</p>}
     </form>
-  )
+  );
 }

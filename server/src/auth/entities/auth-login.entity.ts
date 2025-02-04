@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Song } from '@prisma/client';
 
 export class LoginEntity {
   @ApiProperty()
@@ -6,6 +7,9 @@ export class LoginEntity {
 
   @ApiProperty()
   username: string;
+
+  @ApiProperty()
+  favoriteSongs?: Song[];
 
   @ApiProperty()
   access_token: string;
