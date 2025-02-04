@@ -12,15 +12,22 @@ export class FavoritesController {
   // }
 
   @Post(':userId/favorites')
-  addFavorite(@Param('userId') userId: string, @Body('songId') songId: string) {
-    return this.favorites.addToFavs(userId, songId);
-  }
-
-  @Delete(':userId/favorites')
-  removeFavorite(
+  addOrRemoveFavorite(
     @Param('userId') userId: string,
     @Body('songId') songId: string,
   ) {
-    return this.favorites.removeFromFavs(userId, songId);
+    return this.favorites.addOrRemoveFavSong(userId, songId);
   }
+  // @Post(':userId/favorites')
+  // addFavorite(@Param('userId') userId: string, @Body('songId') songId: string) {
+  //   return this.favorites.addToFavs(userId, songId);
+  // }
+
+  // @Delete(':userId/favorites')
+  // removeFavorite(
+  //   @Param('userId') userId: string,
+  //   @Body('songId') songId: string,
+  // ) {
+  //   return this.favorites.removeFromFavs(userId, songId);
+  // }
 }

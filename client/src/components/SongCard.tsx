@@ -12,6 +12,7 @@ import { API_URL } from "@/utils/const";
 import useUserStore from "@/store/user";
 import { incrementPlaycount } from "@/utils/playcount";
 import { useEffect, useState } from "react";
+// import { getUser } from "@/utils/user";
 
 interface SongProps {
   song: Song;
@@ -21,7 +22,7 @@ export default function SongCard({ song }: SongProps) {
   const [isFavorite, setIsFavorite] = useState(false);
   const router = useRouter();
   const { active, pause, playSong, pauseSong } = usePlayerStore();
-  const { user } = useUserStore();
+  const { user, setUser } = useUserStore();
 
   const isPlaying = active?.id === song.id && !pause;
   const isSongOwner = user?.id === song.uploadedBy.id;
@@ -52,12 +53,13 @@ export default function SongCard({ song }: SongProps) {
     }
   };
 
-  const handleFavorite = async () => {
+  const addOrRemoveFavSong = async () => {
     try {
       const response = await fetch(
         `${API_URL}/api/users/${user?.id}/favorites`,
         {
-          method: isFavorite ? "DELETE" : "POST",
+          method: "POST",
+          // method: isFavorite ? "DELETE" : "POST",
           headers: {
             "Content-Type": "application/json",
           },
@@ -67,6 +69,17 @@ export default function SongCard({ song }: SongProps) {
 
       if (response.ok) {
         setIsFavorite(!isFavorite);
+        // const updatedUser = await response.json();
+        // setUser(updatedUser);
+
+        // if (user?.id) {
+        //   const updatedUser = await getUser(user?.id);
+        //   if (updatedUser) {
+        //     setUser(updatedUser);
+        //   }
+        // } else {
+        //   console.error("User ID is undefined");
+        // }
       } else {
         console.error("Error setting favorite song");
       }
@@ -100,7 +113,7 @@ export default function SongCard({ song }: SongProps) {
           {isPlaying ? <FaPause /> : <FaPlay />}
         </Button>
 
-        <button className="absolute top-2 right-2" onClick={handleFavorite}>
+        <button className="absolute top-2 right-2" onClick={addOrRemoveFavSong}>
           {isFavorite ? <FaHeart color="red" /> : <FaRegHeart />}
         </button>
 
