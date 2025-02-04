@@ -1,28 +1,16 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import Image from 'next/image'
-import logo from '../../public/images/rafton.png'
-import LogoutBtn from './LogoutBtn'
-import useUserStore from '@/store/user'
-import { useEffect, useState } from 'react'
-import { formatName } from '@/utils/format'
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import Image from "next/image";
+import logo from "../../public/images/rafton.png";
+import LogoutBtn from "./LogoutBtn";
+import useUserStore from "@/store/user";
+import { formatName } from "@/utils/format";
 
 export default function Navbar() {
-  const pathname = usePathname()
-  const { user, isAuth, checkAuth } = useUserStore()
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    const checkUserAuth = async () => {
-      await checkAuth()
-      setLoading(false)
-    }
-    checkUserAuth()
-  }, [checkAuth])
-
-  if (loading) return null
+  const pathname = usePathname();
+  const { user, isAuth } = useUserStore();
 
   return (
     <div className="z-10 fixed w-full h-[80px] flex justify-between items-center bg-rafton-blue p-5">
@@ -42,14 +30,14 @@ export default function Navbar() {
           <>
             <Link
               href="/auth/login"
-              className={pathname === '/auth/login' ? 'text-rafton-green' : ''}
+              className={pathname === "/auth/login" ? "text-rafton-green" : ""}
             >
               Login
             </Link>
             <Link
               href="/auth/register"
               className={
-                pathname === '/auth/register' ? 'text-rafton-green' : ''
+                pathname === "/auth/register" ? "text-rafton-green" : ""
               }
             >
               Register
@@ -60,23 +48,23 @@ export default function Navbar() {
             <Link
               href={`/users/${user?.id}`}
               className={
-                pathname === `/users/${user?.id}` ? 'text-rafton-green' : ''
+                pathname === `/users/${user?.id}` ? "text-rafton-green" : ""
               }
             >
-              {formatName(user?.username || '')}
+              {formatName(user?.username || "")}
             </Link>
             {/* <span className="">{formatName(user?.username || '', 3)}</span> */}
-            {user?.role === 'ADMIN' ? (
+            {user?.role === "ADMIN" ? (
               <Link
                 href="/users"
-                className={pathname === '/users' ? 'text-rafton-green' : ''}
+                className={pathname === "/users" ? "text-rafton-green" : ""}
               >
                 Users
               </Link>
             ) : null}
             <Link
               href="/songs"
-              className={pathname === '/songs' ? 'text-rafton-green' : ''}
+              className={pathname === "/songs" ? "text-rafton-green" : ""}
             >
               Playlist
             </Link>
@@ -91,5 +79,5 @@ export default function Navbar() {
         )}
       </ul>
     </div>
-  )
+  );
 }
