@@ -14,9 +14,16 @@ export default function AuthCheck({ children }: AuthCheckProps) {
   const { checkAuth, isAuth } = useUserStore();
   const router = useRouter();
   const pathname = usePathname();
+  const isLandingPage = pathname === "/";
 
   useEffect(() => {
     const authCheck = async () => {
+      // if (pathname === "/" || pathname === "/about" || pathname === "/contact") {
+      if (isLandingPage) {
+        setIsLoading(false);
+        return;
+      }
+
       await checkAuth();
       setIsLoading(false);
     };
@@ -28,9 +35,9 @@ export default function AuthCheck({ children }: AuthCheckProps) {
     return <>{children}</>;
   }
 
-  if (isLoading) return <Loader />;
+  if (isLoading && !isLandingPage) return <Loader />;
 
-  if (!isAuth) {
+  if (!isAuth && !isLandingPage) {
     router.push("/auth/login");
     return null;
   }
