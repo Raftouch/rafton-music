@@ -29,7 +29,7 @@ export default function AuthCheck({ children }: AuthCheckProps) {
     };
 
     authCheck();
-  }, [checkAuth]);
+  }, [checkAuth, isPublicPage]);
 
   if (pathname === "/auth/login") {
     return <>{children}</>;

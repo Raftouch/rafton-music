@@ -28,7 +28,7 @@ export default function UsersList() {
     };
 
     fetchUsers();
-  }, [user]);
+  }, [user, router]);
 
   return (
     <div className="mt-20 sm:w-[80%] w-full">

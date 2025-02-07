@@ -15,6 +15,11 @@ export default function Playlists({
   searchParams?: { query?: string; page?: string };
 }) {
   const [songs, setSongs] = useState<Song[]>([]);
+  const [clientReady, setClientReady] = useState(false);
+
+  useEffect(() => {
+    setClientReady(true);
+  }, []);
 
   useEffect(() => {
     const fetchSongs = async () => {
@@ -29,6 +34,10 @@ export default function Playlists({
 
     fetchSongs();
   }, []);
+
+  if (!clientReady) {
+    return null;
+  }
 
   return (
     <div className="mt-20 mb-20 flex flex-col items-center gap-5">

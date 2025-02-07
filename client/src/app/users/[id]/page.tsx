@@ -35,7 +35,7 @@ export default function UserDetails({ params: { id } }: DetailsProps) {
     };
 
     fetchProfile();
-  }, [user, id]);
+  }, [user, id, router]);
 
   if (!profile) {
     return (
