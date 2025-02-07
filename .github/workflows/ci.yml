@@ -2,7 +2,7 @@ name: Music App CI
 
 on:
   pull_request:
-    branches: ['dev']
+    branches: ["dev"]
 
 jobs:
   server-and-client-with-tests:
@@ -22,7 +22,7 @@ jobs:
           POSTGRES_USER: user-name
           POSTGRES_PASSWORD: strong-password
         ports:
-          - '5432:5432'
+          - "5432:5432"
         volumes:
           - db-data:/var/lib/postgresql/data
 
@@ -35,7 +35,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version}}
-          cache: 'npm'
+          cache: "npm"
 
       - name: Determine server package versions & dependencies
         run: npm ci
@@ -79,7 +79,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version}}
-          cache: 'npm'
+          cache: "npm"
 
       - name: Determine client package versions & dependencies (clean-install)
         run: npm ci
@@ -107,7 +107,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          wait-on: 'http://localhost:3000'
+          wait-on: "http://localhost:3000"
           wait-on-timeout: 300
           browser: electron
           working-directory: client
@@ -120,6 +120,6 @@ jobs:
       # - name: Build Docker image for client (Next.js)
       #   run: docker build -t music-app-client:latest -f client/Dockerfile.prod .
 
-      # Run Docker Compose to start services
+      # # Run Docker Compose to start services
       # - name: Run Docker Compose
       #   run: docker-compose -f docker-compose.prod.yml up -d
