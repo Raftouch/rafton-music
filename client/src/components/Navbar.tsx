@@ -30,15 +30,17 @@ export default function Navbar() {
           <>
             <Link
               href="/auth/login"
-              className={pathname === "/auth/login" ? "text-rafton-green" : ""}
+              // className={pathname === "/auth/login" ? "text-rafton-green" : ""}
+              className="py-2 px-4 bg-white rounded-full text-rafton-blue hover:bg-rafton-green"
             >
               Login
             </Link>
             <Link
               href="/auth/register"
-              className={
-                pathname === "/auth/register" ? "text-rafton-green" : ""
-              }
+              // className={
+              //   pathname === "/auth/register" ? "text-rafton-green" : ""
+              // }
+              className="hover:text-rafton-green"
             >
               Register
             </Link>
