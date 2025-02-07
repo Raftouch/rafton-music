@@ -1,54 +1,34 @@
-'use client'
+"use client";
 
-import SearchSong from '@/components/SearchSong'
-import SongList from '@/components/SongList'
-import { getAllSongs } from '@/utils/song'
+import SearchSong from "@/components/SearchSong";
+import SongList from "@/components/SongList";
+import { getAllSongs } from "@/utils/song";
 // import { Metadata } from 'next'
-import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
-import useUserStore from '@/store/user'
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
 // import { API_URL } from '@/utils/const'
-import { Song } from '@/models/song'
-import { useRouter } from 'next/navigation'
-import Loader from '@/components/Loader'
+import { Song } from "@/models/song";
 
 export default function Playlists({
   searchParams,
 }: {
-  searchParams?: { query?: string; page?: string }
+  searchParams?: { query?: string; page?: string };
 }) {
-  const [songs, setSongs] = useState<Song[]>([])
-  const [loading, setLoading] = useState(true)
-  const router = useRouter()
-
-  const { checkAuth, isAuth } = useUserStore()
+  const [songs, setSongs] = useState<Song[]>([]);
 
   useEffect(() => {
-    const authAndFetchSongs = async () => {
-      if (!isAuth) {
-        await checkAuth()
-      }
-      
-      if (!isAuth) {
-        router.push('/auth/login')
-        return
-      }
-
+    const fetchSongs = async () => {
       try {
-        const songsData = await getAllSongs()
-        console.log('songs data : ', songsData)
-        setSongs(songsData || [])
+        const songsData = await getAllSongs();
+        console.log("songs data : ", songsData);
+        setSongs(songsData || []);
       } catch (error) {
-        console.error('Failed to fetch songs:', error)
-      } finally {
-        setLoading(false)
+        console.error("Failed to fetch songs:", error);
       }
-    }
+    };
 
-    authAndFetchSongs()
-  }, [checkAuth, router, isAuth])
-
-  if (loading) return <Loader />
+    fetchSongs();
+  }, []);
 
   return (
     <div className="mt-20 mb-20 flex flex-col items-center gap-5">
@@ -60,5 +40,5 @@ export default function Playlists({
         <p>No songs found</p>
       )}
     </div>
-  )
+  );
 }

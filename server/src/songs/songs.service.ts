@@ -6,6 +6,7 @@ import { FileType, FilesService } from '../files/files.service';
 import { PrismaService } from '../prisma/prisma.service';
 import * as path from 'path';
 import { LoggerService } from 'src/logger/logger.service';
+import { PlaycountService } from 'src/playcount/playcount.service';
 
 @Injectable()
 export class SongsService {
@@ -13,6 +14,7 @@ export class SongsService {
     private readonly prisma: PrismaService,
     private readonly file: FilesService,
     private readonly loggerService: LoggerService,
+    private readonly playcountService: PlaycountService,
   ) {}
 
   async create(
@@ -101,8 +103,14 @@ export class SongsService {
         artist: true,
         genre: true,
         uploadedBy: true,
+        playHistory: true,
       },
     });
+
+    const playcount = song?.playHistory.length ?? 0;
+
+    console.log('playcount : ', song.playcount);
+    console.log('play history : ', song.playHistory);
 
     // logger
     const logMessage = song
@@ -113,7 +121,7 @@ export class SongsService {
       .createLog('GET_SONG_BY_ID', logMessage)
       .catch((error) => console.error('Failed to log:', error.message));
 
-    return song;
+    return { ...song, playcount };
   }
 
   async update(
@@ -178,6 +186,37 @@ export class SongsService {
       where: { id },
       data: updateData,
     });
+
+    try {
+      await this.playcountService.trackPlaycount(userId, id);
+    } catch (error) {
+      console.error('Playcount track record failed: ', error.message);
+    }
+
+    // // track play count
+    // const userHasPlayedSong = await this.prisma.songPlayHistory.findFirst({
+    //   where: {
+    //     userId,
+    //     songId: id,
+    //   },
+    // });
+
+    // if (!userHasPlayedSong) {
+    //   // If the user hasn't played this song before
+    //   await this.prisma.song.update({
+    //     where: { id },
+    //     data: {
+    //       playcount: { increment: 1 },
+    //     },
+    //   });
+    // }
+
+    // await this.prisma.songPlayHistory.create({
+    //   data: {
+    //     userId,
+    //     songId: id,
+    //   },
+    // });
 
     // logger
     const logMessage = updatedSong

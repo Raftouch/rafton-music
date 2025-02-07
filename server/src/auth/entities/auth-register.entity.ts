@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class AuthEntity {
+export class RegisterEntity {
   @ApiProperty()
   id: string;
 
@@ -8,8 +8,5 @@ export class AuthEntity {
   username: string;
 
   @ApiProperty()
-  access_token: string;
-
-  @ApiProperty()
-  refresh_token: string;
+  message: string;
 }

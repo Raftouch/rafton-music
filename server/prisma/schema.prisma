@@ -23,30 +23,45 @@ model Genre {
 }
 
 model Song {
-  id           String   @id @default(uuid()) @db.Uuid
-  title        String   @db.VarChar(50)
-  image        String?  @db.VarChar(255)
-  audio        String   @db.VarChar(255)
-  playcount    Int?
-  uploadedAt   DateTime @default(dbgenerated("CURRENT_DATE")) @db.Date
-  artist       Artist   @relation("ArtistSongs", fields: [artistId], references: [id])
-  artistId     String   @db.Uuid
-  genre        Genre    @relation("GenreSongs", fields: [genreId], references: [id])
-  genreId      String   @db.Uuid
-  uploadedBy   User?    @relation("UploadedSongs", fields: [uploadedById], references: [id])
-  uploadedById String?  @db.Uuid
+  id           String            @id @default(uuid()) @db.Uuid
+  title        String            @db.VarChar(50)
+  image        String?           @db.VarChar(255)
+  audio        String            @db.VarChar(255)
+  playcount    Int?              @default(0)
+  uploadedAt   DateTime          @default(dbgenerated("CURRENT_DATE")) @db.Date
+  artist       Artist            @relation("ArtistSongs", fields: [artistId], references: [id])
+  artistId     String            @db.Uuid
+  genre        Genre             @relation("GenreSongs", fields: [genreId], references: [id])
+  genreId      String            @db.Uuid
+  uploadedBy   User?             @relation("UploadedSongs", fields: [uploadedById], references: [id])
+  uploadedById String?           @db.Uuid
+  playHistory  SongPlayHistory[] @relation("SongPlayHistory")
+  favoritedBy  User[]            @relation("FavouriteSongs")
 }
 
 model User {
-  id            String   @id @default(uuid()) @db.Uuid
-  username      String   @unique @db.VarChar(50)
-  email         String   @unique @db.VarChar(50)
-  password      String   @db.VarChar(255) // hash
-  refreshToken  String?  @db.VarChar(255) // hash
-  role          Role     @default(BASIC)
-  registeredAt  DateTime @default(dbgenerated("CURRENT_DATE")) @db.Date
-  updatedAt     DateTime @default(dbgenerated("CURRENT_DATE")) @db.Date
-  uploadedSongs Song[]   @relation("UploadedSongs")
+  id            String            @id @default(uuid()) @db.Uuid
+  username      String            @unique @db.VarChar(50)
+  email         String            @unique @db.VarChar(50)
+  password      String            @db.VarChar(255) // hash
+  refreshToken  String?           @db.VarChar(255) // hash
+  role          Role              @default(BASIC)
+  registeredAt  DateTime          @default(dbgenerated("CURRENT_DATE")) @db.Date
+  updatedAt     DateTime          @default(dbgenerated("CURRENT_DATE")) @db.Date
+  uploadedSongs Song[]            @relation("UploadedSongs")
+  playHistory   SongPlayHistory[] @relation("UserSongPlayHistory")
+  favoriteSongs Song[]            @relation("FavouriteSongs")
+}
+
+model SongPlayHistory {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  songId    String   @db.Uuid
+  createdAt DateTime @default(now()) @db.Date
+  user      User     @relation("UserSongPlayHistory", fields: [userId], references: [id])
+  song      Song     @relation("SongPlayHistory", fields: [songId], references: [id])
+
+  @@unique([userId, songId]) // only one play per user recorded
 }
 
 enum Role {

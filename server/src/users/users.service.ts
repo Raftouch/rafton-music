@@ -21,12 +21,30 @@ export class UsersService {
   }
 
   async findOne(id: string) {
-    return this.prisma.user.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: { id },
+      // select: {
+      //   id: true,
+      //   username: true,
+      //   email: true,
+      //   role: true,
+      //   registeredAt: true,
+      //   updatedAt: true,
+      //   uploadedSongs: true,
+      //   favorites: true,
+      // },
       include: {
         uploadedSongs: true,
+        favoriteSongs: true,
       },
     });
+
+    if (user) {
+      delete user.password;
+      delete user.refreshToken;
+    }
+
+    return user;
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {

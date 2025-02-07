@@ -9,20 +9,24 @@ import * as bcrypt from 'bcryptjs';
 import { LoginDto } from './dto/auth-login.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Request, Response } from 'express';
-import { AuthEntity } from './entities/auth.entity';
+import { RegisterEntity } from './entities/auth-register.entity';
+import { LoginEntity } from './entities/auth-login.entity';
+import { User } from '@prisma/client';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private prisma: PrismaService,
     private jwt: JwtService,
+    private usersServive: UsersService,
   ) {}
 
   async register(
     authDto: RegisterDto,
     req: Request,
     res: Response,
-  ): Promise<AuthEntity> {
+  ): Promise<RegisterEntity> {
     const { username, email, password, role } = authDto;
 
     const usernameAlreadyInUse = await this.prisma.user.findUnique({
@@ -52,48 +56,61 @@ export class AuthService {
       },
     });
 
-    const tokens = await this.signTokens({
+    // const tokens = await this.signTokens({
+    //   id: newUser.id,
+    //   username: newUser.username,
+    // });
+
+    // if (!tokens) {
+    //   throw new BadRequestException('Access denied, no token');
+    // }
+
+    // await this.updateRefreshToken(newUser.id, tokens.refresh_token);
+
+    // res.cookie('access_token', tokens.access_token, {
+    //   httpOnly: true,
+    //   // secure: process.env.NODE_ENV === 'production',
+    //   secure: false,
+    //   sameSite: 'lax',
+    //   maxAge: 1000 * 60 * 15, // 15 minutes
+    //   // path: '/',
+    // });
+
+    // res.cookie('refresh_token', tokens.refresh_token, {
+    //   httpOnly: true,
+    //   // secure: process.env.NODE_ENV === 'production',
+    //   secure: false,
+    //   sameSite: 'lax',
+    //   maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+    //   // path: '/',
+    // });
+
+    const responsePayload: RegisterEntity = {
       id: newUser.id,
       username: newUser.username,
-    });
+      message: 'Registration successful',
+    };
 
-    if (!tokens) {
-      throw new BadRequestException('Access denied, no token');
-    }
+    res.status(200).json(responsePayload);
 
-    await this.updateRefreshToken(newUser.id, tokens.refresh_token);
+    return responsePayload;
 
-    res.cookie('access_token', tokens.access_token, {
-      httpOnly: true,
-      // secure: process.env.NODE_ENV === 'production',
-      secure: false,
-      sameSite: 'lax',
-      maxAge: 1000 * 60 * 15, // 15 minutes
-      // path: '/',
-    });
-
-    res.cookie('refresh_token', tokens.refresh_token, {
-      httpOnly: true,
-      // secure: process.env.NODE_ENV === 'production',
-      secure: false,
-      sameSite: 'lax',
-      maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
-      // path: '/',
-    });
-
-    res.send({ message: 'Registration successful' });
-    return tokens;
+    // res.send({ message: 'Registration successful' });
+    // return tokens;
   }
 
   async login(
     authDto: LoginDto,
     req: Request,
     res: Response,
-  ): Promise<AuthEntity> {
+  ): Promise<LoginEntity> {
     const { username, password } = authDto;
 
     const userFound = await this.prisma.user.findUnique({
       where: { username },
+      include: {
+        favoriteSongs: true,
+      },
     });
 
     if (!userFound) {
@@ -138,9 +155,10 @@ export class AuthService {
       // path: '/',
     });
 
-    const responsePayload: AuthEntity = {
+    const responsePayload: LoginEntity = {
       id: userFound.id,
       username: userFound.username,
+      favoriteSongs: userFound.favoriteSongs,
       access_token: tokens.access_token,
       refresh_token: tokens.refresh_token,
     };
@@ -183,7 +201,7 @@ export class AuthService {
   async signTokens(args: {
     id: string;
     username: string;
-  }): Promise<AuthEntity> {
+  }): Promise<LoginEntity> {
     const payload = args;
     const [accessToken, refreshToken] = await Promise.all([
       this.jwt.signAsync(payload, {
@@ -202,6 +220,28 @@ export class AuthService {
       access_token: accessToken,
       refresh_token: refreshToken,
     };
+  }
+
+  async checkAuth(
+    req: Request,
+    res: Response,
+  ): Promise<Response<any, Record<string, any>>> {
+    const userFromRequest = req.user as User;
+
+    if (!userFromRequest) {
+      return res.status(401).json({ authenticated: false });
+    }
+
+    const userFromDB = await this.usersServive.findOne(userFromRequest.id);
+
+    return res.status(200).json({
+      authenticated: true,
+      id: userFromDB.id,
+      username: userFromDB.username,
+      role: userFromDB.role,
+      uploadedSongs: userFromDB.uploadedSongs,
+      favoriteSongs: userFromDB.favoriteSongs,
+    });
   }
 
   async updateRefreshToken(id: string, refreshToken: string) {
