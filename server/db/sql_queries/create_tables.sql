@@ -25,46 +25,27 @@ CREATE TABLE song (
     audio VARCHAR(255) NOT NULL,
     playCount INT DEFAULT 0,
     uploadedAt DATE DEFAULT CURRENT_DATE,
-    id_user UUID REFERENCES "user" ON DELETE SET NULL,
-    id_artist UUID REFERENCES artist(id) ON DELETE CASCADE,
-    id_genre UUID REFERENCES genre(id) ON DELETE CASCADE
+    uploadedById UUID REFERENCES "user"(id) ON DELETE SET NULL, 
+    artistId UUID REFERENCES artist(id) ON DELETE CASCADE,      
+    genreId UUID REFERENCES genre(id) ON DELETE CASCADE        
 );
 
-CREATE TABLE favorite (
-    id_song UUID REFERENCES song(id) ON DELETE CASCADE,
-    id_user UUID REFERENCES "user"(id) ON DELETE CASCADE,
-    PRIMARY KEY (id_song, id_user)
+CREATE TABLE favorite_songs (
+    songId UUID REFERENCES song(id) ON DELETE CASCADE,            
+    userId UUID REFERENCES "user"(id) ON DELETE CASCADE,         
+    PRIMARY KEY (songId, userId)
 );
 
-CREATE TABLE listen (
-    id_song UUID REFERENCES song(id) ON DELETE CASCADE,
-    id_user UUID REFERENCES "user"(id) ON DELETE CASCADE,
-    PRIMARY KEY (id_song, id_user)
-);
-
-CREATE TABLE classify (
-    id_song UUID REFERENCES song(id) ON DELETE CASCADE,
-    id_genre UUID REFERENCES genre(id) ON DELETE CASCADE,
-    PRIMARY KEY (id_song, id_genre)
-);
-
-CREATE TABLE perform (
-    id_artist UUID REFERENCES artist(id) ON DELETE CASCADE,
-    id_genre UUID REFERENCES genre(id) ON DELETE CASCADE,
-    PRIMARY KEY (id_artist, id_genre)
-);
-
-CREATE TABLE create (
-    id_artist UUID REFERENCES artist(id) ON DELETE CASCADE,
-    id_song UUID REFERENCES song(id) ON DELETE CASCADE,
-    PRIMARY KEY (id_artist, id_song)
+CREATE TABLE genre_artists (
+    artistId UUID REFERENCES artist(id) ON DELETE CASCADE,     
+    genreId UUID REFERENCES genre(id) ON DELETE CASCADE,     
+    PRIMARY KEY (artistId, genreId)
 );
 
 CREATE TABLE song_play_history (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    userId UUID REFERENCES "user"(id) ON DELETE CASCADE,
+    userId UUID REFERENCES "user"(id) ON DELETE CASCADE, 
     songId UUID REFERENCES song(id) ON DELETE CASCADE,
     createdAt DATE DEFAULT CURRENT_DATE,
     CONSTRAINT unique_user_song UNIQUE (userId, songId)
 );
-
