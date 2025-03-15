@@ -29,9 +29,10 @@ async function start() {
       transform: true,
       whitelist: true,
       forbidNonWhitelisted: true,
-      skipMissingProperties: false,
+      // skipMissingProperties: false,
       validationError: {
         target: false,
+        value: false,
       },
     }),
   );

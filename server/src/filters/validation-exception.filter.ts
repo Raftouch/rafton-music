@@ -3,9 +3,7 @@ import {
   Catch,
   ArgumentsHost,
   HttpException,
-  HttpStatus,
 } from '@nestjs/common';
-import { ValidationError } from 'class-validator';
 
 @Catch(HttpException)
 export class ValidationExceptionFilter implements ExceptionFilter {
@@ -16,27 +14,53 @@ export class ValidationExceptionFilter implements ExceptionFilter {
     const status = exception.getStatus();
 
     const exceptionResponse = exception.getResponse();
+
+    console.log('Exception Response:', exceptionResponse);
+
     let message = 'An error occurred';
     let errors = [];
 
-    // validation errors (e.g., class-validator errors)
     if (
       exceptionResponse['message'] &&
       Array.isArray(exceptionResponse['message'])
     ) {
       message = 'Validation failed';
-      errors = exceptionResponse['message'].map((error: ValidationError) => ({
-        field: error.property,
-        constraints: error.constraints,
-      }));
+
+      errors = exceptionResponse['message'].map((validationError: string) => {
+        console.log('Validation Error:', validationError);
+
+        if (validationError.includes('Username')) {
+          return {
+            field: 'username',
+            constraints: [validationError],
+          };
+        } else if (validationError.includes('email')) {
+          return {
+            field: 'email',
+            constraints: [validationError],
+          };
+        } else if (validationError.includes('Password')) {
+          return {
+            field: 'password',
+            constraints: [validationError],
+          };
+        } else {
+          return {
+            field: 'unknown',
+            constraints: [validationError],
+          };
+        }
+      });
     }
-    // custom errors (e.g., BadRequestException)
+    // errors like BadRequestException
     else if (exceptionResponse['message']) {
       message = exceptionResponse['message'];
       errors = [{ field: null, constraints: [message] }];
     } else {
       message = 'Unexpected error occurred';
     }
+
+    console.log('Mapped Errors:', errors);
 
     response.status(status).json({
       statusCode: status,
