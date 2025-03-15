@@ -51,6 +51,7 @@
     "class-validator": "^0.14.1",
     "cookie-parser": "^1.4.6",
     "dotenv-cli": "^7.3.0",
+    "escape-html": "^1.0.3",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.1.13",

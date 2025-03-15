@@ -12,6 +12,7 @@ import {
   IsAlphanumeric,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
+import * as escape from 'escape-html';
 
 export class RegisterDto {
   @ApiProperty()
@@ -23,13 +24,14 @@ export class RegisterDto {
     message: 'Username must be alphanumeric (letters and numbers only)',
   })
   @Transform(({ value }) => value.trim())
+  @Transform(({ value }) => escape(value))
   username: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsEmail({}, { message: 'Please provide a valid email address' })
   @Transform(({ value }) => {
-    const sanitizedEmail = value.replace(/[^a-zA-Z0-9@.]/g, '').trim();
+    const sanitizedEmail = value.replace(/[^a-zA-Z0-9@.-_+]+/g, '').trim();
     console.log('Normalized Email:', sanitizedEmail);
     return sanitizedEmail;
   })
