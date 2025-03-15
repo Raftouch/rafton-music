@@ -12,7 +12,6 @@ import {
   IsAlphanumeric,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
-import * as validator from 'validator';
 
 export class RegisterDto {
   @ApiProperty()
@@ -30,7 +29,9 @@ export class RegisterDto {
   @IsNotEmpty()
   @IsEmail({}, { message: 'Please provide a valid email address' })
   @Transform(({ value }) => {
-    return validator.normalizeEmail(value);
+    const sanitizedEmail = value.replace(/[^a-zA-Z0-9@.]/g, '').trim();
+    console.log('Normalized Email:', sanitizedEmail);
+    return sanitizedEmail;
   })
   @Transform(({ value }) => value.trim())
   email: string;
@@ -40,10 +41,13 @@ export class RegisterDto {
   @IsString()
   @MinLength(12, { message: 'Password must be at least 12 characters long' })
   @MaxLength(20, { message: 'Password cannot be longer than 20 characters' })
-  @Matches(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).+$/, {
-    message:
-      'Password must contain at least one uppercase letter, one number, and one special character',
-  })
+  @Matches(
+    /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>!'()*+,-./:;<=>?[\]^_`{|}~ €]).+$/,
+    {
+      message:
+        'Password must contain at least one uppercase letter, one number, and one special character (e.g., !@#$%^&*)',
+    },
+  )
   @Transform(({ value }) => value.trim())
   password: string;
 

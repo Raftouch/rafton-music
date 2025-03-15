@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 // import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
+import { ValidationPipe } from '@nestjs/common';
 
 async function start() {
   const app = await NestFactory.create(AppModule);
@@ -10,7 +11,7 @@ async function start() {
   const origins = [
     process.env.NEXT_PUBLIC_API_URL,
     process.env.NEXT_PUBLIC_BASE_URL,
-  ]
+  ];
 
   app.use(cookieParser());
 
@@ -21,7 +22,18 @@ async function start() {
     allowedHeaders: 'Content-Type, Accept, Authorization, Cookie, Origin',
     preflightContinue: false,
   });
-  // app.useGlobalPipes(new ValidationPipe());
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      skipMissingProperties: false,
+      validationError: {
+        target: false,
+      },
+    }),
+  );
 
   const config = new DocumentBuilder()
     .setTitle('Rafton')
@@ -32,6 +44,8 @@ async function start() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  await app.listen(port, () => console.log(`MY Server running on port ${port}`));
+  await app.listen(port, () =>
+    console.log(`MY Server running on port ${port}`),
+  );
 }
 start();
