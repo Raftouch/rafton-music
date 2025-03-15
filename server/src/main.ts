@@ -4,6 +4,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 // import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 import { ValidationPipe } from '@nestjs/common';
+import { ValidationExceptionFilter } from './filters/validation-exception.filter';
 
 async function start() {
   const app = await NestFactory.create(AppModule);
@@ -34,6 +35,8 @@ async function start() {
       },
     }),
   );
+
+  app.useGlobalFilters(new ValidationExceptionFilter());
 
   const config = new DocumentBuilder()
     .setTitle('Rafton')
