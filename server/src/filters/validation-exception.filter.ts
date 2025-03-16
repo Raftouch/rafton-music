@@ -44,6 +44,16 @@ export class ValidationExceptionFilter implements ExceptionFilter {
             field: 'password',
             constraints: [validationError],
           };
+        } else if (validationError.includes('genre')) {
+          return {
+            field: 'genre',
+            constraints: [validationError],
+          };
+        } else if (validationError.includes('artist')) {
+          return {
+            field: 'artist',
+            constraints: [validationError],
+          };
         } else {
           return {
             field: 'unknown',

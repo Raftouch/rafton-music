@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CreateArtistDto } from '../../artists/dto/create-artist.dto';
 import { CreateGenreDto } from '../../genres/dto/create-genre.dto';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class CreateSongDto {
   @IsString()
@@ -18,9 +19,13 @@ export class CreateSongDto {
   @ApiProperty({ default: 0 })
   playcount: number;
 
+  @ValidateNested()
+  @Type(() => CreateArtistDto)
   @ApiProperty({ type: CreateArtistDto })
   artist: CreateArtistDto;
 
+  @ValidateNested()
+  @Type(() => CreateGenreDto)
   @ApiProperty({ type: CreateGenreDto })
   genre: CreateGenreDto;
 
