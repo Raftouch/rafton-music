@@ -1,59 +1,66 @@
-'use client'
+"use client";
 
-import FileUpload from '@/components/FileUpload'
-import React, { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { validate } from '../validations/song'
-import { FormValues } from '@/models/formvalues'
-import { toast } from 'sonner'
-import { API_URL } from '@/utils/const'
+import FileUpload from "@/components/FileUpload";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { validate } from "../validations/song";
+import { FormValues } from "@/models/formvalues";
+import { toast } from "sonner";
+import { API_URL } from "@/utils/const";
+import DOMPurify from "dompurify";
 
 export default function CreateSongForm() {
-  const [image, setImage] = useState<File | undefined>(undefined)
-  const [audio, setAudio] = useState<File | undefined>(undefined)
-  const router = useRouter()
+  const [image, setImage] = useState<File | undefined>(undefined);
+  const [audio, setAudio] = useState<File | undefined>(undefined);
+  const router = useRouter();
 
   const [values, setValues] = useState<FormValues>({
-    title: '',
-    artist: '',
-    genre: '',
-  })
+    title: "",
+    artist: "",
+    genre: "",
+  });
 
-  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   function handleInput(event: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = event.target
-    setValues({ ...values, [name]: value })
+    const { name, value } = event.target;
+    setValues({ ...values, [name]: value });
   }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
+    event.preventDefault();
 
-    const validationErrors = validate({ ...values, image, audio })
-    setErrors(validationErrors)
+    const sanitizedValues = {
+      title: DOMPurify.sanitize(values.title),
+      artist: DOMPurify.sanitize(values.artist),
+      genre: DOMPurify.sanitize(values.genre),
+    };
+
+    const validationErrors = validate({ ...sanitizedValues, image, audio });
+    setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
-      const formData = new FormData()
-      formData.append('title', values.title)
-      formData.append('artist[name]', values.artist)
-      formData.append('genre[type]', values.genre)
-      if (image) formData.append('image', image)
-      if (audio) formData.append('audio', audio)
+      const formData = new FormData();
+      formData.append("title", sanitizedValues.title);
+      formData.append("artist[name]", sanitizedValues.artist);
+      formData.append("genre[type]", sanitizedValues.genre);
+      if (image) formData.append("image", image);
+      if (audio) formData.append("audio", audio);
       fetch(`${API_URL}/api/songs`, {
-        method: 'POST',
+        method: "POST",
         body: formData,
-        credentials: 'include',
+        credentials: "include",
       })
         .then((response) => {
           if (response.ok) {
-            toast.success('Song successfully created')
-            router.push('/songs')
+            toast.success("Song successfully created");
+            router.push("/songs");
           } else {
-            toast.error('Failed to create song')
-            throw new Error('Failed to submit form')
+            toast.error("Failed to create song");
+            throw new Error("Failed to submit form");
           }
         })
-        .catch((error) => console.error(error))
+        .catch((error) => console.error(error));
     }
   }
 
@@ -121,5 +128,5 @@ export default function CreateSongForm() {
 
       <button type="submit">Create</button>
     </form>
-  )
+  );
 }
