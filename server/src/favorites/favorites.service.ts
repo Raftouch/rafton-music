@@ -12,8 +12,6 @@ export class FavoritesService {
   //     include: { favorites: true },
   //   });
 
-  //   console.log('user :', user);
-
   //   if (!user) {
   //     throw new Error('User not found');
   //   }

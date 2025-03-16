@@ -29,7 +29,6 @@ const usePlayerStore = create<PlayerState>((set, get) => ({
     const state = get();
 
     if (song && song.id !== state.active?.id) {
-      // If a new song is set, reset and play the new song
       if (!audio) {
         audio = new Audio();
       }
@@ -37,7 +36,6 @@ const usePlayerStore = create<PlayerState>((set, get) => ({
       audio.volume = state.volume / 100;
       audio.play();
 
-      // Set duration and currentTime as before
       audio.onloadedmetadata = () => {
         set({ duration: Math.ceil(audio!.duration) });
       };
@@ -48,22 +46,18 @@ const usePlayerStore = create<PlayerState>((set, get) => ({
           get().duration
         );
         set({ currentTime: clampedTime });
-        // set({ currentTime: Math.ceil(audio!.currentTime) })
       };
 
-      // Add an event listener for when the song ends
       audio.onended = () => {
-        set({ pause: true, currentTime: 0 }); // Reset to 0 when song ends
-        // set({ pause: true }) // Update pause state to show the play button
+        set({ pause: true, currentTime: 0 });
       };
 
       set({
         active: song,
         pause: false,
-        currentTime: 0, // Reset time for a new song
+        currentTime: 0,
       });
     } else if (state.pause && audio) {
-      // If it's the same song and paused, just resume it
       audio.play();
       set({ pause: false });
     }

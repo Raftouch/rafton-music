@@ -17,7 +17,6 @@ app.use("/api", loggerEvents);
 const start = async (): Promise<void> => {
   try {
     await mongoose.connect(process.env.MONGODB_URI as string);
-    console.log("Connected to DB");
 
     app.listen(port, (): void =>
       console.log(`Event logger service running on port ${port}`)

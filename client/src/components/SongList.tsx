@@ -19,8 +19,6 @@ export default function SongList({ songs }: SongListProps) {
       )
     : songs;
 
-  console.log("Filtered Songs:", filteredSongs);
-
   if (filteredSongs.length === 0) {
     return (
       <p>

@@ -32,7 +32,6 @@ export class RegisterDto {
   @IsEmail({}, { message: 'Please provide a valid email address' })
   @Transform(({ value }) => {
     const sanitizedEmail = value.replace(/[^a-zA-Z0-9@.-_+]+/g, '').trim();
-    console.log('Normalized Email:', sanitizedEmail);
     return sanitizedEmail;
   })
   @Transform(({ value }) => value.trim())

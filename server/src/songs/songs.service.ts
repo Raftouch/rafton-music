@@ -109,9 +109,6 @@ export class SongsService {
 
     const playcount = song?.playHistory.length ?? 0;
 
-    console.log('playcount : ', song.playcount);
-    console.log('play history : ', song.playHistory);
-
     // logger
     const logMessage = song
       ? `Success! Song with id: ${id}, Title: ${song.title}`
@@ -246,9 +243,6 @@ export class SongsService {
         HttpStatus.FORBIDDEN,
       );
     }
-
-    // console.log('Song uploadedById:', song.uploadedById);
-    // console.log('User attempting update userId:', userId);
 
     if (song.image) {
       // Extract the filename from the path

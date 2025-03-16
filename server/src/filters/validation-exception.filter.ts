@@ -15,8 +15,6 @@ export class ValidationExceptionFilter implements ExceptionFilter {
 
     const exceptionResponse = exception.getResponse();
 
-    console.log('Exception Response:', exceptionResponse);
-
     let message = 'An error occurred';
     let errors = [];
 
@@ -27,8 +25,6 @@ export class ValidationExceptionFilter implements ExceptionFilter {
       message = 'Validation failed';
 
       errors = exceptionResponse['message'].map((validationError: string) => {
-        console.log('Validation Error:', validationError);
-
         if (validationError.includes('Title')) {
           return {
             field: 'title',
@@ -77,8 +73,6 @@ export class ValidationExceptionFilter implements ExceptionFilter {
     } else {
       message = 'Unexpected error occurred';
     }
-
-    console.log('Mapped Errors:', errors);
 
     response.status(status).json({
       statusCode: status,

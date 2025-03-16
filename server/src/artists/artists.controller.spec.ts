@@ -56,7 +56,6 @@ describe('ArtistsController', () => {
     expect(createResponse.body).toBeDefined();
     expect(createResponse.body.id).toBe(createdArtistId);
     expect(createResponse.body.name).toBe(createArtistDto.name);
-    console.log(createResponse.body);
   });
 
   it('should get all artists - GET /api/artists', async () => {
@@ -90,8 +89,6 @@ describe('ArtistsController', () => {
     expect(getResponse.body).toBeDefined();
     expect(getResponse.body.id).toBe(artistId);
     expect(getResponse.body.name).toBe(createArtistDto.name);
-
-    console.log(getResponse.body);
   });
 
   it('should update an artist - PATCH /api/artists/:id', async () => {
@@ -121,8 +118,6 @@ describe('ArtistsController', () => {
 
     expect(updatedArtist).toBeDefined();
     expect(updatedArtist.name).toBe(updateArtistDto.name);
-
-    console.log(getResponse.body);
   });
 
   it('should delete an artist - DELETE /api/artists/:id', async () => {

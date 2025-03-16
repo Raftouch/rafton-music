@@ -22,7 +22,6 @@ export default function UsersList() {
           console.error("Failed to fetch users:", error);
         }
       } else {
-        console.log("Not authorized. Redirecting to home page");
         router.push("/");
       }
     };

@@ -8,7 +8,6 @@ export class PlaycountController {
   @Post()
   //   create(@Body() dto: PlaycountRecordDto): Promise<PlaycountRecordDto> {
   create(@Body() body: { userId: string; songId: string }) {
-    console.log('Request received:', body);
     return this.playcountService.trackPlaycount(body.userId, body.songId);
   }
 }
