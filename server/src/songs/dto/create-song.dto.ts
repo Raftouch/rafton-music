@@ -5,6 +5,7 @@ import {
   IsAlphanumeric,
   IsNotEmpty,
   IsString,
+  Matches,
   MaxLength,
   ValidateNested,
 } from 'class-validator';
@@ -16,8 +17,9 @@ export class CreateSongDto {
   @IsNotEmpty()
   @ApiProperty()
   @MaxLength(50, { message: 'Title cannot be longer than 50 characters' })
-  @IsAlphanumeric('en-US', {
-    message: 'Title must contain only alphanumeric characters',
+  @Matches(/^[a-zA-Z0-9\s;,._\-?]+$/, {
+    message:
+      'Title can only contain alphanumeric characters, spaces, and the following special characters: ; , - _ ? : .',
   })
   @Transform(({ value }) => value.trim())
   @Transform(({ value }) => escape(value))

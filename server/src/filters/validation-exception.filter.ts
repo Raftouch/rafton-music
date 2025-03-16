@@ -37,12 +37,12 @@ export class ValidationExceptionFilter implements ExceptionFilter {
         } else if (validationError.includes('Genre')) {
           return {
             field: 'genre',
-            constraints: [validationError],
+            constraints: [validationError.replace(/^genre\./, '')],
           };
         } else if (validationError.includes('Artist')) {
           return {
             field: 'artist',
-            constraints: [validationError],
+            constraints: [validationError.replace(/^artist\./, '')],
           };
         } else if (validationError.includes('Username')) {
           return {
