@@ -29,12 +29,27 @@ export class ValidationExceptionFilter implements ExceptionFilter {
       errors = exceptionResponse['message'].map((validationError: string) => {
         console.log('Validation Error:', validationError);
 
-        if (validationError.includes('Username')) {
+        if (validationError.includes('Title')) {
+          return {
+            field: 'title',
+            constraints: [validationError],
+          };
+        } else if (validationError.includes('Genre')) {
+          return {
+            field: 'genre',
+            constraints: [validationError],
+          };
+        } else if (validationError.includes('Artist')) {
+          return {
+            field: 'artist',
+            constraints: [validationError],
+          };
+        } else if (validationError.includes('Username')) {
           return {
             field: 'username',
             constraints: [validationError],
           };
-        } else if (validationError.includes('email')) {
+        } else if (validationError.includes('Email')) {
           return {
             field: 'email',
             constraints: [validationError],
@@ -42,16 +57,6 @@ export class ValidationExceptionFilter implements ExceptionFilter {
         } else if (validationError.includes('Password')) {
           return {
             field: 'password',
-            constraints: [validationError],
-          };
-        } else if (validationError.includes('genre')) {
-          return {
-            field: 'genre',
-            constraints: [validationError],
-          };
-        } else if (validationError.includes('artist')) {
-          return {
-            field: 'artist',
             constraints: [validationError],
           };
         } else {

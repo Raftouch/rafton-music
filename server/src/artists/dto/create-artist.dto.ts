@@ -1,9 +1,22 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { Transform } from 'class-transformer';
+import {
+  IsAlphanumeric,
+  IsNotEmpty,
+  IsString,
+  MaxLength,
+} from 'class-validator';
+import * as escape from 'escape-html';
 
 export class CreateArtistDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
+  @MaxLength(50, { message: 'Artist name cannot be longer than 50 characters' })
+  @IsAlphanumeric('en-US', {
+    message: 'Artist name must contain only alphanumeric characters',
+  })
+  @Transform(({ value }) => value.trim())
+  @Transform(({ value }) => escape(value))
   name: string;
 }
