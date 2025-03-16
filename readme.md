@@ -21,7 +21,7 @@
 - [x] Rest API
   - [x] artists
   - [x] songs
-  - [ ] users
+  - [x] users
   - [x] genres
 - [x] run server tests w/ Jest (to check API routes ok)
 - [x] upload files on server (images, audios)
