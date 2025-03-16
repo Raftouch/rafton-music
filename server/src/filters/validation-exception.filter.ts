@@ -66,6 +66,9 @@ export class ValidationExceptionFilter implements ExceptionFilter {
           };
         }
       });
+    } else if (exceptionResponse['message'] && status === 401) {
+      message = 'Unauthorized';
+      errors = [{ field: null, constraints: ['Unauthorized access'] }];
     }
     // errors like BadRequestException
     else if (exceptionResponse['message']) {
