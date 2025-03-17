@@ -7,7 +7,7 @@ import { RegisterDto } from './dto/auth-register.dto';
 
 describe('AuthController - Registration XSS Prevention', () => {
   let authController: AuthController;
-  let authService: AuthService;
+  // let authService: AuthService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -25,7 +25,7 @@ describe('AuthController - Registration XSS Prevention', () => {
     }).compile();
 
     authController = module.get<AuthController>(AuthController);
-    authService = module.get<AuthService>(AuthService);
+    // authService = module.get<AuthService>(AuthService);
   });
 
   it('should be defined', () => {
