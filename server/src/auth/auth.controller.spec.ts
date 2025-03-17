@@ -1,72 +1,72 @@
-// import { Test, TestingModule } from '@nestjs/testing';
-// import { AuthController } from './auth.controller';
-// import { AuthService } from './auth.service';
+import { Test, TestingModule } from '@nestjs/testing';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
 // import { Role } from '@prisma/client';
 // import * as escape from 'escape-html';
 // import { RegisterDto } from './dto/auth-register.dto';
 
-// describe('AuthController - Registration XSS Prevention', () => {
-//   let authController: AuthController;
-//   // let authService: AuthService;
+describe('AuthController - Registration XSS Prevention', () => {
+  let authController: AuthController;
+  // let authService: AuthService;
 
-//   beforeEach(async () => {
-//     const module: TestingModule = await Test.createTestingModule({
-//       controllers: [AuthController],
-//       providers: [
-//         {
-//           provide: AuthService,
-//           useValue: {
-//             register: jest
-//               .fn()
-//               .mockResolvedValue({ id: '1', username: 'testuser' }),
-//           },
-//         },
-//       ],
-//     }).compile();
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      controllers: [AuthController],
+      providers: [
+        {
+          provide: AuthService,
+          useValue: {
+            register: jest
+              .fn()
+              .mockResolvedValue({ id: '1', username: 'testuser' }),
+          },
+        },
+      ],
+    }).compile();
 
-//     authController = module.get<AuthController>(AuthController);
-//     // authService = module.get<AuthService>(AuthService);
-//   });
+    authController = module.get<AuthController>(AuthController);
+    // authService = module.get<AuthService>(AuthService);
+  });
 
-//   it('should be defined', () => {
-//     expect(authController).toBeDefined();
-//   });
+  it('should be defined', () => {
+    expect(authController).toBeDefined();
+  });
 
-//   describe('register', () => {
-//     it('should sanitize username to prevent XSS injection', async () => {
-//       const maliciousInput = '<script>alert("XSS")</script>';
-//       const sanitizedUsername = escape(maliciousInput);
+  // describe('register', () => {
+  //   it('should sanitize username to prevent XSS injection', async () => {
+  //     const maliciousInput = '<script>alert("XSS")</script>';
+  //     const sanitizedUsername = escape(maliciousInput);
 
-//       const createUserDto: RegisterDto = {
-//         username: maliciousInput,
-//         email: 'test@example.com',
-//         password: 'Test1234!',
-//         role: Role.BASIC,
-//       };
+  //     const createUserDto: RegisterDto = {
+  //       username: maliciousInput,
+  //       email: 'test@example.com',
+  //       password: 'Test1234!',
+  //       role: Role.BASIC,
+  //     };
 
-//       const result = await authController.register(
-//         createUserDto,
-//         {} as any,
-//         {} as any,
-//       );
+  //     const result = await authController.register(
+  //       createUserDto,
+  //       {} as any,
+  //       {} as any,
+  //     );
 
-//       expect(result.username).toBe(sanitizedUsername);
-//     });
+  //     expect(result.username).toBe(sanitizedUsername);
+  //   });
 
-//     // it('should sanitize email to prevent XSS injection', async () => {
-//     //   const maliciousEmail = 'test@exam<script>alert("XSS")</script>ple.com';
-//     //   const sanitizedEmail = escape(maliciousEmail);
+  // it('should sanitize email to prevent XSS injection', async () => {
+  //   const maliciousEmail = 'test@exam<script>alert("XSS")</script>ple.com';
+  //   const sanitizedEmail = escape(maliciousEmail);
 
-//     //   const createUserDto: RegisterDto = {
-//     //     username: 'testuser',
-//     //     email: maliciousEmail,
-//     //     password: 'Test1234!',
-//     //     role: Role.BASIC,
-//     //   };
+  //   const createUserDto: RegisterDto = {
+  //     username: 'testuser',
+  //     email: maliciousEmail,
+  //     password: 'Test1234!',
+  //     role: Role.BASIC,
+  //   };
 
-//     //   const result = await authController.register(createUserDto, {} as any, {} as any);
+  //   const result = await authController.register(createUserDto, {} as any, {} as any);
 
-//     //   expect(result.email).toBe(sanitizedEmail);
-//     // });
-//   });
-// });
+  //   expect(result.email).toBe(sanitizedEmail);
+  // });
+  // });
+});
