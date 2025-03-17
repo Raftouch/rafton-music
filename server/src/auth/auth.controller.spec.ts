@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { UsersService } from 'src/users/users.service';
 // import { Role } from '@prisma/client';
 // import * as escape from 'escape-html';
 // import { RegisterDto } from './dto/auth-register.dto';
@@ -21,11 +22,14 @@ describe('AuthController - Registration XSS Prevention', () => {
               .mockResolvedValue({ id: '1', username: 'testuser' }),
           },
         },
+        {
+          provide: UsersService,
+          useValue: {},
+        },
       ],
     }).compile();
 
     authController = module.get<AuthController>(AuthController);
-    // authService = module.get<AuthService>(AuthService);
   });
 
   it('should be defined', () => {
