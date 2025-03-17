@@ -2,7 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { CreateArtistDto } from '../../artists/dto/create-artist.dto';
 import { CreateGenreDto } from '../../genres/dto/create-genre.dto';
 import {
-  IsAlphanumeric,
   IsNotEmpty,
   IsString,
   Matches,

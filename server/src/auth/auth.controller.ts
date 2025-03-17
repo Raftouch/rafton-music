@@ -16,7 +16,6 @@ import { Request, Response } from 'express';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { JwtRefreshAuthGuard } from './guards/refresh-token.guard';
 import { JwtAuthGuard } from './guards/access-token.guard';
-import { User } from '@prisma/client';
 import { LoginEntity } from './entities/auth-login.entity';
 import { RegisterEntity } from './entities/auth-register.entity';
 

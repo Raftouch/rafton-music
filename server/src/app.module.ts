@@ -21,8 +21,6 @@ import { PlaycountService } from './playcount/playcount.service';
 import { PlaycountController } from './playcount/playcount.controller';
 import { FavoritesController } from './favorites/favorites.controller';
 import { FavoritesService } from './favorites/favorites.service';
-import { APP_FILTER } from '@nestjs/core';
-import { ValidationExceptionFilter } from './filters/validation-exception.filter';
 
 @Module({
   imports: [
@@ -53,10 +51,6 @@ import { ValidationExceptionFilter } from './filters/validation-exception.filter
     LoggerService,
     PlaycountService,
     FavoritesService,
-    // {
-    //   provide: APP_FILTER,
-    //   useClass: ValidationExceptionFilter,
-    // },
   ],
 })
 export class AppModule implements NestModule {
