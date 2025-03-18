@@ -7,7 +7,7 @@ on:
 jobs:
   server-and-client-with-tests:
     runs-on: ubuntu-latest
-    stragtegy:
+    strategy:
       matrix:
         node-version: [20.x]
 

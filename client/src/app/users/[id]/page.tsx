@@ -29,7 +29,6 @@ export default function UserDetails({ params: { id } }: DetailsProps) {
           notFound();
         }
       } else {
-        console.log("Not authorized. Redirecting to home page");
         router.push("/");
       }
     };

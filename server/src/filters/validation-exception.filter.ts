@@ -1,0 +1,85 @@
+import {
+  ExceptionFilter,
+  Catch,
+  ArgumentsHost,
+  HttpException,
+} from '@nestjs/common';
+
+@Catch(HttpException)
+export class ValidationExceptionFilter implements ExceptionFilter {
+  catch(exception: HttpException, host: ArgumentsHost) {
+    const ctx = host.switchToHttp();
+    const response = ctx.getResponse();
+    const request = ctx.getRequest();
+    const status = exception.getStatus();
+
+    const exceptionResponse = exception.getResponse();
+
+    let message = 'An error occurred';
+    let errors = [];
+
+    if (
+      exceptionResponse['message'] &&
+      Array.isArray(exceptionResponse['message'])
+    ) {
+      message = 'Validation failed';
+
+      errors = exceptionResponse['message'].map((validationError: string) => {
+        if (validationError.includes('Title')) {
+          return {
+            field: 'title',
+            constraints: [validationError],
+          };
+        } else if (validationError.includes('Genre')) {
+          return {
+            field: 'genre',
+            constraints: [validationError.replace(/^genre\./, '')],
+          };
+        } else if (validationError.includes('Artist')) {
+          return {
+            field: 'artist',
+            constraints: [validationError.replace(/^artist\./, '')],
+          };
+        } else if (validationError.includes('Username')) {
+          return {
+            field: 'username',
+            constraints: [validationError],
+          };
+        } else if (validationError.includes('Email')) {
+          return {
+            field: 'email',
+            constraints: [validationError],
+          };
+        } else if (validationError.includes('Password')) {
+          return {
+            field: 'password',
+            constraints: [validationError],
+          };
+        } else {
+          return {
+            field: 'unknown',
+            constraints: [validationError],
+          };
+        }
+      });
+    } else if (exceptionResponse['message'] && status === 401) {
+      message = 'Unauthorized';
+      errors = [{ field: null, constraints: ['Unauthorized access'] }];
+    }
+    // errors like BadRequestException
+    else if (exceptionResponse['message']) {
+      message = exceptionResponse['message'];
+      errors = [{ field: null, constraints: [message] }];
+    } else {
+      message = 'Unexpected error occurred';
+    }
+
+    response.status(status).json({
+      statusCode: status,
+      message,
+      errors,
+      timestamp: new Date().toISOString(),
+      path: request.url,
+    });
+  }
+}

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Song, User } from '@prisma/client';
+import { User } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -11,8 +11,6 @@ export class FavoritesService {
   //     where: { id: userId },
   //     include: { favorites: true },
   //   });
-
-  //   console.log('user :', user);
 
   //   if (!user) {
   //     throw new Error('User not found');

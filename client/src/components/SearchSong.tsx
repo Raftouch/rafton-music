@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
+import DOMPurify from "dompurify";
 
 interface SearchSongProps {
   placeholder: string;
@@ -13,8 +14,9 @@ export default function SearchSong({ placeholder }: SearchSongProps) {
   const pathname = usePathname();
 
   const handleChange = useDebouncedCallback((term: string) => {
+    const sanitizedTerm = DOMPurify.sanitize(term);
     const params = new URLSearchParams(searchParams);
-    term ? params.set("query", term) : params.delete("query");
+    sanitizedTerm ? params.set("query", sanitizedTerm) : params.delete("query");
 
     replace(`${pathname}?${params.toString()}`);
   }, 500);

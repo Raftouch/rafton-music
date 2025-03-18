@@ -6,14 +6,21 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
+interface FormError {
+  field: string | null;
+  constraints: string[];
+}
+
 export default function LoginForm() {
-  const [error, setError] = useState<string | null>(null);
+  // const [error, setError] = useState<string | null>(null);
+  const [formErrors, setFormErrors] = useState<FormError[] | null>(null);
   const { setUser, setIsAuth } = useUserStore();
   const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setError(null);
+    // setError(null);
+    setFormErrors(null);
 
     const formData = new FormData(event.currentTarget);
     const payload = {
@@ -34,11 +41,15 @@ export default function LoginForm() {
         credentials: "include",
       });
 
-      if (!response.ok) {
-        throw new Error(`Login failed, status: ${response.status}`);
-      }
+      // const data = await response.json();
 
       const userData = await response.json();
+
+      if (!response.ok) {
+        setFormErrors(userData.errors);
+        return;
+      }
+
       setUser({
         id: userData.id,
         username: userData.username,
@@ -49,12 +60,13 @@ export default function LoginForm() {
       toast.success("Login successful");
       router.push("/songs");
     } catch (e) {
-      if (e instanceof Error) {
-        toast.error(e.message);
-      } else {
-        toast.error("Login failed");
-      }
+      toast.error("Login failed, please try again");
     }
+  };
+
+  const getErrorMessage = (field: string) => {
+    const error = formErrors?.find((error) => error.field === field);
+    return error?.constraints?.[0];
   };
 
   return (
@@ -71,6 +83,9 @@ export default function LoginForm() {
           required
           className="w-full border-2"
         />
+        {getErrorMessage("username") && (
+          <p className="text-xs text-red-500">{getErrorMessage("username")}</p>
+        )}
       </div>
       <div>
         <label htmlFor="password">Password</label>
@@ -81,9 +96,20 @@ export default function LoginForm() {
           required
           className="w-full border-2"
         />
+        {getErrorMessage("password") && (
+          <p className="text-xs text-red-500">{getErrorMessage("password")}</p>
+        )}
       </div>
       <button type="submit">Login</button>
-      {error && <p className="text-red-500">{error}</p>}
+      {/* {error && <p className="text-red-500">{error}</p>} */}
+
+      {formErrors
+        ?.find((error: any) => error.field === null)
+        ?.constraints?.map((msg: string) => (
+          <p key={msg} className="text-xs text-red-500">
+            {msg}
+          </p>
+        ))}
     </form>
   );
 }
