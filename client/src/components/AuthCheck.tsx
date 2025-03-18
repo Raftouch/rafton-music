@@ -14,7 +14,7 @@ export default function AuthCheck({ children }: AuthCheckProps) {
   const { checkAuth, isAuth } = useUserStore();
   const router = useRouter();
   const pathname = usePathname();
-  const isPublicPage = pathname === "/" || "/auth/register";
+  const isPublicPage = pathname === "/" || pathname === "/auth/register";
 
   useEffect(() => {
     const authCheck = async () => {
