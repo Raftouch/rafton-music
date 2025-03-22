@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import { formatName, formatDate } from "../../../utils/format";
 import SongCard from "@/components/SongCard";
 import Link from "next/link";
+import Loader from "@/components/Loader";
 
 interface DetailsProps {
   params: { id: string };
@@ -15,15 +16,18 @@ interface DetailsProps {
 
 export default function UserDetails({ params: { id } }: DetailsProps) {
   const [profile, setProfile] = useState<User | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
   const { user } = useUserStore();
 
   useEffect(() => {
     const fetchProfile = async () => {
+      setLoading(true);
       if (user?.id === id || user?.role === "ADMIN") {
         try {
           const userData = await getUser(id);
           setProfile(userData);
+          setLoading(false);
         } catch (error) {
           console.error("Error fetching user data:", error);
           notFound();
@@ -35,6 +39,10 @@ export default function UserDetails({ params: { id } }: DetailsProps) {
 
     fetchProfile();
   }, [user, id, router]);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   if (!profile) {
     return (

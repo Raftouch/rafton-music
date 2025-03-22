@@ -1,11 +1,11 @@
-import { User } from '@/models/user'
-import { formatName, formatDate } from '@/utils/format'
-import Button from './Button'
-import { FaInfo } from 'react-icons/fa'
+import { User } from "@/models/user";
+import { formatName, formatDate } from "@/utils/format";
+import { FaInfo } from "react-icons/fa";
+import Link from "next/link";
 
 interface UserProps {
-  user: User
-  index: number
+  user: User;
+  index: number;
 }
 
 export default function UserCard({ user, index }: UserProps) {
@@ -29,10 +29,10 @@ export default function UserCard({ user, index }: UserProps) {
         <p>{user.uploadedSongs?.length}</p>
       </div>
       <div>
-        <Button onClick={() => (window.location.href = `/users/${user.id}`)}>
+        <Link href={`/users/${user.id}`}>
           <FaInfo />
-        </Button>
+        </Link>
       </div>
     </div>
-  )
+  );
 }
