@@ -5,7 +5,7 @@ import rainbow from "../../public/images/rainbow.svg";
 
 export default function HeroSection() {
   return (
-    <section className="h-screen px-10 py-20 relative flex flex-col justify-center items-center text-center">
+    <section className="px-10 py-28 relative flex flex-col justify-center items-center text-center">
       <h1
         className="text-3xl font-bold mb-10 z-10 bg-contain"
         style={{ backgroundImage: `url(${rainbow.src})` }}
