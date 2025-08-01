@@ -11,6 +11,7 @@
     "cypress": "cypress run --headless"
   },
   "dependencies": {
+    "clsx": "^2.1.1",
     "dompurify": "^3.2.4",
     "jsonwebtoken": "^9.0.2",
     "next": "^14.2.4",
