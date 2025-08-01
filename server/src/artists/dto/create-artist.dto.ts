@@ -13,9 +13,9 @@ export class CreateArtistDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(50, { message: 'Artist name cannot be longer than 50 characters' })
-  @IsAlphanumeric('en-US', {
-    message: 'Artist name must contain only alphanumeric characters',
-  })
+  // @IsAlphanumeric('en-US', {
+  //   message: 'Artist name must contain only alphanumeric characters',
+  // })
   @Transform(({ value }) => value.trim())
   @Transform(({ value }) => escape(value))
   name: string;
