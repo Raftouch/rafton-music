@@ -13,7 +13,7 @@ export default function Navbar() {
   const { user, isAuth } = useUserStore();
 
   return (
-    <div className="z-10 fixed w-full h-[80px] flex justify-between items-center bg-rafton-blue p-5">
+    <div className="z-20 fixed w-full h-[80px] flex justify-between items-center bg-rafton-blue p-5">
       <Link href="/">
         <Image
           src={logo}
