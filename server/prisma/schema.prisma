@@ -38,7 +38,7 @@ model Song {
   playHistory  SongPlayHistory[] @relation("SongPlayHistory")
   favoritedBy  User[]            @relation("FavouriteSongs")
 
-  // @@unique([title, artistId])
+  @@unique([title, artistId])
 }
 
 model User {
