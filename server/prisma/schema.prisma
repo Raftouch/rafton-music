@@ -37,6 +37,8 @@ model Song {
   uploadedById String?           @db.Uuid
   playHistory  SongPlayHistory[] @relation("SongPlayHistory")
   favoritedBy  User[]            @relation("FavouriteSongs")
+
+  // @@unique([title, artistId])
 }
 
 model User {
@@ -59,7 +61,7 @@ model SongPlayHistory {
   songId    String   @db.Uuid
   createdAt DateTime @default(now()) @db.Date
   user      User     @relation("UserSongPlayHistory", fields: [userId], references: [id])
-  song      Song     @relation("SongPlayHistory", fields: [songId], references: [id])
+  song      Song     @relation("SongPlayHistory", fields: [songId], references: [id], onDelete: Cascade)
 
   @@unique([userId, songId]) // only one play per user recorded
 }
