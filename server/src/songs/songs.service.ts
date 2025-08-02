@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { CreateSongDto } from './dto/create-song.dto';
 import { UpdateSongDto } from './dto/update-song.dto';
 import { Prisma, Song } from '@prisma/client';
@@ -43,6 +48,19 @@ export class SongsService {
     const genreData = existingGenre
       ? { connect: { id: existingGenre.id } }
       : { create: { type: genre.type } };
+
+    if (existingArtist) {
+      const existingSong = await this.prisma.song.findFirst({
+        where: {
+          title: songData.title,
+          artistId: existingArtist.id,
+        },
+      });
+
+      if (existingSong) {
+        throw new BadRequestException('This song already exists');
+      }
+    }
 
     const song = await this.prisma.song.create({
       data: {
