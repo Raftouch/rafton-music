@@ -21,7 +21,7 @@ export default function GallerySection() {
   return (
     <section className="px-10 py-20 space-y-10">
       <div className="space-y-5 text-center max-w-3xl mx-auto">
-        <h1 className="text-4xl font-bold">Gallery</h1>
+        <h1 className="text-3xl font-bold">Gallery</h1>
         <h2 className="text-2xl font-semibold">
           Explore musical vibes through images
         </h2>
