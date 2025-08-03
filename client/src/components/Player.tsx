@@ -49,7 +49,8 @@ export default function Player() {
     setCurrentTime(Number(e.target.value));
   };
 
-  if (!isAuth || !active) {
+  // if (!isAuth || !active) {
+  if (!active) {
     return null;
   }
 
