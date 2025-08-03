@@ -22,7 +22,7 @@ export default function SongCard({ song }: SongProps) {
   const [isFavorite, setIsFavorite] = useState(false);
   const router = useRouter();
   const { active, pause, playSong, pauseSong } = usePlayerStore();
-  const { user, setUser } = useUserStore();
+  const { user, isAuth } = useUserStore();
 
   const isPlaying = active?.id === song.id && !pause;
   const isSongOwner = user?.id === song.uploadedBy.id;
@@ -110,9 +110,14 @@ export default function SongCard({ song }: SongProps) {
           {isPlaying ? <FaPause /> : <FaPlay />}
         </Button>
 
-        <button className="absolute top-2 right-2" onClick={addOrRemoveFavSong}>
-          {isFavorite ? <FaHeart color="red" /> : <FaRegHeart />}
-        </button>
+        {isAuth ? (
+          <button
+            className="absolute top-2 right-2"
+            onClick={addOrRemoveFavSong}
+          >
+            {isFavorite ? <FaHeart color="red" /> : <FaRegHeart />}
+          </button>
+        ) : null}
 
         {isSongOwner || user?.role === "ADMIN" ? (
           <>
