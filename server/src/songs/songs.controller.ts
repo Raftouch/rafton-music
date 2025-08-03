@@ -63,6 +63,12 @@ export class SongsController {
     return this.songsService.findAll();
   }
 
+  @Get('public')
+  @ApiOkResponse({ type: SongEntity, isArray: true })
+  async findAllPublic() {
+    return this.songsService.findAllPublic();
+  }
+
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   // @ApiBearerAuth()

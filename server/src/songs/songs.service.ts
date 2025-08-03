@@ -114,6 +114,22 @@ export class SongsService {
     return songs;
   }
 
+  async findAllPublic(): Promise<Song[]> {
+    const songs = await this.prisma.song.findMany({
+      where: {},
+      orderBy: {
+        uploadedAt: 'desc',
+      },
+      include: {
+        artist: true,
+        genre: true,
+        uploadedBy: true,
+      },
+    });
+
+    return songs;
+  }
+
   async findOne(id: string): Promise<Song> {
     const song = await this.prisma.song.findUnique({
       where: { id },
