@@ -22,15 +22,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`bg-rafton-blue text-white ${inter.className}`}>
+      <body
+        className={`min-h-screen flex flex-col bg-rafton-blue text-white ${inter.className}`}
+      >
         <AuthCheck>
           <Navbar />
-          <main className="w-screen p-5 flex items-center justify-center">
+          <main className="w-screen flex-grow p-5 flex items-center justify-center">
             {children}
             <Toaster richColors />
-            <Footer />
           </main>
           <Player />
+          <Footer />
         </AuthCheck>
       </body>
     </html>

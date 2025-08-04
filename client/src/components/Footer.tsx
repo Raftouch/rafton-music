@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="text-center fixed bottom-2 text-xs">
+    <footer className="z-20 text-center text-xs">
       Created with ❤️ by Nelli - &copy; Copyright {new Date().getFullYear()}{" "}
     </footer>
   );
